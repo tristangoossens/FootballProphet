@@ -1,0 +1,13 @@
+/* You can add global styles to this file, and also import other style files */
+@use "variables" as var;
+@import '~bootstrap/scss/bootstrap';
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@500&display=swap');
+
+body {
+    font-family: 'DM Sans', sans-serif !important;
+}
+
+.color-span {
+    color: var.$redMunsell;
+}
+

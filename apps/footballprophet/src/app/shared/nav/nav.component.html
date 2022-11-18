@@ -1,0 +1,32 @@
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container-fluid fw-bold text-white w-100">
+      <a class="navbar-brand ms-3 me-5">
+        <img class="img-fluid me-2" src="/assets/img/logo-nav.png" />
+        <span class="color-span">Football</span>prophet
+      </a>
+
+      <button
+        class="navbar-toggler"
+        type="button"
+        (click)="isMenuCollapsed = !isMenuCollapsed"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >&#9776;</button>
+
+      <div [ngbCollapse]="isMenuCollapsed"  class="collapse navbar-collapse text-right row">
+        <ul class="navbar-nav d-flex p-4 p-lg-0">
+            <li class="nav-item">
+                <a class="nav-link" routerLink="/">Home</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" routerLink="/about">Players</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/about">About</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+</nav>
