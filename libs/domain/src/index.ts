@@ -1,1 +1,1 @@
-export { Player } from "./lib/Player";
+export { Player, Position } from "./lib/Player";
