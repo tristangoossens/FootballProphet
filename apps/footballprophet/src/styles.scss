@@ -11,3 +11,31 @@ body {
     color: var.$redMunsell;
 }
 
+.btn-footballprophet-create {
+    color: #ffffff !important;
+    background-color: var.$lightGreen !important;
+}
+
+.btn-footballprophet-create:hover {
+    background-color: var.$green !important;
+}
+
+.btn-footballprophet-delete {
+    color: #ffffff !important;
+    background-color: var.$redMunsell !important;
+}
+
+.btn-footballprophet-delete:hover {
+    background-color: var.$lightRed !important;
+}
+
+.btn-footballprophet-info {
+    color: #ffffff !important;
+    background-color: var.$darkBlue !important;
+}
+
+.btn-footballprophet-info:hover {
+    background-color: var.$lightBlue !important;
+}
+
+
