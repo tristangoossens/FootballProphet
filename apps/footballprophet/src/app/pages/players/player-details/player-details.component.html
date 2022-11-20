@@ -1,0 +1,31 @@
+<div class="col-12 mb-3 mt-1">
+    <h3 class="fw-bold color-span">{{ player!.name}}</h3>
+    <img class="img-fluid" [src]="player!.photoUrl">
+</div>
+
+<div class="col-12 text-start">
+    <div class="border-bottom my-3">
+        <p class="fw-bold mb-0">Positie</p>
+        <p class="mb-1">{{ player!.position }}</p>
+    </div>
+
+    <div class="border-bottom my-3">
+        <p class="fw-bold mb-0">Nationaliteit</p>
+        <p class="mb-1">{{ player!.nationality }}</p>
+    </div>
+
+    <div class="border-bottom my-3">
+        <p class="fw-bold mb-0">Geb. datum</p>
+        <p class="mb-1">{{ player!.dateOfBirth.toLocaleDateString('nl-NL') }}</p>
+    </div>
+
+    <div class="border-bottom my-3">
+        <p class="fw-bold mb-0">Toegevoegd op</p>
+        <p class="mb-1">{{ player!.createdAt.toLocaleString('nl-NL') }}</p>
+    </div>
+
+    <div class="border-bottom my-3">
+        <p class="fw-bold mb-0">Laatste update</p>
+        <p class="mb-1">{{ player!.updatedAt.toLocaleString('nl-NL') }}</p>
+    </div>
+</div>
