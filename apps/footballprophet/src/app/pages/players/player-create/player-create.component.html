@@ -1,0 +1,151 @@
+<div class="row container">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="fw-bold"><span class="color-span">Speler</span> toevoegen</h1>
+            <p>
+                Op deze pagina kan er een nieuwe speler worden toegevoegd. Vul hieronder alle velden correct in en klik op de knop "Toevoegen".
+            </p>
+
+            <div class="alert alert-secondary" role="alert">
+                Velden met een * zijn verplicht
+            </div>
+        </div>
+    </div>
+    
+
+
+    <div class="row my-2">
+        <div class="col-12">
+            <form #playerCreateForm="ngForm" name="form" (ngSubmit)="submitForm()" class="my-3" novalidate>
+                <!-- Name -->
+                <div class="mb-3 form-group">
+                    <label for="name" class="form-label fw-bold">Naam*</label>
+                    <input 
+                        type="text" 
+                        class="form-control" 
+                        name="name"
+                        #name="ngModel" 
+                        [(ngModel)]="player!.name" 
+                        required 
+                        minlength="10"
+                        [ngClass]="{
+                            'is-invalid': name.invalid && name.touched
+                        }"
+                    >
+
+                    <div *ngIf="name.invalid && name.touched" class="invalid-feedback">
+                        <div *ngIf="name.errors!['required']">
+                            Naam is verplicht!
+                        </div>
+                        <div *ngIf="name.errors!['minlength']">
+                            Naam moet minimaal 10 karakters bevatten!
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Nationality -->
+                <div class="mb-3 form-group">
+                    <label for="nationality" class="form-label fw-bold">Nationaliteit*</label>
+                    <input 
+                        type="text" 
+                        class="form-control" 
+                        name="nationality"
+                        #nationality="ngModel" 
+                        [(ngModel)]="player!.nationality" 
+                        required 
+                        minlength="5"
+                        [ngClass]="{
+                            'is-invalid': nationality.invalid && nationality.touched
+                        }"
+                    >
+
+                    <div *ngIf="nationality.invalid && nationality.touched" class="invalid-feedback">
+                        <div *ngIf="nationality.errors!['required']">
+                            Nationaliteit is verplicht!
+                        </div>
+                        <div *ngIf="nationality.errors!['minlength']">
+                            Nationaliteit moet minimaal 5 karakters bevatten!
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Date of birth -->
+                <div class="mb-3 form-group">
+                    <label for="dateOfBirth" class="form-label fw-bold">Geboortedatum*</label>
+                    <input 
+                        type="date" 
+                        class="form-control" 
+                        name="dateOfBirth"
+                        #dateOfBirth="ngModel" 
+                        [(ngModel)]="player!.dateOfBirth" 
+                        required 
+                        minlength="5"
+                        [ngClass]="{
+                            'is-invalid': dateOfBirth.invalid && dateOfBirth.touched
+                        }"
+                    >
+
+                    <div *ngIf="dateOfBirth.invalid && dateOfBirth.touched" class="invalid-feedback">
+                        <div *ngIf="dateOfBirth.errors!['required']">
+                            Geboortedatum is verplicht!
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Position -->
+                <div class="mb-3 form-group">
+                    <label for="position" class="form-label fw-bold">Positie*</label>
+                    <select 
+                        name="position"
+                        #position="ngModel" 
+                        [(ngModel)]="player!.position"
+                        class="form-select"
+                        [ngClass]="{
+                            'is-invalid': position.invalid && position.touched
+                        }"
+                    >
+                        <option *ngFor="let position of positions" [value]="position">{{position}}</option>
+                    </select>
+                    
+                    <div *ngIf="position.invalid && position.touched" class="invalid-feedback">
+                        <div *ngIf="position.errors!['required']">
+                            Positie is verplicht!
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Nationality -->
+                <div class="mb-3 form-group">
+                    <label for="photoUrl" class="form-label fw-bold">URL Foto*</label>
+                    <input 
+                        type="text" 
+                        class="form-control" 
+                        name="photoUrl"
+                        #photoUrl="ngModel" 
+                        [(ngModel)]="player!.photoUrl" 
+                        required 
+                        minlength="15"
+                        [ngClass]="{
+                            'is-invalid': photoUrl.invalid && photoUrl.touched
+                        }"
+                    >
+
+                    <div *ngIf="photoUrl.invalid && photoUrl.touched" class="invalid-feedback">
+                        <div *ngIf="photoUrl.errors!['required']">
+                            Url van foto is verplicht!
+                        </div>
+                        <div *ngIf="photoUrl.errors!['minlength']">
+                            Url van foto moet minimaal 15 karakters bevatten!
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-footballprophet-create" [disabled]="!playerCreateForm.valid">Toevoegen</button>
+            </form>
+
+            <pre>
+                {{ player | json }}
+            </pre>
+        </div>
+    </div>
+</div>
