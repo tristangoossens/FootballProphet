@@ -9,7 +9,7 @@ import { PlayerService } from '../../../services/player.service';
   templateUrl: './player-details.component.html',
   styleUrls: ['./player-details.component.scss'],
 })
-export class DetailsComponent implements OnInit {
+export class PlayerDetailsComponent implements OnInit {
   player: Player | undefined;
 
   constructor(

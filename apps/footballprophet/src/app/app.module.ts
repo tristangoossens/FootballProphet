@@ -5,12 +5,14 @@ import { AppComponent } from './app.component';
 import { NavComponent } from './shared/nav/nav.component';
 import { AppRoutingModule } from './app.routes';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { FormsModule } from '@angular/forms';
 
 import { AboutComponent } from './pages/about/about.component';
 import { HomeComponent } from './pages/home/home.component';
 import { PlayerService } from './services/player.service';
 import { PlayersComponent } from './pages/players/players.component';
-import { DetailsComponent } from './pages/players/player-details/player-details.component';
+import { PlayerDetailsComponent } from './pages/players/player-details/player-details.component';
+import { PlayerCreateComponent } from './pages/players/player-create/player-create.component';
 
 @NgModule({
   declarations: [
@@ -19,9 +21,10 @@ import { DetailsComponent } from './pages/players/player-details/player-details.
     AboutComponent,
     HomeComponent,
     PlayersComponent,
-    DetailsComponent,
+    PlayerDetailsComponent,
+    PlayerCreateComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, NgbModule],
+  imports: [BrowserModule, AppRoutingModule, NgbModule, FormsModule],
   providers: [PlayerService],
   bootstrap: [AppComponent],
 })
