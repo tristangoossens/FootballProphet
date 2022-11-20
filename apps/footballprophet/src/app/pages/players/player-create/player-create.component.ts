@@ -31,6 +31,10 @@ export class PlayerCreateComponent implements OnInit {
   }
 
   submitForm() {
+    this.player!.dateOfBirth = new Date(this.player!.dateOfBirth);
+    this.player!.createdAt = new Date(this.player!.createdAt);
+    this.player!.updatedAt = new Date(this.player!.updatedAt);
+
     this.playerService.addPlayer(this.player!);
     this.router.navigate(['/players']);
   }

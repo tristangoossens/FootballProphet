@@ -17,6 +17,7 @@
                         <th scope="col">Naam</th>
                         <th scope="col">Nationaliteit</th>
                         <th scope="col">Verwijderen</th>
+                        <th scope="col">Wijzigen</th>
                         <th scope="col">Bekijken</th>
                     </tr>
                 </thead>
@@ -29,6 +30,9 @@
                             <button type="button" (click)="DeletePlayer(player.id)" class="btn btn-footballprophet-delete ms-2">
                                 <i class="fa-solid fa-trash"></i>
                             </button>
+                        </td>
+                        <td>
+                            <a class="btn btn-warning ms-2" routerLink="/players/edit/{{player!.id}}"><i class="fa-solid fa-pencil"></i></a>
                         </td>
                         <td>
                             <a asp-action="Details" class="btn btn-footballprophet-info ms-2" routerLink="/players/{{player.id}}">

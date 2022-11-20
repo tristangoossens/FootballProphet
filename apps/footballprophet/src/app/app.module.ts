@@ -13,6 +13,7 @@ import { PlayerService } from './services/player.service';
 import { PlayersComponent } from './pages/players/players.component';
 import { PlayerDetailsComponent } from './pages/players/player-details/player-details.component';
 import { PlayerCreateComponent } from './pages/players/player-create/player-create.component';
+import { PlayerEditComponent } from './pages/players/player-edit/player-edit.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { PlayerCreateComponent } from './pages/players/player-create/player-crea
     PlayersComponent,
     PlayerDetailsComponent,
     PlayerCreateComponent,
+    PlayerEditComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, NgbModule, FormsModule],
   providers: [PlayerService],

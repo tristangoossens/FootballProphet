@@ -6,12 +6,14 @@ import { AboutComponent } from './pages/about/about.component';
 import { HomeComponent } from './pages/home/home.component';
 import { PlayerCreateComponent } from './pages/players/player-create/player-create.component';
 import { PlayerDetailsComponent } from './pages/players/player-details/player-details.component';
+import { PlayerEditComponent } from './pages/players/player-edit/player-edit.component';
 import { PlayersComponent } from './pages/players/players.component';
 
 const routes: Routes = [
     { path: '', pathMatch: 'full', component: HomeComponent },
     { path: 'about', pathMatch: 'full', component: AboutComponent },
     { path: 'players/new', pathMatch: 'full', component: PlayerCreateComponent},
+    { path: 'players/edit/:id', pathMatch: 'full', component: PlayerEditComponent},
     { 
         path: 'players',
         component: PlayersComponent,
