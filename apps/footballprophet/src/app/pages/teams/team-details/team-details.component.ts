@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Player, Team } from '@footballprophet/domain';
+import Swal from 'sweetalert2';
 import { PlayerService } from '../../../services/player.service';
 import { TeamService } from '../../../services/team.service';
 
@@ -31,5 +32,31 @@ export class TeamDetailsComponent implements OnInit {
 
   back(){
     this.router.navigate(['/teams']);
+  }
+
+  deletePlayer(playerId: string, teamId: string) {
+    Swal.fire({
+      title: 'Weet je het zeker?',
+      text: 'Je kunt deze actie niet ongedaan maken!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#FF0000',
+      cancelButtonColor: '#001E28',
+      confirmButtonText: 'Verwijderen',
+      cancelButtonText: 'Annuleren',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.playerService.deletePlayer(playerId);
+        this.playersInTeam = this.playerService.getPlayersInTeam(teamId);
+
+        Swal.fire({
+          title: 'Verwijderd',
+          text: `Speler met id "${playerId}" is verwijderd!`,
+          icon: 'success',
+          confirmButtonColor: '#001E28',
+          confirmButtonText: 'OK',
+        });
+      }
+    });
   }
 }
