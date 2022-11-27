@@ -55,22 +55,39 @@
         <h3 class="fw-bold"><span class="color-span">Entiteiten</span> in systeem</h3>
         <p>
             In dit kopje worden de entiteiten uit het diagram verder toegelicht en word er per attribuut aangegeven wat het datatype van het
-            attribuut is.
+            attribuut is. Elk entiteit kent een uniek ID, en enkele timestamps voor het bijhouden van wanneer een entiteit is aangemaakt of 
+            gewijzigd.
         </p>
         <hr />
         
-        <div class="card col-12 col-md-6 col-lg-3">
-            <div class="card-header">
-                Player
-            </div>
-            <div class="card-body">
-                <li>Name: string</li>
-                <li>DateOfBirth: string</li>
-                <li>Nationality: string</li>
-                <li>Position: Position (enum)</li>
-                <li>Photo: string (url)</li>
+        <div class="container">
+            <div class="row">
+                <div class="card col-12 col-md-6 col-lg-3 mx-3">
+                    <div class="card-header">
+                        Player
+                    </div>
+                    <div class="card-body">
+                        <li>Name: string</li>
+                        <li>DateOfBirth: Date</li>
+                        <li>Nationality: string</li>
+                        <li>Position: Position (enum)</li>
+                        <li>Photo: string (url)</li>
+                    </div>
+                </div>
+
+                <div class="card col-12 col-md-6 col-lg-3 mx-3">
+                    <div class="card-header">
+                        Team
+                    </div>
+                    <div class="card-body">
+                        <li>Name: string</li>
+                        <li>LogoURL: string</li>
+                        <li>FoundedIn: Date</li>
+                    </div>
+                </div>
             </div>
         </div>
+        
     </div>
 </div>
 

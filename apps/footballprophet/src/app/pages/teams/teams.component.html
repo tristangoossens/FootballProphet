@@ -1,0 +1,53 @@
+<div class="row">
+    <div class="col-12 rounded border shadow-sm bg-light p-4">
+        <div class="d-flex flex-column flex-lg-row">
+            <h1 class="fw-bold color-span">Team</h1>
+    
+            <a class="btn btn-footballprophet-create d-inline my-auto ms-lg-auto" routerLink="/teams/new">
+                <i class="fa-solid fa-plus me-2"></i>Toevoegen
+            </a>
+        </div>
+    
+        <p class="pt-4 pt-lg-0">Dit is het overzicht van de spelers. Klik op een team om meer informatie te achterhalen</p>
+    
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">Naam</th>
+                        <th scope="col">Opgericht in</th>
+                        <th scope="col">Verwijderen</th>
+                        <th scope="col">Wijzigen</th>
+                        <th scope="col">Bekijken</th>
+                    </tr>
+                </thead>
+    
+                <tbody>
+                    <tr *ngFor="let team of teams">
+                        <td>{{ team!.name }}</td>
+                        <td>{{ team!.foundedIn .toLocaleDateString('nl-NL') }}</td>
+                        <td>
+                            <button type="button" (click)="deleteTeam(team!.id)" class="btn btn-footballprophet-delete ms-2">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </td>
+                        <td>
+                            <a class="btn btn-warning ms-2" routerLink="/teams/{{team!.id}}/edit">
+                                <i class="fa-solid fa-pencil"></i>
+                            </a>
+                        </td>
+                        <td>
+                            <a class="btn btn-footballprophet-info ms-2" routerLink="/teams/{{team!.id}}">
+                                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<router-outlet></router-outlet>
+
+
