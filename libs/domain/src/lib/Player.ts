@@ -7,5 +7,6 @@ export interface Player extends EntityBase {
     nationality: string;
     position: Position;
     photoUrl: string;
+    teamId: string | null;
 }
 

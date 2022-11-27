@@ -1,0 +1,68 @@
+<div class="row my-5 rounded border bg-light shadow-sm">
+    <div class="col-12 col-lg-8 p-4">
+        <div class="d-flex flex-column flex-lg-row order-2 order-lg-1">
+            <h2 class="fw-bold color-span">Spelers</h2>
+            <a class="btn btn-footballprophet-create d-inline my-auto ms-lg-auto" routerLink="/players/new">
+                <i class="fa-solid fa-plus me-2"></i>Toevoegen
+            </a>
+        </div>
+        
+        <p>Hier zijn spelers van <span class="color-span">"{{team!.name}}"</span> terug te vinden</p>
+
+        <div class="container">
+            <div class="row">
+                <div *ngFor="let player of playersInTeam" class="rounded col-12 col-lg-6 py-3">
+                    <div class='card pt-4'>
+                        <div class='d-flex align-items-center'>
+                            <img class='img-fluid mx-auto p-4' [src]="player!.photoUrl" width="150" height="150" />
+                        </div>
+                        <div class='card-body'>
+                            <h5 class='card-text title fw-bold mb-1 color-span'>{{player!.name}}</h5>
+                            <span class="badge bg-secondary">{{player!.position}}</span>
+
+                            <div class="border-bottom my-3">
+                                <p class="fw-bold mb-0">Nationaliteit</p>
+                                <p class="mb-1">{{ player!.nationality }}</p>
+                            </div>
+                        
+                            <div class="mt-3 mb-2">
+                                <p class="fw-bold mb-0">Geb. datum</p>
+                                <p class="mb-1">{{ player!.dateOfBirth.toLocaleDateString('nl-NL') }}</p>
+                            </div>
+                        </div>
+                        <div class='card-footer'>
+                            <div class="my-2">
+                                <p class="fw-bold mb-0">Laatste update</p>
+                                <p class="mb-1">{{ player!.updatedAt.toLocaleString('nl-NL') }}</p>
+                            </div>                        
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-lg-4 border-start py-4">
+        <div class="border-bottom text-center">
+            <h2 class="color-span fw-bold">{{team!.name}}</h2>
+            <img class="img-fluid" [src]="team!.logoUrl" width="150" height="150" />
+        </div>
+        
+        <div class="py-3 ps-2 border-bottom">
+            <p class="fw-bold mb-0">Datum opgericht</p>
+            <p class="mb-1">{{ team!.foundedIn.toLocaleDateString('nl-NL') }}</p>
+        </div>   
+
+        <div class="py-3 ps-2 border-bottom">
+            <p class="fw-bold mb-0">Toegevoegd op</p>
+            <p class="mb-1">{{ team!.createdAt.toLocaleString('nl-NL') }}</p>
+        </div>   
+
+        <div class="py-3 ps-2">
+            <p class="fw-bold mb-0">Laatste update</p>
+            <p class="mb-1">{{ team!.updatedAt.toLocaleString('nl-NL') }}</p>
+        </div>   
+    </div>
+
+    <a class="btn btn-footballprophet-info rounded-bottom" (click)="back()">Terug</a>
+</div>

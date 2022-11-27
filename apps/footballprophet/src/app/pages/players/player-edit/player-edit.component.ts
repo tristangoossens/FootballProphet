@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Player, Position } from '@footballprophet/domain';
+import Swal from 'sweetalert2';
 import { PlayerService } from '../../../services/player.service';
 
 @Component({
@@ -33,5 +34,13 @@ export class PlayerEditComponent implements OnInit {
 
     this.playerService.updatePlayer(this.player!);
     this.router.navigate(['/players']);
+
+    Swal.fire({
+      title: 'Gewijzigd',
+      text: `Speler met id "${this.player!.id}" is gewijzigd!`,
+      icon: 'success',
+      confirmButtonColor: '#001E28',
+      confirmButtonText: 'OK',
+    });
   }
 }
