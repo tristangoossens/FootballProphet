@@ -15,7 +15,8 @@ export class PlayerService {
       nationality: 'Argentina',
       photoUrl: 'https://www.flashscore.com/res/image/data/d8SZZtZg-nNCjsra2.png',
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
+      teamId: '1'
     },
     {
       id: '2',
@@ -25,7 +26,8 @@ export class PlayerService {
       nationality: 'Portugal',
       photoUrl: 'https://www.flashscore.com/res/image/data/QXkwuwHG-EJcn5Kai.png',
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
+      teamId: '2'
     },
     {
       id: '3',
@@ -35,7 +37,8 @@ export class PlayerService {
       nationality: 'France',
       photoUrl: 'https://www.flashscore.com/res/image/data/C2kfb8dM-8QfA3Tpl.png',
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
+      teamId: '3'
     },
     {
       id: '4',
@@ -45,7 +48,8 @@ export class PlayerService {
       nationality: 'Egypt',
       photoUrl: 'https://www.flashscore.com/res/image/data/rXrxPtZg-S6oLNQmH.png',
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
+      teamId: '4'
     },
     {
       id: '5',
@@ -55,7 +59,8 @@ export class PlayerService {
       nationality: 'Brazil',
       photoUrl: 'https://www.flashscore.com/res/image/data/Y9iNhbe5-hxJXRX3n.png',
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
+      teamId: '5'
     },
     {
       id: '6',
@@ -65,7 +70,19 @@ export class PlayerService {
       nationality: 'Uruguay',
       photoUrl: 'https://www.flashscore.com/res/image/data/2LHkh9jl-M1tW1Y2U.png',
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
+      teamId: '6'
+    },
+    {
+      id: '7',
+      name: 'Julian Alvarez',
+      dateOfBirth: new Date('1996-01-01'),
+      position: Position.FW,
+      nationality: 'Argentina',
+      photoUrl: 'https://www.flashscore.com/res/image/data/IidHbScM-8IUJBPW9.png',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      teamId: '1'
     }
   ];
 
@@ -73,6 +90,10 @@ export class PlayerService {
 
   getPlayers(): Player[] {
     return this.players;
+  }
+
+  getPlayersInTeam(teamId: string): Player[] {
+    return this.players.filter(p => p.teamId === teamId);
   }
 
   getPlayer(id: string): Player | undefined {

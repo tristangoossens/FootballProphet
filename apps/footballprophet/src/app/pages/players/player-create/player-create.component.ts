@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Player, Position } from '@footballprophet/domain';
+import Swal from 'sweetalert2';
 import { PlayerService } from '../../../services/player.service';
 
 @Component({
@@ -25,6 +26,7 @@ export class PlayerCreateComponent implements OnInit {
       position: Position.FW,
       nationality: '',
       photoUrl: '',
+      teamId: null,
       createdAt: new Date(),
       updatedAt: new Date(),
     }
@@ -37,5 +39,13 @@ export class PlayerCreateComponent implements OnInit {
 
     this.playerService.addPlayer(this.player!);
     this.router.navigate(['/players']);
+
+    Swal.fire({
+      title: 'Toegevoegd',
+      text: `Speler met id "${this.player!.id}" is toegevoegd!`,
+      icon: 'success',
+      confirmButtonColor: '#001E28',
+      confirmButtonText: 'OK',
+    });
   }
 }
