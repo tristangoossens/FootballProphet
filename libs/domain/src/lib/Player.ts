@@ -1,4 +1,5 @@
 import { EntityBase } from "./EntityBase";
+import { Position } from "./Position";
 
 export interface Player extends EntityBase {
     name: string;
@@ -8,9 +9,3 @@ export interface Player extends EntityBase {
     photoUrl: string;
 }
 
-export enum Position {
-    GK = "Goalkeeper",
-    DF = "Defender",
-    MF = "Midfielder",
-    FW = "Forward"
-}
