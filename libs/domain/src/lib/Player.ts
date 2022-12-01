@@ -1,5 +1,5 @@
 import { EntityBase } from "./EntityBase";
-import { Position } from "./Position";
+import { Position } from "./enum/Position";
 
 export interface Player extends EntityBase {
     name: string;
