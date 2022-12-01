@@ -35,7 +35,12 @@ import { TeamDetailsComponent } from './pages/teams/team-details/team-details.co
     TeamEditComponent,
     TeamDetailsComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, NgbModule, FormsModule],
+  imports: [
+    BrowserModule, 
+    AppRoutingModule, 
+    NgbModule, 
+    FormsModule
+  ],
   providers: [PlayerService, TeamService],
   bootstrap: [AppComponent],
 })
