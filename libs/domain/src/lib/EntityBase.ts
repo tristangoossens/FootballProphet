@@ -1,5 +1,7 @@
+import { Types } from 'mongoose';
+
 export interface EntityBase {
-    id: string;
+    _id: string;
     createdAt: Date;
     updatedAt: Date;
 }

@@ -11,11 +11,12 @@ export class AuthService {
     ) {}
 
     async validateUser(email: string, pass: string): Promise<User> {
-        const user = await this.userService.findOne(email);
+        const user = await this.userService.findOne();
         if (user && user.password === pass) {
             delete user.password;
             return user;
         }
+        
         return null;
     }
 
@@ -23,8 +24,8 @@ export class AuthService {
         return {
             access_token: this.jwtService.sign({
                 username: user.email,
-                sub: user.id,
-                roles: user.roles
+                sub: user._id,
+                roles: user.role
             }),
             expires_in: '2h'
         }
