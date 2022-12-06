@@ -1,5 +1,5 @@
 import { User, UserRole } from '@footballprophet/domain';
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectConnection, InjectModel } from '@nestjs/mongoose';
 import { Connection, Model } from 'mongoose';
 import { UserDocument, UserModel } from './user.model';
@@ -14,15 +14,14 @@ export class UserService {
         console.log(this.userModel.find())
     }
 
-    async findOne(){
-        return null;
+    async findByUsername(username: string): Promise<User | null> {
+        return await this.userModel.findOne({ username: username }).lean();
     }
 
     async create() {
         const user = await this.userModel.create({
-            email: 'tristan@mail.nl',
+            username: 'tristan@mail.nl',
             password: 'Test123!',
-            username: 'tristangoossens',
             birthDate: new Date('2002-04-02'),
             phonenumber: '061234567',
             role: UserRole.Admin,

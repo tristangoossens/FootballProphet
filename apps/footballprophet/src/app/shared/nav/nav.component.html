@@ -20,16 +20,31 @@
             </li>
 
             <li class="nav-item">
-              <a class="nav-link" routerLink="/players">Players</a>
-            </li>
-
-            <li class="nav-item">
-              <a class="nav-link" routerLink="/teams">Teams</a>
-            </li>
-
-            <li class="nav-item">
               <a class="nav-link" routerLink="/about">About</a>
             </li>
+
+            <div *ngIf="(authService.currentUser$ | async) === undefined" ngbDropdown class="nav-item dropdown ms-lg-auto ms-md-auto me-lg-3">
+              <a type="button" class="nav-link dropdown-toggle" ngbDropdownToggle>
+                Account
+              </a>
+
+              <ul ngbDropdownMenu class="dropdown-menu dropdown-menu-end">
+                <a ngbDropdownItem routerLink="/login">Login</a>
+              </ul>
+
+
+            </div>
+
+            <div *ngIf="authService.currentUser$ | async as user" ngbDropdown class="nav-item dropdown ms-lg-auto ms-md-auto me-lg-3">
+              <a type="button" class="nav-link dropdown-toggle" ngbDropdownToggle>
+                {{ user.username }}
+              </a>
+
+              <ul ngbDropdownMenu class="dropdown-menu dropdown-menu-end">
+                <a ngbDropdownItem routerLink="/account">Mijn account</a>
+                <button ngbDropdownItem routerLink="/login" (click)="authService.logout()">Logout</button>
+              </ul>
+            </div>
         </ul>
       </div>
     </div>

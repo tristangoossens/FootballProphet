@@ -7,6 +7,24 @@ body {
     font-family: 'DM Sans', sans-serif !important;
 }
 
+
+*:hover,
+*:focus,
+*:active {
+    outline: none;
+    box-shadow: none !important;
+}
+
+a {
+    text-decoration: none !important;
+}
+
+.content-box {
+    background-color: var.$darkBlue !important;
+    color: white;
+    border-radius: 15px;
+}
+
 .color-span {
     color: var.$redMunsell;
 }
@@ -18,6 +36,10 @@ body {
 
 .btn-footballprophet-create:hover {
     background-color: var.$green !important;
+}
+
+.btn-footballprophet-create:disabled {
+    border: var.$lightGreen !important;
 }
 
 .btn-footballprophet-delete {

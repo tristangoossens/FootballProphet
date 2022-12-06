@@ -1,12 +1,9 @@
-import { Types } from "mongoose";
 import { EntityBase } from "./EntityBase";
 import { UserRole } from "./enum/UserRole";
+import { Identity } from "./Identity";
 
-export interface User extends EntityBase {
-    email: string;
-    password: string | undefined;
-    username: string;
+export interface User extends EntityBase, Identity {
     birthDate: Date;
     phonenumber: string;
-    role: UserRole;
+    role: UserRole
 }
