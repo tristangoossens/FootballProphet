@@ -8,7 +8,7 @@ import { UserDocument, UserModel } from './user.model';
 export class UserService {
     constructor(
         @InjectModel('users') private userModel: Model<UserDocument>
-    ){}
+    ) { }
 
     async listUsers() {
         console.log(this.userModel.find())
@@ -24,7 +24,7 @@ export class UserService {
             password: 'Test123!',
             birthDate: new Date('2002-04-02'),
             phonenumber: '061234567',
-            role: UserRole.Admin,
+            roles: [UserRole.Admin, UserRole.User],
             createdAt: new Date(),
             updatedAt: new Date(),
         })

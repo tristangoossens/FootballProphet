@@ -8,7 +8,7 @@ export class AuthService {
     constructor(
         private userService: UserService,
         private jwtService: JwtService
-    ) {}
+    ) { }
 
     async validateUser(username: string, pass: string): Promise<User> {
         const user = await this.userService.findByUsername(username);
@@ -16,7 +16,7 @@ export class AuthService {
             delete user.password;
             return user;
         }
-        
+
         return null;
     }
 

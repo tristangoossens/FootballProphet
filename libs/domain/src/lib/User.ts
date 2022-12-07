@@ -5,5 +5,5 @@ import { Identity } from "./Identity";
 export interface User extends EntityBase, Identity {
     birthDate: Date;
     phonenumber: string;
-    role: UserRole
+    roles: UserRole[];
 }
