@@ -36,6 +36,18 @@ export class AuthService {
       ); 
   }
 
+  public register(userCredentials: Identity): Observable<string | undefined> {
+    return this.http.post<Identity>(`${environment.api_url}/auth/register`, userCredentials)
+      .pipe(
+        map((data: any) => {
+          localStorage.setItem(this.TOKEN, data.access_token);
+          this._isLoggedin$.next(true);
+          this._currentUser$.next(jwt_decode(data.access_token));
+          return data.access_token;
+        })
+      );
+  }
+
   public logout(): void {
     this.router.navigate(['/']).then(() => {
       localStorage.removeItem(this.TOKEN);

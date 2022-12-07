@@ -30,6 +30,7 @@
 
               <ul ngbDropdownMenu class="dropdown-menu dropdown-menu-end">
                 <a ngbDropdownItem routerLink="/login">Login</a>
+                <a ngbDropdownItem routerLink="/register" >Register</a>
               </ul>
 
 
@@ -42,7 +43,7 @@
 
               <ul ngbDropdownMenu class="dropdown-menu dropdown-menu-end">
                 <a ngbDropdownItem routerLink="/account">Mijn account</a>
-                <button ngbDropdownItem routerLink="/login" (click)="authService.logout()">Logout</button>
+                <button ngbDropdownItem (click)="authService.logout()">Logout</button>
               </ul>
             </div>
         </ul>

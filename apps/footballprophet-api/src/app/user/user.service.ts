@@ -10,25 +10,23 @@ export class UserService {
         @InjectModel('users') private userModel: Model<UserDocument>
     ) { }
 
-    async listUsers() {
-        console.log(this.userModel.find())
-    }
-
     async findByUsername(username: string): Promise<User | null> {
         return await this.userModel.findOne({ username: username }).lean();
     }
 
-    async create() {
-        const user = await this.userModel.create({
-            username: 'tristan@mail.nl',
-            password: 'Test123!',
-            birthDate: new Date('2002-04-02'),
-            phonenumber: '061234567',
-            roles: [UserRole.Admin, UserRole.User],
-            createdAt: new Date(),
-            updatedAt: new Date(),
-        })
+    async find(id: string): Promise<User | null> {
+        return await this.userModel.findOne({ _id: id }).lean();
+    }
 
-        await user.save()
+    async create(user: User) {
+        await this.userModel.create(user);
+    }
+
+    async update(id: string, item: User) {
+        throw new Error('Method not implemented.');
+    }
+
+    async delete(id: string) {
+        throw new Error('Method not implemented.');
     }
 }

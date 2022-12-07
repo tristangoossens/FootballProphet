@@ -11,6 +11,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AboutComponent } from './pages/about/about.component';
 import { HomeComponent } from './pages/home/home.component';
 import { LoginComponent } from './pages/auth/login/login.component';
+import { RegisterComponent } from './pages/auth/register/register.component';
 
 @NgModule({
   declarations: [
@@ -19,11 +20,12 @@ import { LoginComponent } from './pages/auth/login/login.component';
     AboutComponent,
     HomeComponent,
     LoginComponent,
+    RegisterComponent,
   ],
   imports: [
-    BrowserModule, 
-    AppRoutingModule, 
-    NgbModule, 
+    BrowserModule,
+    AppRoutingModule,
+    NgbModule,
     FormsModule,
     HttpClientModule,
   ],

@@ -1,8 +1,8 @@
 // Domain entities
-export { Player } from "./lib/Player";
 export { User } from "./lib/User";
 export { Identity } from "./lib/Identity";
 export { Team } from "./lib/Team";
+export { League } from "./lib/League";
 
 // Enums
 export { UserRole } from "./lib/enum/UserRole";
