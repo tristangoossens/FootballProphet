@@ -16,8 +16,7 @@ export class RegisterComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private router: Router
-  ) 
-  { }
+  ) { }
 
   ngOnInit(): void {
     this.newUser = {
@@ -35,14 +34,14 @@ export class RegisterComponent implements OnInit {
   register() {
     this.authService.register(this.newUser)
       .subscribe({
-        next: (_) => {
-          this.router.navigate(['/']);
-          AlertService.alertSuccess('Je account is succesvol aangemaakt!');
+        next: (msg) => {
+          this.router.navigate(['/login']);
+          AlertService.alertSuccess(msg || 'Registratie is successvol');
         },
         error: (e) => {
           AlertService.alertError(e.error.message);
         }
-    });
+      });
   }
 
 }

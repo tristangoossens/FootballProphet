@@ -1,52 +1,50 @@
 <nav class="navbar navbar-expand-lg navbar-dark">
-    <div class="container-fluid fw-bold text-white w-100">
-      <a class="navbar-brand ms-3 me-5">
-        <img class="img-fluid me-2" src="/assets/img/logo-nav.png" />
-        <span class="color-span">Football</span>prophet
-      </a>
+  <div class="container-fluid fw-bold text-white w-100">
+    <a class="navbar-brand ms-3 me-5">
+      <img class="img-fluid me-2" src="/assets/img/logo-nav.png" />
+      <span class="color-span">Football</span>prophet
+    </a>
 
-      <button
-        class="navbar-toggler"
-        type="button"
-        (click)="isMenuCollapsed = !isMenuCollapsed"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >&#9776;</button>
+    <button class="navbar-toggler" type="button" (click)="isMenuCollapsed = !isMenuCollapsed" aria-expanded="false" aria-label="Toggle navigation">&#9776;</button>
 
-      <div [ngbCollapse]="isMenuCollapsed"  class="collapse navbar-collapse text-right row">
-        <ul class="navbar-nav d-flex p-4 p-lg-0">
-            <li class="nav-item">
-                <a class="nav-link" routerLink="/">Home</a>
-            </li>
+    <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse text-right row">
+      <ul class="navbar-nav d-flex p-4 p-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/">Home</a>
+        </li>
 
-            <li class="nav-item">
-              <a class="nav-link" routerLink="/about">About</a>
-            </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/leagues">Leagues</a>
+        </li>
 
-            <div *ngIf="(authService.currentUser$ | async) === undefined" ngbDropdown class="nav-item dropdown ms-lg-auto ms-md-auto me-lg-3">
-              <a type="button" class="nav-link dropdown-toggle" ngbDropdownToggle>
-                Account
-              </a>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/about">About</a>
+        </li>
 
-              <ul ngbDropdownMenu class="dropdown-menu dropdown-menu-end">
-                <a ngbDropdownItem routerLink="/login">Login</a>
-                <a ngbDropdownItem routerLink="/register" >Register</a>
-              </ul>
+        <div *ngIf="(authService.currentUser$ | async) === undefined" ngbDropdown class="nav-item dropdown ms-lg-auto ms-md-auto me-lg-3">
+          <a type="button" class="nav-link dropdown-toggle" ngbDropdownToggle>
+            Account
+          </a>
+
+          <ul ngbDropdownMenu class="dropdown-menu dropdown-menu-end">
+            <a ngbDropdownItem routerLink="/login">Login</a>
+            <a ngbDropdownItem routerLink="/register">Register</a>
+          </ul>
 
 
-            </div>
+        </div>
 
-            <div *ngIf="authService.currentUser$ | async as user" ngbDropdown class="nav-item dropdown ms-lg-auto ms-md-auto me-lg-3">
-              <a type="button" class="nav-link dropdown-toggle" ngbDropdownToggle>
-                {{ user.username }}
-              </a>
+        <div *ngIf="authService.currentUser$ | async as user" ngbDropdown class="nav-item dropdown ms-lg-auto ms-md-auto me-lg-3">
+          <a type="button" class="nav-link dropdown-toggle" ngbDropdownToggle>
+            {{ user.username }}
+          </a>
 
-              <ul ngbDropdownMenu class="dropdown-menu dropdown-menu-end">
-                <a ngbDropdownItem routerLink="/account">Mijn account</a>
-                <button ngbDropdownItem (click)="authService.logout()">Logout</button>
-              </ul>
-            </div>
-        </ul>
-      </div>
+          <ul ngbDropdownMenu class="dropdown-menu dropdown-menu-end">
+            <a ngbDropdownItem routerLink="/account">Mijn account</a>
+            <button ngbDropdownItem (click)="authService.logout()">Logout</button>
+          </ul>
+        </div>
+      </ul>
     </div>
+  </div>
 </nav>

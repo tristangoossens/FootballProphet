@@ -22,14 +22,14 @@ export class AuthController {
   }
 
   @Post('register')
-  async register(@Body() user: User) : Promise<any> {
+  async register(@Body() user: User): Promise<any> {
     await this.userService.create(user);
-    return await this.authService.login(user);
+    return `Gebruiker aangemaakt met gebruikersnaam '${user.username}'`;
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('profile')
-  async profile(@Request() req) : Promise<User> {
+  async profile(@Request() req): Promise<User> {
     return await this.userService.find(req.user._id);
   }
 }

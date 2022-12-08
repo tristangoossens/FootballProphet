@@ -6,9 +6,7 @@ import { BehaviorSubject, map, Observable, of } from 'rxjs';
 import jwt_decode from 'jwt-decode';
 import { Router } from '@angular/router';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class AuthService {
   private _isLoggedin$ = new BehaviorSubject<boolean>(false);
   public isLoggedin$ = this._isLoggedin$.asObservable();
@@ -27,23 +25,20 @@ export class AuthService {
   public login(userCredentials: Identity): Observable<string | undefined> {
     return this.http.post<Identity>(`${environment.api_url}/auth/login`, userCredentials)
       .pipe(
-        map((data: any) => {
-          localStorage.setItem(this.TOKEN, data.access_token);
+        map((resp: any) => {
+          localStorage.setItem(this.TOKEN, resp.data.access_token);
           this._isLoggedin$.next(true);
-          this._currentUser$.next(jwt_decode(data.access_token));
-          return data.access_token;
+          this._currentUser$.next(jwt_decode(resp.data.access_token));
+          return resp.data.access_token;
         })
-      ); 
+      );
   }
 
-  public register(userCredentials: Identity): Observable<string | undefined> {
-    return this.http.post<Identity>(`${environment.api_url}/auth/register`, userCredentials)
+  public register(userInfo: User): Observable<string | undefined> {
+    return this.http.post<User>(`${environment.api_url}/auth/register`, userInfo)
       .pipe(
-        map((data: any) => {
-          localStorage.setItem(this.TOKEN, data.access_token);
-          this._isLoggedin$.next(true);
-          this._currentUser$.next(jwt_decode(data.access_token));
-          return data.access_token;
+        map((resp: any) => {
+          return resp.message;
         })
       );
   }
@@ -53,6 +48,6 @@ export class AuthService {
       localStorage.removeItem(this.TOKEN);
       this._isLoggedin$.next(false);
       this._currentUser$.next(undefined);
-    });	
+    });
   }
 }
