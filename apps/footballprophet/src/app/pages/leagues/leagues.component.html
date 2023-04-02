@@ -9,3 +9,72 @@
         <hr />
     </div>
 </div>
+
+<div class="row p-3">
+    <div *ngFor="let row of rows" class="col-12">
+        <div class="d-flex flex-row rounded-top p-4 mt-3 bg-light">
+            <img class="img-fluid flex-column" [src]="row.league.logoUrl" width="75" height="75">
+            <div class="flex-column ms-3">
+                <h4 class="color-span fw-bold">{{ row.league.name }}</h4>
+                <p class="fw-bold">Seizoen: <span class="color-span">{{ row.league.season }}</span></p>
+            </div>
+    
+            <button
+                type="button"
+                class="btn btn-footballprophet-info my-auto ms-auto"
+                (click)="row.isCollapsed = !row.isCollapsed"
+                [attr.aria-expanded]="!row.isCollapsed"          
+            >
+                <i 
+                    class="fa-sharp fa-solid me-2"
+                    [ngClass]="{
+                        'fa-chevron-up': !row.isCollapsed,
+                        'fa-chevron-down': row.isCollapsed
+                    }"
+                ></i>Teams
+            </button>
+        </div>
+        
+        <div [ngbCollapse]="row.isCollapsed" class="p-3 bg-light table-responsive border-top">
+            <div class="d-flex mb-3">
+                <h5 class="fw-bold flex-column my-auto">Teams in <span class="color-span">"{{row.league.name}}"</span></h5>
+
+                <a class="btn btn-footballprophet-create my-auto ms-auto" routerLink="/leagues/{{row.league._id}}/addteam">
+                    <i class="fa-solid fa-plus me-2"></i>Toevoegen
+                </a>
+            </div>
+            
+
+            <table class="table table-bordered align-middle mb-0">
+                <thead>
+                  <tr>
+                    <th>Logo</th>
+                    <th>Naam</th>
+                    <th>Datum oprichting</th>
+                    <th *ngIf="isLoggedIn && isAdmin">Delete</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let team of row.league.teams">
+                    <td>
+                        <img [src]="team.logoUrl" class="rounded img-fluid"/>
+                    </td>
+                    <td class="fw-bold">
+                        {{team.name}}
+                    </td>
+                    <td>
+                        {{ team.foundedIn }}
+                    </td>
+                    <td *ngIf="isLoggedIn && isAdmin" class="text-center">
+                        <button
+                            class="btn btn-footballprophet-delete"
+                        >
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+        </div>
+    </div>
+</div>

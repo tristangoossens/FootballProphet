@@ -21,12 +21,4 @@ export class UserService {
     async create(user: User) {
         await this.userModel.create(user);
     }
-
-    async update(id: string, item: User) {
-        throw new Error('Method not implemented.');
-    }
-
-    async delete(id: string) {
-        throw new Error('Method not implemented.');
-    }
 }

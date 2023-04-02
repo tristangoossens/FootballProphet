@@ -1,5 +1,6 @@
 import { League, Team, UserRole } from '@footballprophet/domain';
 import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
+import { ObjectId } from 'mongoose';
 import { HasRoles } from '../auth/decorators/roles.decorator';
 import { JwtAuthGuard } from '../auth/guards/jwt.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
@@ -10,48 +11,42 @@ import { LeagueService } from './league.service';
 export class LeagueController {
     constructor(
         private leagueService: LeagueService,
-        private teamService: TeamService
+        private teamService: TeamService,
     ){ }
 
     @Get()
     async getAll() {
-        return await this.leagueService.getAll();
+        return await this.leagueService.GetAll();
     }
 
     @Get(':id')
-    async getById(@Param('id') id: string) {
-        return await this.leagueService.getById(id);
+    async getById(@Param('id') id: ObjectId) {
+        return await this.leagueService.GetById(id);
     }
 
     @HasRoles([UserRole.Admin])
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Post()
     async create(@Body() league: League): Promise<string> {
-        await this.leagueService.create(league);
+        await this.leagueService.Create(league);
         return `League created with name '${league.name}'`;
     }
 
+
+    // Team methods
     @HasRoles([UserRole.Admin])
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Post(':id/teams')
-    async addTeam(@Body() team: Team, @Param('id') leagueId: string): Promise<string> {
-        await this.teamService.create(leagueId, team);
-        return `Team added to league with id "${leagueId}"`;
-    }
-
-    @HasRoles([UserRole.Admin])
-    @UseGuards(JwtAuthGuard, RolesGuard)
-    @Put(':id/teams/:teamId')
-    async updateTeam(@Body() team: Team, @Param('id') leagueId: string, @Param('teamId') teamId: string): Promise<string> {
-        await this.teamService.update(leagueId, teamId, team);
-        return `Team updated in league with id "${leagueId}"`;
+    async addTeamToLeague(@Param('id') id: ObjectId, @Body() team: Team): Promise<string> {
+        await this.teamService.AddTeamToLeague(id, team);
+        return `Team added to league with id '${id}'`;
     }
 
     @HasRoles([UserRole.Admin])
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Delete(':id/teams/:teamId')
-    async removeTeam(@Param('id') leagueId: string, @Param('teamId') teamId: string): Promise<string> {
-        await this.teamService.delete(leagueId, teamId);
-        return `Team removed from league with id "${leagueId}"`;
+    async removeTeamFromLeague(@Param('id') id: ObjectId, @Param('teamId') teamId: ObjectId): Promise<string> {
+        await this.teamService.RemoveTeamFromLeague(id, teamId);
+        return `Team removed from league with id '${id}'`;
     }
 }

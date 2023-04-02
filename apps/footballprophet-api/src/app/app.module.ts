@@ -15,8 +15,6 @@ import { AuthController } from './auth/auth.controller';
     UserModule,
     LeagueModule,
   ],
-  controllers: [AuthController],
-  providers: [],
 })
 export class AppModule {
   constructor(@InjectConnection() private conn: Connection) {}

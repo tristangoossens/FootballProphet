@@ -9,6 +9,7 @@ export const LeagueSchema = new mongoose.Schema({
     logoUrl: { type: String, required: true },
     season: { type: Number, required: true },
     teams: { type: [TeamSchema], required: false},
+    fixtures: { type: [mongoose.Types.ObjectId], required: false, ref: 'fixtures'},
 }, { timestamps: true })
 
 export const LeagueModel = mongoose.model<LeagueDocument>('leagues', LeagueSchema);

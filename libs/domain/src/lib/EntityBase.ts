@@ -1,7 +1,7 @@
-import { Types } from 'mongoose';
+import { ObjectId } from 'mongoose';
 
 export interface EntityBase {
-    _id: string | undefined;
-    createdAt: Date;
-    updatedAt: Date;
+    _id: ObjectId | undefined;
+    createdAt: Date | undefined;
+    updatedAt: Date | undefined;
 }

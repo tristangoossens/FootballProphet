@@ -1,9 +1,8 @@
-import { Team } from "@footballprophet/domain";
-import { Injectable } from "@nestjs/common";
-import { InjectModel } from "@nestjs/mongoose";
-import { Model } from "mongoose";
-import { LeagueDocument } from "../league/league.model";
-
+import { Team } from '@footballprophet/domain';
+import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model, ObjectId } from 'mongoose';
+import { LeagueDocument } from '../league/league.model';
 
 @Injectable()
 export class TeamService {
@@ -11,24 +10,35 @@ export class TeamService {
         @InjectModel('leagues') private leagueModel: Model<LeagueDocument>
     ) { }
 
-    async create(leagueId: string, team: Team) {
-        const league = await this.leagueModel.findById(leagueId);
-        league.teams.push(team);
-        await league.save();
-    }
+    async AddTeamToLeague(leagueId: ObjectId, team: Team) {
+        await this.leagueModel.findOneAndUpdate(
+            // Filter
+            {
+                _id: leagueId,
+            },
+            // Team to add
+            {
+                $push: {
+                    teams: team,
+                }
+            },
+        )
+    };
 
-    async update(leagueId: string, teamId: string, team: Team) {
-        const league = await this.leagueModel.findById(leagueId);
-        const teamIndex = league.teams.findIndex(t => t._id === teamId);
-        league.teams[teamIndex] = team;
-        await league.save();
+    async RemoveTeamFromLeague(leagueId: ObjectId, teamId: ObjectId) {
+        await this.leagueModel.findOneAndUpdate(
+            // Filter
+            {
+                _id: leagueId,
+            },
+            // Team to Remove
+            {
+                $pull: {
+                    teams: {
+                        _id: teamId,
+                    }
+                }
+            },
+        )
     }
-
-    async delete(leagueId: string, teamId: string) {
-        const league = await this.leagueModel.findById(leagueId);
-        league.teams = league.teams.filter(t => t._id !== teamId);
-        await league.save();
-    }
-
-    
 }

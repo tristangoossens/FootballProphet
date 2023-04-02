@@ -12,5 +12,10 @@ export class LeagueService {
 
   public list(): Observable<League[] | undefined> {
     return this.http.get<League[]>(`${environment.api_url}/leagues`)
+      .pipe(
+        map((resp: any) => {
+          return resp.data;
+        })
+      );
   }
 }
