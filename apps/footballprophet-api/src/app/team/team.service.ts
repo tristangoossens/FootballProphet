@@ -25,6 +25,22 @@ export class TeamService {
         )
     };
 
+    async UpdateTeamInLeague(leagueId: ObjectId, teamId: ObjectId, team: Team) {
+        await this.leagueModel.findOneAndUpdate(
+            // Filter
+            {
+                _id: leagueId,
+                'teams._id': teamId,
+            },
+            // Team to update
+            {
+                $set: {
+                    'teams.$': team,
+                }
+            },
+        );
+    }
+
     async RemoveTeamFromLeague(leagueId: ObjectId, teamId: ObjectId) {
         await this.leagueModel.findOneAndUpdate(
             // Filter

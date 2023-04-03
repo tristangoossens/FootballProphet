@@ -1,4 +1,6 @@
+import { ObjectId } from "mongoose";
 import { EntityBase } from "./EntityBase";
+import { League } from "./League";
 import { Team } from "./Team";
 
 export interface Fixture extends EntityBase {
@@ -7,4 +9,5 @@ export interface Fixture extends EntityBase {
     kickOffDate: Date;
     homeTeam: Team;
     awayTeam: Team;
+    league: ObjectId | League;
 }

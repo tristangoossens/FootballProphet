@@ -1,15 +1,20 @@
 import { Fixture, League, Team, UserRole } from '@footballprophet/domain';
 import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
+import { ObjectId } from 'mongoose';
 import { HasRoles } from '../auth/decorators/roles.decorator';
 import { JwtAuthGuard } from '../auth/guards/jwt.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
+import { LeagueService } from '../league/league.service';
 import { FixtureService } from './fixture.service';
 
+@ApiTags('Fixture')
 @Controller('fixtures')
 export class FixtureController {
     constructor(
         private readonly fixtureService: FixtureService,
-    ){ }
+        private readonly leagueService: LeagueService,
+    ) { }
 
     @HasRoles([UserRole.Admin])
     @UseGuards(JwtAuthGuard, RolesGuard)
@@ -21,9 +26,13 @@ export class FixtureController {
 
     @HasRoles([UserRole.Admin])
     @UseGuards(JwtAuthGuard, RolesGuard)
-    @Put()
-    async update(@Body() fixture: Fixture): Promise<string> {
-        await this.fixtureService.Update(fixture);
+    @Put(':id')
+    async update(@Param('id') id: ObjectId, @Body() fixture: Fixture): Promise<string> {
+        await this.fixtureService.Update(id, fixture);
+
+        // Add a reference to the fixture in the league
+        await this.leagueService.AddFixtureReference(fixture.league as ObjectId, id);
+
         return `Fixture has been updated`;
     }
 }

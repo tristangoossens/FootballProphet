@@ -7,7 +7,7 @@ export type FixtureDocument = Fixture & Document
 export const FixtureSchema = new mongoose.Schema({
     referee: { type: String, required: true },
     stadium: { type: String, required: true },
-    kickOffDate: { type: Number, required: true },
+    kickOffDate: { type: Date, required: true },
     homeTeam: { type: TeamSchema, required: true },
     awayTeam: { type: TeamSchema, required: true },
     homeTeamScore: { type: Number, required: false },

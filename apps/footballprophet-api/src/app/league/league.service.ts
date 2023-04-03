@@ -22,4 +22,37 @@ export class LeagueService {
     async Create(league: League) {
         await this.leagueModel.create(league);
     }
+
+    async Update(id: ObjectId, league: League) {
+        await this.leagueModel.findOneAndUpdate(
+            // Filter
+            {
+                _id: id,
+            },
+            // Update (league attributes)
+            {
+                $set: {
+                    name: league.name,
+                    logoUrl: league.logoUrl,
+                    season: league.season,
+                }
+            },
+        );
+    }
+
+    // Fixture reference methods
+    async AddFixtureReference(leagueId: ObjectId, fixtureId: ObjectId) {
+        await this.leagueModel.findOneAndUpdate(
+            // Filter
+            {
+                _id: leagueId,
+            },
+            // Update
+            {
+                $push: {
+                    fixtures: fixtureId,
+                }
+            },
+        );
+    }
 }

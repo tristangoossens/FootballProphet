@@ -5,17 +5,20 @@ import { ConfigModule } from '@nestjs/config';
 import { InjectConnection, MongooseModule } from '@nestjs/mongoose';
 import { Connection } from 'mongoose';
 import { LeagueModule } from './league/league.module';
-import { AuthController } from './auth/auth.controller';
+import { FixtureModule } from './fixture/fixture.module';
+import { PoolModule } from './pool/pool.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ envFilePath: `.env.${process.env.NODE_ENV}` }),
-    MongooseModule.forRoot('mongodb://localhost:27017/footballprophet'),
+    MongooseModule.forRoot('mongodb://127.0.0.1:27017/footballprophet'),
     AuthModule,
+    FixtureModule,
     UserModule,
     LeagueModule,
+    PoolModule
   ],
 })
 export class AppModule {
-  constructor(@InjectConnection() private conn: Connection) {}
+  constructor(@InjectConnection() private conn: Connection) { }
 }

@@ -15,10 +15,11 @@ export class UserService {
     }
 
     async find(id: string): Promise<User | null> {
-        return await this.userModel.findOne({ _id: id }).lean();
+        return await this.userModel.findOne({ _id: id }).populate('predictions.fixture').lean();
     }
 
     async create(user: User) {
+        // TODO: Hash password
         await this.userModel.create(user);
     }
 }
