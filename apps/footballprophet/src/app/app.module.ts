@@ -1,40 +1,76 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { AppComponent } from './app.component';
-import { AppRoutingModule } from './app.routes';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { AppComponent } from './app.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { LayoutModule } from '@angular/cdk/layout';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
 import { NavComponent } from './shared/nav/nav.component';
-import { AboutComponent } from './pages/about/about.component';
-import { HomeComponent } from './pages/home/home.component';
-import { LoginComponent } from './pages/auth/login/login.component';
-import { RegisterComponent } from './pages/auth/register/register.component';
-import { LeaguesComponent } from './pages/leagues/leagues.component';
-import { AuthService } from './pages/auth/auth.service';
-import { LeagueService } from './pages/leagues/league.service';
+import { MatMenuModule } from '@angular/material/menu';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { AuthService } from './auth/auth.service';
+import { LoginComponent } from './auth/login/login-dialog.component';
+import { AppRoutingModule } from './app.routes';
+import { MatInputModule } from '@angular/material/input';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatDialogModule } from '@angular/material/dialog';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatStepperModule } from '@angular/material/stepper';
+import { RegisterComponent } from './auth/register/register-dialog.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { SuccessComponent } from './shared/alert/success/success.component';
+import { ErrorComponent } from './shared/alert/error/error.component';
+import { AlertService } from './shared/alert/alert.service';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatCardModule } from '@angular/material/card';
+import { LeagueComponent } from './league/league.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavComponent,
-    AboutComponent,
-    HomeComponent,
     LoginComponent,
     RegisterComponent,
-    LeaguesComponent,
+    SuccessComponent,
+    ErrorComponent,
+    LeagueComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    NgbModule,
-    FormsModule,
     HttpClientModule,
+
+    // Angular Material
+    BrowserAnimationsModule,
+    LayoutModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatMenuModule,
+    MatIconModule,
+    MatListModule,
+    MatInputModule,
+    MatProgressBarModule,
+    MatDialogModule,
+    MatStepperModule,
+    MatNativeDateModule,
+    MatDatepickerModule,
+    MatSnackBarModule,
+    MatGridListModule,
+    MatCardModule,
+
+    // Forms
+    FormsModule,
+    ReactiveFormsModule,
+
+    // Bootstrap
+    NgbModule,
   ],
-  providers: [
-    AuthService,
-    LeagueService
-  ],
+  providers: [AuthService, AlertService],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

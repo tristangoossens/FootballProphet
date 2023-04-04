@@ -1,4 +1,4 @@
 export interface Identity {
-    username: string;
-    password: string | undefined;
+  username: string;
+  password: string;
 }

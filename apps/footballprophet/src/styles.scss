@@ -1,63 +1,17 @@
 /* You can add global styles to this file, and also import other style files */
-@use "variables" as var;
-@import '~bootstrap/scss/bootstrap';
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@500&display=swap');
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
 
-body {
-    font-family: 'DM Sans', sans-serif !important;
+/* Importing Bootstrap SCSS file. */
+@import 'bootstrap/scss/bootstrap';
+
+* { font-family: 'DM Sans', sans-serif; }
+.material-icons{
+    font-family: 'Material Icons' !important;
 }
+html, body { height: 100%; }
+body { margin: 0; background-color: #EEEEEE;}
 
-
-*:hover,
-*:focus,
-*:active {
-    outline: none;
-    box-shadow: none !important;
+.red-icon {
+    color: #ff1507 !important;
 }
-
-a {
-    text-decoration: none !important;
-}
-
-.content-box {
-    background-color: var.$darkBlue !important;
-    color: white;
-    border-radius: 15px;
-}
-
-.color-span {
-    color: var.$redMunsell;
-}
-
-.btn-footballprophet-create {
-    color: #ffffff !important;
-    background-color: var.$lightGreen !important;
-}
-
-.btn-footballprophet-create:hover {
-    background-color: var.$green !important;
-}
-
-.btn-footballprophet-create:disabled {
-    border: var.$lightGreen !important;
-}
-
-.btn-footballprophet-delete {
-    color: #ffffff !important;
-    background-color: var.$redMunsell !important;
-}
-
-.btn-footballprophet-delete:hover {
-    background-color: var.$lightRed !important;
-}
-
-.btn-footballprophet-info {
-    color: #ffffff !important;
-    background-color: var.$darkBlue !important;
-}
-
-.btn-footballprophet-info:hover {
-    background-color: var.$lightBlue !important;
-}
-
-

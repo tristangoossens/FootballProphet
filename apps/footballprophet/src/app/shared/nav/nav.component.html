@@ -1,50 +1,47 @@
-<nav class="navbar navbar-expand-lg navbar-dark">
-  <div class="container-fluid fw-bold text-white w-100">
-    <a class="navbar-brand ms-3 me-5">
-      <img class="img-fluid me-2" src="/assets/img/logo-nav.png" />
-      <span class="color-span">Football</span>prophet
-    </a>
-
-    <button class="navbar-toggler" type="button" (click)="isMenuCollapsed = !isMenuCollapsed" aria-expanded="false" aria-label="Toggle navigation">&#9776;</button>
-
-    <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse text-right row">
-      <ul class="navbar-nav d-flex p-4 p-lg-0">
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/">Home</a>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/leagues">Leagues</a>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/about">About</a>
-        </li>
-
-        <div *ngIf="(authService.currentUser$ | async) === undefined" ngbDropdown class="nav-item dropdown ms-lg-auto ms-md-auto me-lg-3">
-          <a type="button" class="nav-link dropdown-toggle" ngbDropdownToggle>
-            Account
-          </a>
-
-          <ul ngbDropdownMenu class="dropdown-menu dropdown-menu-end">
-            <a ngbDropdownItem routerLink="/login">Login</a>
-            <a ngbDropdownItem routerLink="/register">Register</a>
-          </ul>
-
-
-        </div>
-
-        <div *ngIf="authService.currentUser$ | async as user" ngbDropdown class="nav-item dropdown ms-lg-auto ms-md-auto me-lg-3">
-          <a type="button" class="nav-link dropdown-toggle" ngbDropdownToggle>
-            {{ user.username }}
-          </a>
-
-          <ul ngbDropdownMenu class="dropdown-menu dropdown-menu-end">
-            <a ngbDropdownItem routerLink="/account">Mijn account</a>
-            <button ngbDropdownItem (click)="authService.logout()">Logout</button>
-          </ul>
-        </div>
-      </ul>
+<mat-toolbar color="primary">
+  <mat-toolbar-row class="py-2">
+    <div>
+      <img class="img-fluid" src="/assets/img/logo-nav.png">
+      <span class="ms-2 fw-bold title">Footballprophet</span>
     </div>
-  </div>
-</nav>
+
+    <button mat-stroked-button class="ms-4 me-2 fp-nav-link" routerLink="/leagues"><mat-icon class="my-auto me-1">sports_soccer</mat-icon>Leagues</button>
+    <button mat-stroked-button class="me-2 fp-nav-link" routerLink="/teams"><mat-icon class="my-auto me-1">sports</mat-icon>Fixtures</button>
+    <button mat-stroked-button class="me-2 fp-nav-link" routerLink="/poules"><mat-icon class="my-auto me-1">groups</mat-icon>Poules</button>
+
+    <span class="example-spacer"></span>
+
+    <!-- No user is logged in -->
+    <button *ngIf="(authService.currentUser$ | async) === undefined"  mat-icon-button [matMenuTriggerFor]="loggedOutMenu" class="example-icon">
+      <mat-icon>account_circle</mat-icon>
+      <mat-menu #loggedOutMenu="matMenu">
+        <button mat-menu-item (click)="openLoginDialog()">
+          <mat-icon>login</mat-icon>
+          <span>Log in</span>
+        </button>
+        <button mat-menu-item (click)="openRegisterDialog()">
+          <mat-icon>person_add</mat-icon>
+          <span>Register new account</span>
+        </button>
+      </mat-menu>
+    </button>
+
+
+    <!-- A user is logged in -->
+    <button *ngIf="authService.currentUser$ | async as user" mat-mini-fab [matMenuTriggerFor]="loggedInMenu" class="avatarButton" [style.backgroundImage]="'url(' + user.avatarUrl + ')'">
+      <mat-menu #loggedInMenu="matMenu">
+        <button mat-menu-item disabled>
+          <span>Welcome, {{user.username}}</span>
+        </button>
+        <button mat-menu-item>
+          <mat-icon>manage_account</mat-icon>
+          <span>View profile page</span>
+        </button>
+        <button mat-menu-item (click)="authService.logout()">
+          <mat-icon>logout</mat-icon>
+          <span>Log out</span>
+        </button>
+      </mat-menu>
+    </button>
+  </mat-toolbar-row>
+</mat-toolbar>

@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { User } from '@footballprophet/domain';
-import { Observable } from 'rxjs';
-import { AuthService } from '../../pages/auth/auth.service';
+import { Component } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { AuthService } from '../../auth/auth.service';
+import { LoginComponent } from '../../auth/login/login-dialog.component';
+import { RegisterComponent } from '../../auth/register/register-dialog.component';
 
 @Component({
   selector: 'footballprophet-nav',
@@ -9,7 +10,13 @@ import { AuthService } from '../../pages/auth/auth.service';
   styleUrls: ['./nav.component.scss'],
 })
 export class NavComponent {
-  public isMenuCollapsed = true;
+  constructor(public authService: AuthService, public dialog: MatDialog) {}
 
-  constructor(public authService: AuthService) {}
+  openLoginDialog() {
+    this.dialog.open(LoginComponent, { restoreFocus: false });
+  }
+
+  openRegisterDialog() {
+    this.dialog.open(RegisterComponent, { restoreFocus: false });
+  }
 }

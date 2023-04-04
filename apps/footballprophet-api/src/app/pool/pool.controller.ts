@@ -1,17 +1,19 @@
 import { Pool, UserRole } from '@footballprophet/domain';
 import { Body, Controller, Request, Get, Param, UseGuards, Post, Put, Delete } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { ObjectId } from 'mongoose';
+import { ObjectId } from 'mongoose/lib/types';
 import { HasRoles } from '../auth/decorators/roles.decorator';
 import { JwtAuthGuard } from '../auth/guards/jwt.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
+import { UserService } from '../user/user.service';
 import { PoolService } from './pool.service';
 
 @ApiTags('Pool')
 @Controller('pools')
 export class PoolController {
     constructor(
-        private readonly poolService: PoolService
+        private readonly poolService: PoolService,
+        private readonly userService: UserService,
     ) { }
 
     @HasRoles([UserRole.User])
@@ -38,7 +40,8 @@ export class PoolController {
         // Owner is also a member
         pool.members = [req.user._id];
 
-        await this.poolService.Create(pool);
+        const poolDocument = await this.poolService.Create(pool);
+        await this.userService.addPool(req.user._id, poolDocument._id);
         return `Pool ${pool.name} has successfully been created`;
     }
 
@@ -53,8 +56,9 @@ export class PoolController {
     @HasRoles([UserRole.User])
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Delete(':id')
-    async delete(@Param('id') id: ObjectId) {
+    async delete(@Request() req, @Param('id') id: ObjectId) {
         await this.poolService.Delete(id);
+        await this.userService.removePool(req.user._id, id);
         return `Pool (${id}) has successfully been deleted`;
     }
 }
