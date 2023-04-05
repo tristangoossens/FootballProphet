@@ -29,6 +29,12 @@ import { AlertService } from './shared/alert/alert.service';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatCardModule } from '@angular/material/card';
 import { LeagueComponent } from './league/league.component';
+import { LeagueService } from './league/league.service';
+import { PoolService } from './pool/pool.service';
+import { JoinComponent } from './pool/join/join-dialog.component';
+import { InviteResolver } from './pool/invite/invite.resolver';
+import { PoolComponent } from './pool/pool.component';
+import { InviteComponent } from './pool/invite/invite-dialog.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +45,9 @@ import { LeagueComponent } from './league/league.component';
     SuccessComponent,
     ErrorComponent,
     LeagueComponent,
+    JoinComponent,
+    PoolComponent,
+    InviteComponent
   ],
   imports: [
     BrowserModule,
@@ -70,7 +79,7 @@ import { LeagueComponent } from './league/league.component';
     // Bootstrap
     NgbModule,
   ],
-  providers: [AuthService, AlertService],
+  providers: [AuthService, AlertService, LeagueService, PoolService, InviteResolver],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

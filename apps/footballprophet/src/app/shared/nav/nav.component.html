@@ -7,12 +7,12 @@
 
     <button mat-stroked-button class="ms-4 me-2 fp-nav-link" routerLink="/leagues"><mat-icon class="my-auto me-1">sports_soccer</mat-icon>Leagues</button>
     <button mat-stroked-button class="me-2 fp-nav-link" routerLink="/teams"><mat-icon class="my-auto me-1">sports</mat-icon>Fixtures</button>
-    <button mat-stroked-button class="me-2 fp-nav-link" routerLink="/poules"><mat-icon class="my-auto me-1">groups</mat-icon>Poules</button>
+    <button mat-stroked-button class="me-2 fp-nav-link" routerLink="/pools"><mat-icon class="my-auto me-1">groups</mat-icon>Pools</button>
 
     <span class="example-spacer"></span>
 
     <!-- No user is logged in -->
-    <button *ngIf="(authService.currentUser$ | async) === undefined"  mat-icon-button [matMenuTriggerFor]="loggedOutMenu" class="example-icon">
+    <button *ngIf="(authService.currentUser$ | async) === undefined" mat-icon-button [matMenuTriggerFor]="loggedOutMenu" class="example-icon">
       <mat-icon>account_circle</mat-icon>
       <mat-menu #loggedOutMenu="matMenu">
         <button mat-menu-item (click)="openLoginDialog()">

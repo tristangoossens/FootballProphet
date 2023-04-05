@@ -49,4 +49,19 @@ export class PoolService {
 
         return await this.poolModel.findByIdAndDelete(id);
     }
+
+    async Join(id: ObjectId, userId: ObjectId) {
+        return await this.poolModel.findByIdAndUpdate(
+            // Filter
+            {
+                _id: id
+            },
+            // Add user to members array
+            {
+                $addToSet: {
+                    members: userId
+                }
+            }
+        );
+    }
 }

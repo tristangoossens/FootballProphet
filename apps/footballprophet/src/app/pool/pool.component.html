@@ -1,0 +1,38 @@
+<div class="row bg-white rounded p-3 mb-3">
+    <div class="col-12">
+        <div class="breadcrumb">
+            <button mat-button routerLink="/">
+                <mat-icon class="red-icon">home</mat-icon>
+                Home
+            </button>
+            <mat-icon class="my-auto">chevron_right</mat-icon>
+            <button mat-button routerLink="/pools">
+                <mat-icon class="red-icon">groups</mat-icon>
+                Pools
+            </button>
+        </div>
+
+        <h1 class="fw-bold title">POOLS</h1>
+        <p>Battle against your friends on who is the best at predicting the future. Down below are some of the most popular leagues on <span class="fw-bold">FootballProphet</span></p>
+    </div>
+</div>
+
+<div class="row bg-white rounded p-3 justify-content-center">
+    <a mat-card class="card col-12 mb-4" routerLink="/leagues/1" *ngFor="let pool of pools">
+        <img mat-card-image class="logo me-3" [src]="pool.logoUrl" [alt]="pool.name">
+        <mat-card-content>
+            <div class="name">{{pool.name}}</div>
+            <div class="season">{{pool.description}}</div>
+
+            <button mat-mini-fab class="fab-button">
+                <mat-icon>chevron_right</mat-icon>
+            </button>
+        </mat-card-content>
+    </a>
+
+    <button mat-raised-button color="primary" (click)="LoadPools()">
+        <mat-icon>expand_more</mat-icon>
+        Load more
+        <mat-progress-bar *ngIf="isLoading" mode="indeterminate" color="accent"></mat-progress-bar>
+    </button>
+</div>

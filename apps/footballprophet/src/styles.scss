@@ -5,13 +5,34 @@
 /* Importing Bootstrap SCSS file. */
 @import 'bootstrap/scss/bootstrap';
 
-* { font-family: 'DM Sans', sans-serif; }
-.material-icons{
+* {
+    font-family: 'DM Sans', sans-serif;
+}
+
+.material-icons {
     font-family: 'Material Icons' !important;
 }
-html, body { height: 100%; }
-body { margin: 0; background-color: #EEEEEE;}
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    background-color: #EEEEEE;
+}
 
 .red-icon {
     color: #ff1507 !important;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+a:hover {
+    text-decoration: none;
+    color: black;
 }

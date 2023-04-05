@@ -1,5 +1,5 @@
 import { Pool, UserRole } from '@footballprophet/domain';
-import { Body, Controller, Request, Get, Param, UseGuards, Post, Put, Delete } from '@nestjs/common';
+import { Body, Controller, Request, Get, Param, UseGuards, Post, Put, Delete, Logger } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { ObjectId } from 'mongoose/lib/types';
 import { HasRoles } from '../auth/decorators/roles.decorator';
@@ -60,5 +60,15 @@ export class PoolController {
         await this.poolService.Delete(id);
         await this.userService.removePool(req.user._id, id);
         return `Pool (${id}) has successfully been deleted`;
+    }
+
+    @HasRoles([UserRole.User])
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Post(':id/join')
+    async join(@Request() req, @Param('id') id: ObjectId) {
+        Logger.log(`User (${req.user._id}) is joining pool (${id})`, 'PoolController');
+        await this.poolService.Join(id, req.user._id);
+        await this.userService.addPool(req.user._id, id);
+        return `User (${req.user._id}) has successfully joined pool (${id})`;
     }
 }

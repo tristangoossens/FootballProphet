@@ -10,6 +10,7 @@ export const PoolSchema = new mongoose.Schema({
     logoUrl: { type: String, required: true },
     isPrivate: { type: Boolean, required: true },
     owner: { type: mongoose.Schema.Types.ObjectId, ref: 'users', required: true },
+    joinCode: { type: String, required: true },
     members: [{ type: mongoose.Schema.Types.ObjectId, ref: 'users', required: true }],
 }, { timestamps: true })
 

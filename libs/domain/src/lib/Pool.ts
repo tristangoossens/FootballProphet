@@ -8,6 +8,9 @@ export interface Pool {
     description: string;
     logoUrl: string;
     isPrivate: boolean;
-    owner: ObjectId | User;
     members: ObjectId[] | User[];
+
+    // Pool owner
+    owner: ObjectId | User;
+    joinCode?: string;
 }

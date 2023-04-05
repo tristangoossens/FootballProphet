@@ -2,8 +2,8 @@
     <div class="col-12">
         <div class="breadcrumb">
             <button mat-button routerLink="/">
-            <mat-icon class="red-icon">home</mat-icon>
-            Home
+                <mat-icon class="red-icon">home</mat-icon>
+                Home
             </button>
             <mat-icon class="my-auto">chevron_right</mat-icon>
             <button mat-button routerLink="/leagues">
@@ -13,31 +13,22 @@
         </div>
 
         <h1 class="fw-bold title">LEAGUES</h1>
+        <p>Some of FootballProphets competitions where you can make a poule</p>
     </div>
 </div>
 
-<div class="row bg-white rounded p-3">
-    <mat-card class="card col-3 me-2" routerLink="/leagues/1">
-        <img mat-card-image class="logo" src="https://www.flashscore.com/res/image/data/vwC9RGhl-vcNAdtF9.png" alt="Liverpool">
+<div class="row bg-white rounded p-3 justify-content-center">
+    <mat-card class="card col-12 mb-4" routerLink="/leagues/1">
+        <img mat-card-image class="logo" src="https://www.flashscore.nl/res/image/data/be5KoO97-h2AIY9cE.png" alt="Liverpool">
         <mat-card-content>
-          <div class="name">Liverpoolfgergdsgd</div>
-          <div class="season">2022</div>
+            <div class="name">LaLiga</div>
+            <div class="season">2022</div>
         </mat-card-content>
     </mat-card>
 
-    <mat-card class="card col-3 me-2" routerLink="/leagues/1">
-        <img mat-card-image class="logo" src="https://www.flashscore.com/res/image/data/vwC9RGhl-vcNAdtF9.png" alt="Liverpool">
-        <mat-card-content>
-          <div class="name">Liverpoolfgergdsgd</div>
-          <div class="season">2022</div>
-        </mat-card-content>
-    </mat-card>
-
-    <mat-card class="card col-3" routerLink="/leagues/1">
-        <img mat-card-image class="logo" src="https://www.flashscore.com/res/image/data/vwC9RGhl-vcNAdtF9.png" alt="Liverpool">
-        <mat-card-content>
-          <div class="name">Liverpoolfgergdsgd</div>
-          <div class="season">2022</div>
-        </mat-card-content>
-    </mat-card>
+    <button mat-raised-button color="primary">
+        <mat-icon>expand_more</mat-icon>
+        Load more
+        <mat-progress-bar *ngIf="true" mode="indeterminate" color="accent"></mat-progress-bar>
+    </button>
 </div>

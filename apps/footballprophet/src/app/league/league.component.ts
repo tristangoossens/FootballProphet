@@ -5,4 +5,6 @@ import { Component } from '@angular/core';
   templateUrl: './league.component.html',
   styleUrls: ['./league.component.scss'],
 })
-export class LeagueComponent {}
+export class LeagueComponent {
+
+}
