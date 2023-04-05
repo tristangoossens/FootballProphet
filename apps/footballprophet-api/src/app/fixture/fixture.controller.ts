@@ -1,5 +1,14 @@
 import { Fixture, League, Team, UserRole } from '@footballprophet/domain';
-import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { ObjectId } from 'mongoose';
 import { HasRoles } from '../auth/decorators/roles.decorator';
@@ -11,28 +20,40 @@ import { FixtureService } from './fixture.service';
 @ApiTags('Fixture')
 @Controller('fixtures')
 export class FixtureController {
-    constructor(
-        private readonly fixtureService: FixtureService,
-        private readonly leagueService: LeagueService,
-    ) { }
+  constructor(
+    private readonly fixtureService: FixtureService,
+    private readonly leagueService: LeagueService
+  ) {}
 
-    @HasRoles([UserRole.Admin])
-    @UseGuards(JwtAuthGuard, RolesGuard)
-    @Post()
-    async create(@Body() fixture: Fixture): Promise<string> {
-        await this.fixtureService.Create(fixture);
-        return `Fixture has been created`;
-    }
+  @HasRoles([UserRole.Admin])
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Post()
+  async create(@Body() fixture: Fixture): Promise<string> {
+    const fixtureDocument = await this.fixtureService.Create(fixture);
 
-    @HasRoles([UserRole.Admin])
-    @UseGuards(JwtAuthGuard, RolesGuard)
-    @Put(':id')
-    async update(@Param('id') id: ObjectId, @Body() fixture: Fixture): Promise<string> {
-        await this.fixtureService.Update(id, fixture);
+    // Add a reference to the fixture in the league
+    await this.leagueService.AddFixtureReference(
+      fixture.league as ObjectId,
+      fixtureDocument._id
+    );
+    return `Fixture has been created`;
+  }
 
-        // Add a reference to the fixture in the league
-        await this.leagueService.AddFixtureReference(fixture.league as ObjectId, id);
+  @HasRoles([UserRole.Admin])
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Put(':id')
+  async update(
+    @Param('id') id: ObjectId,
+    @Body() fixture: Fixture
+  ): Promise<string> {
+    await this.fixtureService.Update(id, fixture);
 
-        return `Fixture has been updated`;
-    }
+    // Add a reference to the fixture in the league
+    await this.leagueService.AddFixtureReference(
+      fixture.league as ObjectId,
+      id
+    );
+
+    return `Fixture has been updated`;
+  }
 }

@@ -1,0 +1,107 @@
+<div class="row bg-white rounded p-3 mb-3">
+    <div class="col-12">
+        <div class="breadcrumb">
+            <button mat-button routerLink="/">
+                <mat-icon class="red-icon">home</mat-icon>
+                Home
+            </button>
+            <mat-icon class="my-auto">chevron_right</mat-icon>
+            <button mat-button routerLink="/pools">
+                <mat-icon class="red-icon">groups</mat-icon>
+                Pools
+            </button>
+            <mat-icon class="my-auto">chevron_right</mat-icon>
+            <button mat-button routerLink="/pools/{{pool._id}}">
+                <mat-icon class="red-icon">groups</mat-icon>
+                {{pool.name}}
+            </button>
+        </div>
+
+        <div class="pool-header mt-4">
+            <img class="logo me-3" [src]="pool.logoUrl" [alt]="pool.name">
+            <div class="mb-auto">
+                <div class="name">{{pool.name}}<mat-icon *ngIf="pool.isPrivate" class="red-icon ms-2">lock</mat-icon></div>
+                <div class="description">{{pool.description}}</div>
+            </div>
+
+            <div *ngIf="loggedInUser" class="ms-auto">
+                <button *ngIf="!IsAlreadyMember(loggedInUser)" mat-raised-button color="primary" (click)="OpenJoinPoolDialog()" [disabled]="pool.isPrivate">
+                    <mat-icon>{{pool.isPrivate ? "lock" : "add"}}</mat-icon>
+                    {{pool.isPrivate ? "Invite only" : "Join now"}}
+                </button>
+
+                <button *ngIf="IsAlreadyMember(loggedInUser)" mat-raised-button color="primary" (click)="OpenJoinPoolDialog()" disabled>
+                    <mat-icon>check</mat-icon>
+                    {{IsPoolOwner(loggedInUser) ? "Owner" : "Member"}}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row bg-white rounded p-3 justify-content-center" [hidden]="!loggedInUser || !IsAlreadyMember(loggedInUser)">
+    <mat-tab-group class="col-12">
+        <mat-tab>
+            <ng-template mat-tab-label>
+                <mat-icon class="me-2">table</mat-icon>
+                Standings
+            </ng-template>
+        </mat-tab>
+        <mat-tab>
+            <ng-template mat-tab-label>
+                <mat-icon class="me-2">groups</mat-icon>
+                Members ({{pool.members.length}})
+            </ng-template>
+
+            <div class="p-3">
+                <h3 class="fw-bold">Members</h3>
+                <p class="description">Members that are part of "<span class="red-icon">{{pool.name}}</span>"</p>
+
+                <table mat-table [dataSource]="AsUserArray()">
+                    <!-- Image Column -->
+                    <ng-container matColumnDef="avatarUrl">
+                      <th mat-header-cell *matHeaderCellDef> Image </th>
+                      <td mat-cell *matCellDef="let user"> <img src="{{ user.avatarUrl }}" class="rounded-image"> </td>
+                    </ng-container>
+                  
+                    <!-- Username Column -->
+                    <ng-container matColumnDef="username">
+                      <th mat-header-cell *matHeaderCellDef> Username </th>
+                      <td mat-cell *matCellDef="let user"> {{ user.username }} <span *ngIf="user._id === PoolOwnerAsUser()._id" class="owner-tag">Owner</span> </td>
+                    </ng-container>
+                  
+                    <!-- Kick Column -->
+                    <ng-container matColumnDef="id">
+                      <th mat-header-cell *matHeaderCellDef>Kick (Owner only)</th>
+                      <td mat-cell *matCellDef="let user"> 
+                        <button *ngIf="!IsPoolOwner(user)" mat-mini-fab color="warn" class="kick-button" [disabled]="loggedInUser && !IsPoolOwner(loggedInUser)" (click)="OpenKickFromPoolDialog(user)" > 
+                            <mat-icon>delete_outline</mat-icon> 
+                        </button> 
+                    </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+            </div>
+        </mat-tab>
+        <mat-tab *ngIf="loggedInUser && IsPoolOwner(loggedInUser)">
+            <ng-template mat-tab-label>
+                <mat-icon class="me-2">send</mat-icon>
+                Invite (Owner only)
+            </ng-template>
+
+            <div class="p-3">
+                <h3 class="fw-bold">Invite users</h3>
+                <p class="description">Invite users with the link below. Send this to your friends so they can join this league <span class="fw-bold">(ANYONE WITH THIS LINK CAN JOIN)</span></p>
+                <mat-form-field class="w-100">
+                    <mat-label>Invite link</mat-label>
+                    <input matInput type="text" disabled value="http://localhost:4200/pools/{{pool._id}}/invite/{{pool.joinCode}}">
+                    <button matSuffix mat-icon-button (click)="CopyInviteUrl()">
+                      <mat-icon>file_copy</mat-icon>
+                    </button>
+                </mat-form-field>
+            </div>
+        </mat-tab>
+    </mat-tab-group>
+</div>

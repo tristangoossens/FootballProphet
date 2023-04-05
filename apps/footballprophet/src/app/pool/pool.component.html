@@ -18,10 +18,10 @@
 </div>
 
 <div class="row bg-white rounded p-3 justify-content-center">
-    <a mat-card class="card col-12 mb-4" routerLink="/leagues/1" *ngFor="let pool of pools">
+    <a mat-card class="card col-12 mb-4" routerLink="/pools/{{pool._id}}" *ngFor="let pool of pools">
         <img mat-card-image class="logo me-3" [src]="pool.logoUrl" [alt]="pool.name">
         <mat-card-content>
-            <div class="name">{{pool.name}}</div>
+            <div class="name">{{pool.name}} <mat-icon *ngIf="pool.isPrivate" class="red-icon">lock</mat-icon></div>
             <div class="season">{{pool.description}}</div>
 
             <button mat-mini-fab class="fab-button">

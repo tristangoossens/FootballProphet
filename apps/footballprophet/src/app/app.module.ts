@@ -31,10 +31,12 @@ import { MatCardModule } from '@angular/material/card';
 import { LeagueComponent } from './league/league.component';
 import { LeagueService } from './league/league.service';
 import { PoolService } from './pool/pool.service';
-import { JoinComponent } from './pool/join/join-dialog.component';
 import { InviteResolver } from './pool/invite/invite.resolver';
 import { PoolComponent } from './pool/pool.component';
-import { InviteComponent } from './pool/invite/invite-dialog.component';
+import { PoolDetailComponent } from './pool/details/pool-details.component';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatTableModule } from '@angular/material/table';
+import { DialogComponent } from './shared/dialog/dialog.component';
 
 @NgModule({
   declarations: [
@@ -45,9 +47,9 @@ import { InviteComponent } from './pool/invite/invite-dialog.component';
     SuccessComponent,
     ErrorComponent,
     LeagueComponent,
-    JoinComponent,
     PoolComponent,
-    InviteComponent
+    PoolDetailComponent,
+    DialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -71,6 +73,8 @@ import { InviteComponent } from './pool/invite/invite-dialog.component';
     MatSnackBarModule,
     MatGridListModule,
     MatCardModule,
+    MatTabsModule,
+    MatTableModule,
 
     // Forms
     FormsModule,
@@ -79,7 +83,13 @@ import { InviteComponent } from './pool/invite/invite-dialog.component';
     // Bootstrap
     NgbModule,
   ],
-  providers: [AuthService, AlertService, LeagueService, PoolService, InviteResolver],
+  providers: [
+    AuthService,
+    AlertService,
+    LeagueService,
+    PoolService,
+    InviteResolver,
+  ],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

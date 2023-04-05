@@ -3,15 +3,24 @@ import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
 import { LeagueComponent } from './league/league.component';
 import { InviteResolver } from './pool/invite/invite.resolver';
-import { JoinComponent } from './pool/join/join-dialog.component';
 import { PoolComponent } from './pool/pool.component';
+import { PoolDetailComponent } from './pool/details/pool-details.component';
 
 const routes: Routes = [
+  // Default route
+  { path: '', pathMatch: 'full', redirectTo: '/profile' },
+
   { path: 'leagues', pathMatch: 'full', component: LeagueComponent },
 
-  // Pool route 
+  // Pool routes
   { path: 'pools', pathMatch: 'full', component: PoolComponent },
-  { path: 'pools/:poolId/invite/:joinCode', pathMatch: 'full', resolve: { canJoin: InviteResolver }, component: PoolComponent },
+  { path: 'pools/:poolId', pathMatch: 'full', component: PoolDetailComponent },
+  {
+    path: 'pools/:poolId/invite/:joinCode',
+    pathMatch: 'full',
+    resolve: { canJoin: InviteResolver },
+    component: PoolComponent,
+  },
 ];
 
 @NgModule({
@@ -22,4 +31,4 @@ const routes: Routes = [
   ],
   exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
