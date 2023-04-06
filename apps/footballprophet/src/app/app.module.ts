@@ -37,6 +37,7 @@ import { PoolDetailComponent } from './pool/details/pool-details.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTableModule } from '@angular/material/table';
 import { DialogComponent } from './shared/dialog/dialog.component';
+import { PoolDialogComponent } from './pool/dialog/pool-dialog.component';
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import { DialogComponent } from './shared/dialog/dialog.component';
     PoolComponent,
     PoolDetailComponent,
     DialogComponent,
+    PoolDialogComponent,
   ],
   imports: [
     BrowserModule,

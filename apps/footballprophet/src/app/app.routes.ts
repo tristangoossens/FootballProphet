@@ -7,9 +7,6 @@ import { PoolComponent } from './pool/pool.component';
 import { PoolDetailComponent } from './pool/details/pool-details.component';
 
 const routes: Routes = [
-  // Default route
-  { path: '', pathMatch: 'full', redirectTo: '/profile' },
-
   { path: 'leagues', pathMatch: 'full', component: LeagueComponent },
 
   // Pool routes

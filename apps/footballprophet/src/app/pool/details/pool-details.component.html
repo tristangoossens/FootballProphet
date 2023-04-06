@@ -29,23 +29,71 @@
                     <mat-icon>{{pool.isPrivate ? "lock" : "add"}}</mat-icon>
                     {{pool.isPrivate ? "Invite only" : "Join now"}}
                 </button>
-
-                <button *ngIf="IsAlreadyMember(loggedInUser)" mat-raised-button color="primary" (click)="OpenJoinPoolDialog()" disabled>
+                <button *ngIf="IsAlreadyMember(loggedInUser)" mat-raised-button color="primary" disabled>
                     <mat-icon>check</mat-icon>
                     {{IsPoolOwner(loggedInUser) ? "Owner" : "Member"}}
+                </button>
+
+                <button *ngIf="IsPoolOwner(loggedInUser)" class="ms-2" mat-raised-button color="primary" (click)="OpenPoolEditDialog()">
+                    <mat-icon>edit</mat-icon>
+                    Edit
                 </button>
             </div>
         </div>
     </div>
 </div>
 
-<div class="row bg-white rounded p-3 justify-content-center" [hidden]="!loggedInUser || !IsAlreadyMember(loggedInUser)">
+<div class="row bg-white rounded p-3 justify-content-center" [hidden]="!loggedInUser || (!IsAlreadyMember(loggedInUser) && pool.isPrivate)">
     <mat-tab-group class="col-12">
         <mat-tab>
             <ng-template mat-tab-label>
                 <mat-icon class="me-2">table</mat-icon>
                 Standings
             </ng-template>
+
+            <div class="p-3">
+                <h3 class="fw-bold">Scoreboard</h3>
+                <p class="description">Standings in the current league season</p>
+
+                <table mat-table [dataSource]="scoreBoard">
+                    <!-- Position Column -->
+                    <ng-container matColumnDef="position">
+                        <th mat-header-cell *matHeaderCellDef> Position </th>
+                        <td mat-cell *matCellDef="let scoreboardEntry"> 
+                        <ng-container *ngIf="scoreboardEntry.position <3">
+                            <mat-icon *ngIf="scoreboardEntry.position ==0" class="gold-icon">workspace_premium</mat-icon>
+                            <mat-icon *ngIf="scoreboardEntry.position ==1" class="silver-icon">workspace_premium</mat-icon>
+                            <mat-icon *ngIf="scoreboardEntry.position==2" class="bronze-icon">workspace_premium</mat-icon>
+                        </ng-container>
+                        <ng-container *ngIf="scoreboardEntry.position>=3">
+                            {{scoreboardEntry.position}}
+                        </ng-container>
+                        </td>
+                    </ng-container>
+
+                    <!-- Image Column -->
+                    <ng-container matColumnDef="avatarUrl">
+                      <th mat-header-cell *matHeaderCellDef> Image </th>
+                      <td mat-cell *matCellDef="let scoreboardEntry"> <img src="{{ scoreboardEntry.member.avatarUrl }}" class="rounded-image"> </td>
+                    </ng-container>
+                  
+                    <!-- Username Column -->
+                    <ng-container matColumnDef="username">
+                      <th mat-header-cell *matHeaderCellDef> Username </th>
+                      <td mat-cell *matCellDef="let scoreboardEntry"> {{ scoreboardEntry.member.username }} <span *ngIf="scoreboardEntry.member._id === PoolOwnerAsUser()._id" class="owner-tag">Owner</span> </td>
+                    </ng-container>
+                   <!-- -->
+                    <ng-container matColumnDef="points">
+                      <th mat-header-cell *matHeaderCellDef>Total points</th>
+                      <td mat-cell *matCellDef="let scoreboardEntry"> 
+                        {{scoreboardEntry.totalPoints}}
+                    </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumnsScoreboard"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumnsScoreboard;"></tr>
+                </table>
+            </div>
         </mat-tab>
         <mat-tab>
             <ng-template mat-tab-label>
@@ -80,8 +128,8 @@
                     </td>
                     </ng-container>
 
-                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumnsMembers"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumnsMembers;"></tr>
                 </table>
             </div>
         </mat-tab>

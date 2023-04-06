@@ -18,6 +18,7 @@ import { JwtAuthGuard } from '../auth/guards/jwt.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { UserService } from '../user/user.service';
 import { PoolService } from './pool.service';
+import mongoose from 'mongoose';
 
 @ApiTags('Pool')
 @Controller('pools')
@@ -35,6 +36,13 @@ export class PoolController {
   @Get(':id')
   async getById(@Param('id') id: ObjectId) {
     return await this.poolService.GetById(id);
+  }
+
+  @Get(':id/scoreboard')
+  async getScoreboard(@Param('id') id: string) {
+    const data = await this.poolService.GetScoreBoard(id);
+    console.log(data);
+    return data;
   }
 
   @HasRoles([UserRole.User])
@@ -55,7 +63,7 @@ export class PoolController {
   @HasRoles([UserRole.User])
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Put(':id')
-  async update(@Param('id') id: ObjectId, @Body() pool: Pool) {
+  async update(@Param('id') id: string, @Body() pool: Pool) {
     await this.poolService.Update(id, pool);
     return `Pool ${pool.name} has successfully been updated`;
   }

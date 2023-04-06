@@ -39,6 +39,48 @@ export class PoolService {
       );
   }
 
+  public GetPoolScoreBoardById(id: string): Observable<any[]> {
+    return this.http
+      .get(`${environment.api_url}/pools/${id}/scoreboard`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      })
+      .pipe(
+        map((resp: any) => {
+          return resp.data;
+        })
+      );
+  }
+
+  public CreatePool(pool: Pool): Observable<Pool> {
+    return this.http
+      .post(`${environment.api_url}/pools`, pool, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      })
+      .pipe(
+        map((resp: any) => {
+          return resp.data;
+        })
+      );
+  }
+
+  public UpdatePool(pool: Pool): Observable<Pool> {
+    return this.http
+      .put(`${environment.api_url}/pools/${pool._id}`, pool, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      })
+      .pipe(
+        map((resp: any) => {
+          return resp.data;
+        })
+      );
+  }
+
   public JoinPool(id: string): Observable<Pool> {
     return this.http
       .post(`${environment.api_url}/pools/${id}/join`, null, {

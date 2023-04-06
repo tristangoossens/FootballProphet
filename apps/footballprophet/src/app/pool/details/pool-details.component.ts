@@ -9,6 +9,7 @@ import { AuthService } from '../../auth/auth.service';
 import { ObjectId } from 'mongoose';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { DialogComponent } from '../../shared/dialog/dialog.component';
+import { PoolDialogComponent } from '../dialog/pool-dialog.component';
 
 @Component({
   selector: 'footballprophet-pool-details',
@@ -19,7 +20,14 @@ export class PoolDetailComponent implements OnInit {
   public loggedInUser!: User | undefined;
 
   public pool: Pool = {} as Pool;
-  public displayedColumns: string[] = ['avatarUrl', 'username', 'id'];
+  public scoreBoard: any[] = []; // TODO: Create ScoreBoard interface
+  public displayedColumnsMembers: string[] = ['avatarUrl', 'username', 'id'];
+  public displayedColumnsScoreboard: string[] = [
+    'position',
+    'avatarUrl',
+    'username',
+    'points',
+  ];
 
   constructor(
     private poolService: PoolService,
@@ -27,8 +35,7 @@ export class PoolDetailComponent implements OnInit {
     private currentRoute: ActivatedRoute,
     private authService: AuthService,
     private dialog: MatDialog,
-    private clipboard: Clipboard,
-    private cd: ChangeDetectorRef
+    private clipboard: Clipboard
   ) {}
 
   ngOnInit(): void {
@@ -38,7 +45,10 @@ export class PoolDetailComponent implements OnInit {
 
     this.currentRoute.paramMap.subscribe((params) => {
       const id = params.get('poolId');
-      if (id) this.GetPoolById(id);
+      if (id) {
+        this.GetPoolById(id);
+        this.GetPoolScoreBoardById(id);
+      }
     });
   }
 
@@ -46,6 +56,19 @@ export class PoolDetailComponent implements OnInit {
     this.poolService.GetPoolById(id).subscribe(
       (pool) => {
         this.pool = pool;
+      },
+      (error) => {
+        this.alertService.AlertError(error.message);
+      }
+    );
+  }
+
+  public GetPoolScoreBoardById(id: string): void {
+    this.poolService.GetPoolScoreBoardById(id).subscribe(
+      (scoreBoard) => {
+        this.scoreBoard = scoreBoard.map((entry, index) => {
+          return { ...entry, position: index };
+        });
       },
       (error) => {
         this.alertService.AlertError(error.message);
@@ -70,6 +93,7 @@ export class PoolDetailComponent implements OnInit {
       this.poolService.JoinPool(id.toString()).subscribe(() => {
         this.alertService.AlertSuccess('You have successfully joined the pool');
         this.GetPoolById(id);
+        this.GetPoolScoreBoardById(id);
       });
     });
   }
@@ -95,7 +119,32 @@ export class PoolDetailComponent implements OnInit {
             `You have successfully kicked ${user.username} from this pool`
           );
           this.GetPoolById(poolId);
+          this.GetPoolScoreBoardById(poolId);
         });
+      }
+    });
+  }
+
+  public OpenPoolEditDialog(): void {
+    const dialogRef = this.dialog.open(PoolDialogComponent, {
+      disableClose: true,
+      data: this.pool,
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result == true) {
+        const poolId = (this.pool._id as ObjectId).toString();
+
+        this.poolService.UpdatePool(this.pool).subscribe(
+          (pool) => {
+            this.alertService.AlertSuccess('Pool updated successfully');
+            this.GetPoolById(poolId);
+            this.GetPoolScoreBoardById(poolId);
+          },
+          (error) => {
+            this.alertService.AlertError(error.message);
+          }
+        );
       }
     });
   }

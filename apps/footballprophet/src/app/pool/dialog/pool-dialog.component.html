@@ -1,0 +1,37 @@
+<!-- Dialog -->
+<mat-dialog-content class="dialog-content">
+    <h3 class="fw-bold">{{data ? "Edit pool" : "Create pool"}}</h3>
+    <p>{{data ? "" : ""}}</p>
+
+    <form [formGroup]="poolForm" (ngSubmit)="Submit()">
+        <!-- Username field -->
+        <mat-form-field class="mb-2 w-100">
+            <mat-label>Pool name</mat-label>
+            <input matInput type="text" placeholder="Pool name" formControlName="name" required [value]="data ? data.name: ''">
+            <mat-error *ngIf="poolForm.get('name')!.hasError('required')">
+                Pool name is required.
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="mb-2 w-100">
+            <mat-label>Description</mat-label>
+            <input matInput type="text" placeholder="Description" formControlName="description" required>
+            <mat-error *ngIf="poolForm.get('description')!.hasError('required')">
+                Description is required.
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="mb-2 w-100">
+            <mat-label>LogoUrl</mat-label>
+            <input matInput type="text" placeholder="Logo URL" formControlName="logoUrl" required>
+            <mat-error *ngIf="poolForm.get('logoUrl')!.hasError('required')">
+                Logo URL is required.
+            </mat-error>
+        </mat-form-field>
+
+        <div class="dialog-actions">
+            <button mat-raised-button color="primary" type="submit"><mat-icon>save</mat-icon> Submit</button>
+            <button mat-button color="primary" class="ms-2" (click)="CloseDialog()"><mat-icon>close</mat-icon>Close</button>
+        </div>
+    </form>
+</mat-dialog-content>

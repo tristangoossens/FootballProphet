@@ -36,3 +36,35 @@ a:hover {
     text-decoration: none;
     color: black;
 }
+
+// Dialog
+.dialog-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.dialog-name {
+    margin-top: 16px;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.dialog-description {
+    margin-top: 8px;
+    font-size: 16px;
+    text-align: center;
+}
+
+.dialog-actions {
+    display: flex;
+    align-items: center;
+}
+
+.rounded-image {
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    object-fit: cover;
+}
