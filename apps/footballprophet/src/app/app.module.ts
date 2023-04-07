@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
@@ -41,6 +41,15 @@ import { PoolDialogComponent } from './pool/dialog/pool-dialog.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSelectModule } from '@angular/material/select';
 import { LeagueDialogComponent } from './league/dialog/league-dialog.component';
+import { LeagueDetailComponent } from './league/details/league-details.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatDividerModule } from '@angular/material/divider';
+import { FixtureDialogComponent } from './fixture/dialog/create/fixture-dialog.component';
+import { FixtureService } from './fixture/fixture.service';
+import { TeamDialogComponent } from './team/dialog/team-dialog.component';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { FixtureScoreDialogComponent } from './fixture/dialog/score/fixture-score-dialog.component';
 
 @NgModule({
   declarations: [
@@ -56,6 +65,10 @@ import { LeagueDialogComponent } from './league/dialog/league-dialog.component';
     DialogComponent,
     PoolDialogComponent,
     LeagueDialogComponent,
+    LeagueDetailComponent,
+    FixtureDialogComponent,
+    TeamDialogComponent,
+    FixtureScoreDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -83,6 +96,10 @@ import { LeagueDialogComponent } from './league/dialog/league-dialog.component';
     MatTableModule,
     MatSlideToggleModule,
     MatSelectModule,
+    MatProgressSpinnerModule,
+    MatChipsModule,
+    MatDividerModule,
+    MatExpansionModule,
 
     // Forms
     FormsModule,
@@ -96,8 +113,9 @@ import { LeagueDialogComponent } from './league/dialog/league-dialog.component';
     AlertService,
     LeagueService,
     PoolService,
+    FixtureService,
     InviteResolver,
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

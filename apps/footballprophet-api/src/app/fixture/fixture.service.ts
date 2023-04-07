@@ -1,7 +1,7 @@
 import { Team, Fixture } from '@footballprophet/domain';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, ObjectId } from 'mongoose';
+import mongoose, { Model, ObjectId } from 'mongoose';
 import { FixtureDocument } from './fixture.model';
 
 @Injectable()
@@ -14,14 +14,20 @@ export class FixtureService {
     return await this.fixtureModel.create(fixture);
   }
 
-  async Update(id: ObjectId, fixture: Fixture) {
+  async Update(id: mongoose.Types.ObjectId, fixture: Fixture) {
     await this.fixtureModel.findOneAndUpdate(
       // Filter
       {
         _id: id,
       },
-      // Fixture to Update/Insert
-      fixture
+      // Score to set
+      {
+        $addToSet: {
+          actualAwayScore: fixture.actualAwayScore,
+          actualHomeScore: fixture.actualHomeScore,
+          awayTeam: fixture.awayTeam,
+        },
+      }
     );
   }
 }

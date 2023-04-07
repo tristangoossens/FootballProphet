@@ -1,0 +1,48 @@
+<!-- Dialog -->
+<mat-dialog-content class="dialog-content">
+    <h3 class="fw-bold red">SCORE FIXTURE</h3>
+    <p>Enter the final score of a fixture</p>
+
+    <mat-horizontal-stepper linear="true">
+        <mat-step class="py-3" [stepControl]="fixtureHalfTimeScoreForm">
+            <ng-template matStepLabel>Half time score</ng-template>
+
+            <form [formGroup]="fixtureHalfTimeScoreForm" class="mt-4">
+                <mat-form-field class="w-100 mb-3">
+                    <mat-label>Half time winner</mat-label>
+                    <mat-select [(ngModel)]="this.model.actualHalfTimeScore" formControlName="actualHalfTimeScore" required>
+                        <mat-option *ngFor="let key of enumKeys" [value]="key">{{key}}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="fixtureHalfTimeScoreForm.get('actualHalfTimeScore')!.hasError('required')">
+                        Selecting a halftime score is required.
+                    </mat-error>
+                </mat-form-field>
+
+                <button mat-raised-button color="primary" matStepperNext class="w-100" [disabled]="fixtureHalfTimeScoreForm.invalid">Next</button>
+            </form>
+        </mat-step>
+        <mat-step class="py-3">
+            <ng-template matStepLabel>Full time score</ng-template>
+
+            <form [formGroup]="fixtureFullTimeScoreForm" class="mt-4">
+                <mat-form-field class="w-100 mb-2">
+                    <mat-label>Home team score</mat-label>
+                    <input matInput type="number" placeholder="Home team goals" formControlName="actualHomeScore" [(ngModel)]="this.model.actualHomeScore" required>
+                    <mat-error *ngIf="fixtureFullTimeScoreForm.get('actualHomeScore')!.hasError('required')">
+                        Home score after full time is required.
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="w-100 mb-2">
+                    <mat-label>Away team score</mat-label>
+                    <input matInput type="number" placeholder="Away team goals" formControlName="actualAwayScore" [(ngModel)]="this.model.actualAwayScore" required>
+                    <mat-error *ngIf="fixtureFullTimeScoreForm.get('actualAwayScore')!.hasError('required')">
+                        Away score after full time is required.
+                    </mat-error>
+                </mat-form-field>
+
+                <button mat-raised-button color="primary" class="w-100" [disabled]="fixtureHalfTimeScoreForm.invalid || fixtureFullTimeScoreForm.invalid">Next</button>
+            </form>
+        </mat-step>
+    </mat-horizontal-stepper>
+</mat-dialog-content>

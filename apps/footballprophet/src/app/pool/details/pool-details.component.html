@@ -1,5 +1,5 @@
-<div class="row bg-white rounded p-3 mb-3">
-    <div class="col-12">
+<div class="row bg-white rounded p-3 mb-3" *ngIf="!isLoading">
+    <div class="col-12 d-flex">
         <div class="breadcrumb">
             <button mat-button routerLink="/">
                 <mat-icon class="red-icon">home</mat-icon>
@@ -11,39 +11,36 @@
                 Pools
             </button>
             <mat-icon class="my-auto">chevron_right</mat-icon>
-            <button mat-button routerLink="/pools/{{pool._id}}">
+            <button mat-button routerLink="/pools/{{pool._id}}" disabled>
                 <mat-icon class="red-icon">groups</mat-icon>
                 {{pool.name}}
             </button>
         </div>
 
-        <div class="pool-header mt-4">
-            <img class="logo me-3" [src]="pool.logoUrl" [alt]="pool.name">
-            <div class="mb-auto">
-                <div class="name">{{pool.name}}<mat-icon *ngIf="pool.isPrivate" class="red-icon ms-2">lock</mat-icon></div>
-                <div class="description">{{pool.description}}</div>
-            </div>
+        <button *ngIf="loggedInUser && IsPoolOwner(loggedInUser)" class="ms-auto my-auto" mat-raised-button color="primary" (click)="OpenPoolEditDialog()">
+            <mat-icon>edit</mat-icon>
+            Edit
+        </button>
+    </div>
 
-            <div *ngIf="loggedInUser" class="ms-auto">
-                <button *ngIf="!IsAlreadyMember(loggedInUser)" mat-raised-button color="primary" (click)="OpenJoinPoolDialog()" [disabled]="pool.isPrivate">
-                    <mat-icon>{{pool.isPrivate ? "lock" : "add"}}</mat-icon>
-                    {{pool.isPrivate ? "Invite only" : "Join now"}}
-                </button>
-                <button *ngIf="IsAlreadyMember(loggedInUser)" mat-raised-button color="primary" disabled>
-                    <mat-icon>check</mat-icon>
-                    {{IsPoolOwner(loggedInUser) ? "Owner" : "Member"}}
-                </button>
+    <div class="pool-header mt-2 mb-3 col-12">
+        <img class="logo me-3" [src]="pool.logoUrl" [alt]="pool.name">
+        <div class="mb-auto">
+            <div class="name">{{pool.name}}<mat-icon *ngIf="pool.isPrivate" class="red-icon ms-2">lock</mat-icon></div>
+            <p class="description">{{pool.description}}</p>
+            <div class="date">Last updated: {{pool.updatedAt | date: 'medium'}}</div>
+        </div>
 
-                <button *ngIf="IsPoolOwner(loggedInUser)" class="ms-2" mat-raised-button color="primary" (click)="OpenPoolEditDialog()">
-                    <mat-icon>edit</mat-icon>
-                    Edit
-                </button>
-            </div>
+        <div *ngIf="loggedInUser" class="ms-auto">
+            <button *ngIf="!IsAlreadyMember(loggedInUser)" mat-raised-button color="primary" (click)="OpenJoinPoolDialog()" [disabled]="pool.isPrivate">
+                <mat-icon>{{pool.isPrivate ? "lock" : "add"}}</mat-icon>
+                {{pool.isPrivate ? "Invite only" : "Join now"}}
+            </button>
         </div>
     </div>
 </div>
 
-<div class="row bg-white rounded p-3 justify-content-center" [hidden]="!loggedInUser || (!IsAlreadyMember(loggedInUser) && pool.isPrivate)">
+<div class="row bg-white rounded p-3 justify-content-center" *ngIf="!isLoading" [hidden]="!loggedInUser || (!IsAlreadyMember(loggedInUser) && pool.isPrivate)">
     <mat-tab-group class="col-12">
         <mat-tab>
             <ng-template mat-tab-label>
@@ -51,8 +48,8 @@
                 Standings
             </ng-template>
 
-            <div class="p-3">
-                <h3 class="fw-bold">Scoreboard</h3>
+            <div class="py-4">
+                <h3 class="fw-bold red">SCOREBOARD</h3>
                 <p class="description">Standings in the current league season</p>
 
                 <table mat-table [dataSource]="scoreBoard">
@@ -101,8 +98,8 @@
                 Members ({{pool.members.length}})
             </ng-template>
 
-            <div class="p-3">
-                <h3 class="fw-bold">Members</h3>
+            <div class="py-4">
+                <h3 class="fw-bold red">MEMBERS</h3>
                 <p class="description">Members that are part of "<span class="red-icon">{{pool.name}}</span>"</p>
 
                 <table mat-table [dataSource]="AsUserArray()">
@@ -139,12 +136,15 @@
                 Invite (Owner only)
             </ng-template>
 
-            <div class="p-3">
-                <h3 class="fw-bold">Invite users</h3>
-                <p class="description">Invite users with the link below. Send this to your friends so they can join this league <span class="fw-bold">(ANYONE WITH THIS LINK CAN JOIN)</span></p>
+            <div class="py-4">
+                <h3 class="fw-bold red">INVITE</h3>
+                <p class="description">Invite users with the link below.</p>
+                
+                <mat-divider class="my-3"></mat-divider>
+
                 <mat-form-field class="w-100">
                     <mat-label>Invite link</mat-label>
-                    <input matInput type="text" disabled value="http://localhost:4200/pools/{{pool._id}}/invite/{{pool.joinCode}}">
+                    <input matInput type="text" readonly value="http://localhost:4200/pools/{{pool._id}}/invite/{{pool.joinCode}}">
                     <button matSuffix mat-icon-button (click)="CopyInviteUrl()">
                       <mat-icon>file_copy</mat-icon>
                     </button>
@@ -152,4 +152,11 @@
             </div>
         </mat-tab>
     </mat-tab-group>
+</div>
+
+
+<div class="row justify-content-center" *ngIf="isLoading">
+    <div class="col-12 d-flex">
+        <mat-spinner class="mx-auto"></mat-spinner>
+    </div>
 </div>

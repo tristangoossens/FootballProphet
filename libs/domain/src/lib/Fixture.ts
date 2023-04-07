@@ -1,4 +1,4 @@
-import { ObjectId } from 'mongoose';
+import mongoose from 'mongoose';
 import { EntityBase } from './EntityBase';
 import { League } from './League';
 import { Team } from './Team';
@@ -8,12 +8,12 @@ export interface Fixture extends EntityBase {
   referee: string;
   stadium: string;
   kickOffDate: Date;
-  league: ObjectId | League;
+  league: mongoose.Types.ObjectId | League;
   homeTeam: Team;
   awayTeam: Team;
 
   // Score fields (will be set after the fixture has been played)
   actualHomeScore?: number;
   actualAwayScore?: number;
-  actualHalfTimeScore?: HalfTimeScore;
+  actualHalfTimeScore?: string;
 }

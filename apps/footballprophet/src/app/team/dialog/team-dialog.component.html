@@ -1,0 +1,38 @@
+<!-- Dialog -->
+<mat-dialog-content class="dialog-content">
+    <h3 class="fw-bold red">ADD TEAM</h3>
+    <p>Add a team to an existing league</p>
+
+    <form [formGroup]="teamForm" (ngSubmit)="Submit()">
+        <!-- Name field -->
+        <mat-form-field class="mb-2 w-100">
+            <mat-label>Pool name</mat-label>
+            <input matInput type="text" placeholder="Pool name" formControlName="name" required [(ngModel)]="model.name">
+            <mat-error *ngIf="teamForm.get('name')!.hasError('required')">
+                Pool name is required.
+            </mat-error>
+        </mat-form-field>
+
+        <!-- Logo URL field -->
+        <mat-form-field class="mb-2 w-100">
+            <mat-label>Logo URL</mat-label>
+            <input matInput type="text" placeholder="Logo URL" formControlName="logoUrl" required [(ngModel)]="model.logoUrl">
+            <mat-error *ngIf="teamForm.get('logoUrl')!.hasError('required')">
+                Logo URL is required.
+            </mat-error>
+        </mat-form-field>
+
+        <!-- Birth date -->
+        <mat-form-field class="w-100 mb-2">
+            <mat-label>Founded on</mat-label>
+            <input matInput [matDatepicker]="picker" placeholder="Founded on" formControlName="foundedIn" [(ngModel)]="model.foundedIn">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <mat-error *ngIf="teamForm.get('foundedIn')!.hasError('required')">Founded in date is required.</mat-error>
+        </mat-form-field>
+
+        <div class="dialog-actions">
+            <button mat-raised-button color="primary" type="submit" [disabled]="teamForm.invalid"><mat-icon>save</mat-icon> Submit</button>
+        </div>
+    </form>
+</mat-dialog-content>

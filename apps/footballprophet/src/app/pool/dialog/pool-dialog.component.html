@@ -1,7 +1,7 @@
 <!-- Dialog -->
 <mat-dialog-content class="dialog-content">
-    <h3 class="fw-bold">{{data.pool ? "Edit pool" : "Create pool"}}</h3>
-    <p>{{data ? "" : ""}}</p>
+    <h3 class="fw-bold red">{{data.pool ? "EDIT POOL" : "CREATE POOL"}}</h3>
+    <p>Create/Edit a pool</p>
 
     <form [formGroup]="poolForm" (ngSubmit)="Submit()">
         <!-- League field -->

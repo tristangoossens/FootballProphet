@@ -24,7 +24,6 @@ export class PoolService {
   }
 
   public GetPoolById(id: string): Observable<Pool> {
-    console.log(localStorage.getItem('token'));
     // Add auth header with jwt token
     return this.http
       .get(`${environment.api_url}/pools/${id}`, {

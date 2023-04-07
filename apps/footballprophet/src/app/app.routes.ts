@@ -5,9 +5,15 @@ import { LeagueComponent } from './league/league.component';
 import { InviteResolver } from './pool/invite/invite.resolver';
 import { PoolComponent } from './pool/pool.component';
 import { PoolDetailComponent } from './pool/details/pool-details.component';
+import { LeagueDetailComponent } from './league/details/league-details.component';
 
 const routes: Routes = [
   { path: 'leagues', pathMatch: 'full', component: LeagueComponent },
+  {
+    path: 'leagues/:leagueId',
+    pathMatch: 'full',
+    component: LeagueDetailComponent,
+  },
 
   // Pool routes
   { path: 'pools', pathMatch: 'full', component: PoolComponent },

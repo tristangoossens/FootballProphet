@@ -1,6 +1,6 @@
 <!-- Dialog -->
 <mat-dialog-content class="dialog-content">
-    <h3 class="fw-bold">CREATE LEAGUE</h3>
+    <h3 class="fw-bold red">{{data ? "UPDATE LEAGUE" : "CREATE LEAGUE"}}</h3>
     <p>Create/edit a league</p>
 
     <form [formGroup]="leagueForm" (ngSubmit)="Submit()">

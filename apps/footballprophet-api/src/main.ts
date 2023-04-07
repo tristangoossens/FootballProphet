@@ -9,7 +9,9 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 function setupSwagger(app) {
   const config = new DocumentBuilder()
     .setTitle('FootballProphet API')
-    .setDescription('This swagger documentation contains all the endpoints for the FootballProphet API')
+    .setDescription(
+      'This swagger documentation contains all the endpoints for the FootballProphet API'
+    )
     .setVersion('1.0')
     .build();
 
@@ -31,18 +33,19 @@ async function bootstrap() {
   const port = process.env.PORT || 3333;
   await app.listen(port);
 
+  // TODO: Return document on create/edit methods
   Logger.log(
     `⚽ Footballprophet API is running on: http://localhost:${port}/${globalPrefix}`
   );
 }
 
 // Execute application
-(async(): Promise<void> => {
+(async (): Promise<void> => {
   try {
     await bootstrap();
   } catch (error) {
     Logger.error(
       `⚠️ Something went wrong while starting the application: ${error}`
-    )
+    );
   }
 })();

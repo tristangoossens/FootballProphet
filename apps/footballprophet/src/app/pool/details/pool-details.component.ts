@@ -18,7 +18,7 @@ import { PoolDialogComponent } from '../dialog/pool-dialog.component';
 })
 export class PoolDetailComponent implements OnInit {
   public loggedInUser!: User | undefined;
-
+  public isLoading: boolean = false;
   public pool: Pool = {} as Pool;
   public scoreBoard: any[] = []; // TODO: Create ScoreBoard interface
   public displayedColumnsMembers: string[] = ['avatarUrl', 'username', 'id'];
@@ -36,7 +36,7 @@ export class PoolDetailComponent implements OnInit {
     private authService: AuthService,
     private dialog: MatDialog,
     private clipboard: Clipboard
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.authService.currentUser$.subscribe((user) => {
@@ -47,20 +47,27 @@ export class PoolDetailComponent implements OnInit {
       const id = params.get('poolId');
       if (id) {
         this.GetPoolById(id);
-        this.GetPoolScoreBoardById(id);
       }
     });
   }
 
   public GetPoolById(id: string): void {
-    this.poolService.GetPoolById(id).subscribe(
-      (pool) => {
-        this.pool = pool;
-      },
-      (error) => {
-        this.alertService.AlertError(error.message);
-      }
-    );
+    // Add a timeout to simulate a slow connection
+    this.isLoading = true;
+
+    setTimeout(() => {
+      this.poolService.GetPoolById(id).subscribe(
+        (pool) => {
+          this.GetPoolScoreBoardById(id);
+          this.pool = pool;
+          this.isLoading = false;
+        },
+        (error) => {
+          this.alertService.AlertError(error.message);
+          this.isLoading = false;
+        }
+      );
+    }, 500);
   }
 
   public GetPoolScoreBoardById(id: string): void {
@@ -91,7 +98,6 @@ export class PoolDetailComponent implements OnInit {
       this.poolService.JoinPool(this.pool._id!.toString()).subscribe(() => {
         this.alertService.AlertSuccess('You have successfully joined the pool');
         this.GetPoolById(this.pool._id!.toString());
-        this.GetPoolScoreBoardById(this.pool._id!.toString());
       });
     });
   }
@@ -109,13 +115,14 @@ export class PoolDetailComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.poolService.KickFromPool(this.pool._id!.toString(), user._id!.toString()).subscribe(() => {
-          this.alertService.AlertSuccess(
-            `You have successfully kicked ${user.username} from this pool`
-          );
-          this.GetPoolById(this.pool._id!.toString());
-          this.GetPoolScoreBoardById(this.pool._id!.toString());
-        });
+        this.poolService
+          .KickFromPool(this.pool._id!.toString(), user._id!.toString())
+          .subscribe(() => {
+            this.alertService.AlertSuccess(
+              `You have successfully kicked ${user.username} from this pool`
+            );
+            this.GetPoolById(this.pool._id!.toString());
+          });
       }
     });
   }
@@ -125,7 +132,7 @@ export class PoolDetailComponent implements OnInit {
       data: {
         pool: Object.assign({}, this.pool),
         user: this.loggedInUser,
-      }
+      },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -134,7 +141,6 @@ export class PoolDetailComponent implements OnInit {
           (_) => {
             this.alertService.AlertSuccess('Pool updated successfully');
             this.GetPoolById(this.pool._id!.toString());
-            this.GetPoolScoreBoardById(this.pool._id!.toString());
           },
           (error) => {
             this.alertService.AlertError(error.message);

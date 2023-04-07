@@ -1,0 +1,142 @@
+<div class="row bg-white rounded p-3 mb-3" *ngIf="!isLoading">
+    <div class="col-12 d-flex">
+        <div class="breadcrumb">
+            <button mat-button routerLink="/">
+                <mat-icon class="red-icon">home</mat-icon>
+                Home
+            </button>
+            <mat-icon class="my-auto">chevron_right</mat-icon>
+            <button mat-button routerLink="/leagues">
+                <mat-icon class="red-icon">sports_soccer</mat-icon>
+                Leagues
+            </button>
+            <mat-icon class="my-auto">chevron_right</mat-icon>
+            <button mat-button routerLink="/leagues/{{league._id}}" disabled>
+                <mat-icon class="red-icon">sports_soccer</mat-icon>
+                {{league.name}}
+            </button>
+        </div>
+
+        <div *ngIf="loggedInUser" class="ms-auto my-auto">
+            <button class="ms-2" mat-raised-button color="primary" (click)="OpenEditLeagueDialog()">
+                <mat-icon>edit</mat-icon>
+                Edit
+            </button>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="league-header mt-4 mb-3 d-flex">
+            <img class="logo me-3" [src]="league.logoUrl" [alt]="league.name">
+            <div class="mb-auto">
+                <div class="name">{{league.name}}<span class="ms-2 season">({{league.season}})</span></div>
+                <div class="date">Last updated: {{league.updatedAt | date: 'medium'}}</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row bg-white rounded p-3 justify-content-center" *ngIf="!isLoading">
+    <mat-tab-group class="col-12">
+        <mat-tab>
+            <ng-template mat-tab-label>
+                <mat-icon class="me-2">sports</mat-icon>
+                Fixtures ({{league.fixtures!.length}})
+            </ng-template>
+
+            <div class="py-4">
+                <div class="header">
+                    <div class="d-flex">
+                        <h3 class="fw-bold red">FIXTURES</h3>
+
+                        <button mat-raised-button *ngIf="loggedInUser" color="primary" class="ms-auto" (click)="OpenCreateFixtureDialog()">
+                            <mat-icon>add</mat-icon> Create fixture
+                        </button>
+                    </div>
+                    <p class="description">Upcoming and previous fixutes in "<span class="red-icon">{{league.name}}</span>"</p>
+                </div>
+
+                <mat-divider class="my-3"></mat-divider>
+                <mat-chip-listbox class="mb-3" [multiple]="false">
+                    <mat-chip-option [selected]="!this.finishedGames" [disabled]="!this.finishedGames" (click)="OnChipSelectionChange()">Upcoming</mat-chip-option>
+                    <mat-chip-option [selected]="this.finishedGames" [disabled]="this.finishedGames" (click)="OnChipSelectionChange()">Finished</mat-chip-option>
+                </mat-chip-listbox>
+
+                <mat-card class="fixture-card my-3" *ngFor="let fixture of filteredFixtures">
+                    <div class="date">{{fixture.kickOffDate | date: 'medium'}}</div>
+                    <div class="matchscore my-2">
+                        <img src="{{ fixture.homeTeam.logoUrl }}" alt="{{ fixture.homeTeam.name }}" class="team-logo">
+                        <div class="score-container">
+                            <div class="score-text">
+                                <div [ngClass]="{'winner': HomeTeamWon(fixture)}" class="score">{{ fixture.actualHomeScore }}</div>
+                                <div class="vs">-</div>
+                                <div [ngClass]="{'winner': AwayTeamWon(fixture)}" class="score">{{ fixture.actualAwayScore }}</div>
+                            </div>
+                        </div>
+                        <img src="{{ fixture.awayTeam.logoUrl }}" alt="{{ fixture.awayTeam.name }}" class="team-logo">
+                    </div>
+
+                    <div class="mx-auto">
+                        <button mat-mini-fab *ngIf="loggedInUser && CanMakePrediction(fixture)" color="primary">
+                            <mat-icon>tips_and_updates</mat-icon>
+                        </button>
+
+                        <button mat-mini-fab *ngIf="loggedInUser && CanScoreBeSet(fixture)" color="primary" class="ms-2" (click)="OpenFixtureScoreDialog(fixture)">
+                            <mat-icon>sports_score</mat-icon>
+                        </button>
+                    </div>
+                </mat-card>
+            </div>
+        </mat-tab>
+        <mat-tab>
+            <ng-template mat-tab-label>
+                <mat-icon class="me-2">groups</mat-icon>
+                Teams ({{league.teams!.length}})
+            </ng-template>
+
+            <div class="py-4">
+                <div class="header">
+                    <div class="d-flex">
+                        <h3 class="fw-bold red">TEAMS</h3>
+
+                        <button mat-raised-button *ngIf="loggedInUser" color="primary" class="ms-auto" (click)="OpenCreateTeamDialog()">
+                            <mat-icon>add</mat-icon> Create team
+                        </button>
+                    </div>
+                    <p class="description">Teams that are playing in the "<span class="red-icon">{{league.name}}</span>" league</p>
+                </div>
+
+                <table mat-table [dataSource]="AsTeamArray()">
+                    <!-- Image column -->
+                    <ng-container matColumnDef="logoUrl">
+                      <th mat-header-cell *matHeaderCellDef> Logo </th>
+                      <td mat-cell *matCellDef="let team"> <img src="{{ team.logoUrl }}" class="team-logo"></td>
+                    </ng-container>
+
+                    <!-- Username Column -->
+                    <ng-container matColumnDef="name">
+                      <th mat-header-cell *matHeaderCellDef> Name </th>
+                      <td mat-cell *matCellDef="let team"> {{ team.name }}</td>
+                    </ng-container>
+
+                    <!-- Kick Column -->
+                    <ng-container matColumnDef="foundedIn">
+                      <th mat-header-cell *matHeaderCellDef>Founded on</th>
+                      <td mat-cell *matCellDef="let team"> 
+                        {{ team.foundedIn | date: 'mediumDate' }}
+                    </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+            </div>
+        </mat-tab>
+    </mat-tab-group>
+</div>
+
+<div class="row justify-content-center" *ngIf="isLoading">
+    <div class="col-12 d-flex">
+        <mat-spinner class="mx-auto"></mat-spinner>
+    </div>
+</div>

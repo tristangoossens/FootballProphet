@@ -10,7 +10,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { ObjectId } from 'mongoose';
+import mongoose, { ObjectId } from 'mongoose';
 import { HasRoles } from '../auth/decorators/roles.decorator';
 import { JwtAuthGuard } from '../auth/guards/jwt.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
@@ -33,7 +33,7 @@ export class FixtureController {
 
     // Add a reference to the fixture in the league
     await this.leagueService.AddFixtureReference(
-      fixture.league as ObjectId,
+      fixture.league as mongoose.Types.ObjectId,
       fixtureDocument._id
     );
     return `Fixture has been created`;
@@ -43,14 +43,14 @@ export class FixtureController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Put(':id')
   async update(
-    @Param('id') id: ObjectId,
+    @Param('id') id: mongoose.Types.ObjectId,
     @Body() fixture: Fixture
   ): Promise<string> {
-    await this.fixtureService.Update(id, fixture);
+    await this.fixtureService.Update(id as mongoose.Types.ObjectId, fixture);
 
     // Add a reference to the fixture in the league
     await this.leagueService.AddFixtureReference(
-      fixture.league as ObjectId,
+      fixture.league as mongoose.Types.ObjectId,
       id
     );
 

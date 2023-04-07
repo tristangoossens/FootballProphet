@@ -26,7 +26,7 @@ export class PoolController {
   constructor(
     private readonly poolService: PoolService,
     private readonly userService: UserService
-  ) { }
+  ) {}
 
   @Get()
   async getAll(@Request() req) {
@@ -63,18 +63,9 @@ export class PoolController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Put(':id')
   async update(@Param('id') id: string, @Body() pool: Pool) {
-    console.log('PoolController.update', pool)
+    console.log('PoolController.update', pool);
     await this.poolService.Update(id, pool);
     return `Pool ${pool.name} has successfully been updated`;
-  }
-
-  @HasRoles([UserRole.User])
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Delete(':id')
-  async delete(@Request() req, @Param('id') id: ObjectId) {
-    await this.poolService.Delete(id);
-    await this.userService.removePool(req.user._id, id);
-    return `Pool (${id}) has successfully been deleted`;
   }
 
   @HasRoles([UserRole.User])

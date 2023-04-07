@@ -16,8 +16,12 @@ export class LeagueComponent implements OnInit {
   public leagues: League[] = [];
   public isLoading: boolean = false;
 
-  constructor(private leagueService: LeagueService, private authService: AuthService, private alertService: AlertService, private dialog: MatDialog) { }
-
+  constructor(
+    private leagueService: LeagueService,
+    private authService: AuthService,
+    private alertService: AlertService,
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
     this.authService.currentUser$.subscribe((user) => {
@@ -39,8 +43,10 @@ export class LeagueComponent implements OnInit {
   }
 
   public OpenLeagueCreateDialog(): void {
-    this.dialog.open(LeagueDialogComponent)
-      .afterClosed().subscribe((league: League) => {
+    this.dialog
+      .open(LeagueDialogComponent)
+      .afterClosed()
+      .subscribe((league: League) => {
         if (league) {
           this.leagueService.CreateLeague(league).subscribe(
             (_) => {
