@@ -1,37 +1,53 @@
 <!-- Dialog -->
 <mat-dialog-content class="dialog-content">
-    <h3 class="fw-bold">{{data ? "Edit pool" : "Create pool"}}</h3>
+    <h3 class="fw-bold">{{data.pool ? "Edit pool" : "Create pool"}}</h3>
     <p>{{data ? "" : ""}}</p>
 
     <form [formGroup]="poolForm" (ngSubmit)="Submit()">
-        <!-- Username field -->
+        <!-- League field -->
+        <mat-form-field [hidden]="data.pool" class="mb-2 w-100">
+            <mat-label>League</mat-label>
+            <mat-select formControlName="league" [(ngModel)]="model.league" required>
+                <mat-option *ngFor="let league of leagues" [value]="league._id">
+                    {{league.name}}
+                </mat-option>
+            </mat-select>
+            <mat-error *ngIf="poolForm.get('league')!.hasError('required')">
+                League is required.
+            </mat-error>
+        </mat-form-field>
+
+        <!-- Name field -->
         <mat-form-field class="mb-2 w-100">
             <mat-label>Pool name</mat-label>
-            <input matInput type="text" placeholder="Pool name" formControlName="name" required [value]="data ? data.name: ''">
+            <input matInput type="text" placeholder="Pool name" formControlName="name" required [(ngModel)]="model.name">
             <mat-error *ngIf="poolForm.get('name')!.hasError('required')">
                 Pool name is required.
             </mat-error>
         </mat-form-field>
 
+        <!-- Description field -->
         <mat-form-field class="mb-2 w-100">
             <mat-label>Description</mat-label>
-            <input matInput type="text" placeholder="Description" formControlName="description" required>
+            <input matInput type="text" placeholder="Description" formControlName="description" required [(ngModel)]="model.description">
             <mat-error *ngIf="poolForm.get('description')!.hasError('required')">
                 Description is required.
             </mat-error>
         </mat-form-field>
 
+        <!-- Logo URL field -->
         <mat-form-field class="mb-2 w-100">
             <mat-label>LogoUrl</mat-label>
-            <input matInput type="text" placeholder="Logo URL" formControlName="logoUrl" required>
+            <input matInput type="text" placeholder="Logo URL" formControlName="logoUrl" required [(ngModel)]="model.logoUrl">
             <mat-error *ngIf="poolForm.get('logoUrl')!.hasError('required')">
                 Logo URL is required.
             </mat-error>
         </mat-form-field>
 
+        <mat-slide-toggle class="mb-4" formControlName="isPrivate" [(ngModel)]="model.isPrivate"><mat-icon>{{model.isPrivate? "lock" : "lock_open"}}</mat-icon></mat-slide-toggle>
+
         <div class="dialog-actions">
-            <button mat-raised-button color="primary" type="submit"><mat-icon>save</mat-icon> Submit</button>
-            <button mat-button color="primary" class="ms-2" (click)="CloseDialog()"><mat-icon>close</mat-icon>Close</button>
+            <button mat-raised-button color="primary" type="submit" [disabled]="poolForm.invalid"><mat-icon>save</mat-icon> Submit</button>
         </div>
     </form>
 </mat-dialog-content>

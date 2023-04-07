@@ -36,7 +36,7 @@ export class PoolDetailComponent implements OnInit {
     private authService: AuthService,
     private dialog: MatDialog,
     private clipboard: Clipboard
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.authService.currentUser$.subscribe((user) => {
@@ -77,8 +77,6 @@ export class PoolDetailComponent implements OnInit {
   }
 
   public OpenJoinPoolDialog(): void {
-    const id = (this.pool._id as ObjectId).toString();
-
     const dialogRef = this.dialog.open(DialogComponent, {
       disableClose: true,
       data: {
@@ -90,10 +88,10 @@ export class PoolDetailComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      this.poolService.JoinPool(id.toString()).subscribe(() => {
+      this.poolService.JoinPool(this.pool._id!.toString()).subscribe(() => {
         this.alertService.AlertSuccess('You have successfully joined the pool');
-        this.GetPoolById(id);
-        this.GetPoolScoreBoardById(id);
+        this.GetPoolById(this.pool._id!.toString());
+        this.GetPoolScoreBoardById(this.pool._id!.toString());
       });
     });
   }
@@ -111,15 +109,12 @@ export class PoolDetailComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        const poolId = (this.pool._id as ObjectId).toString();
-        const userId = (user._id as ObjectId).toString();
-
-        this.poolService.KickFromPool(poolId, userId).subscribe(() => {
+        this.poolService.KickFromPool(this.pool._id!.toString(), user._id!.toString()).subscribe(() => {
           this.alertService.AlertSuccess(
             `You have successfully kicked ${user.username} from this pool`
           );
-          this.GetPoolById(poolId);
-          this.GetPoolScoreBoardById(poolId);
+          this.GetPoolById(this.pool._id!.toString());
+          this.GetPoolScoreBoardById(this.pool._id!.toString());
         });
       }
     });
@@ -127,19 +122,19 @@ export class PoolDetailComponent implements OnInit {
 
   public OpenPoolEditDialog(): void {
     const dialogRef = this.dialog.open(PoolDialogComponent, {
-      disableClose: true,
-      data: this.pool,
+      data: {
+        pool: Object.assign({}, this.pool),
+        user: this.loggedInUser,
+      }
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      if (result == true) {
-        const poolId = (this.pool._id as ObjectId).toString();
-
-        this.poolService.UpdatePool(this.pool).subscribe(
-          (pool) => {
+      if (result) {
+        this.poolService.UpdatePool(result).subscribe(
+          (_) => {
             this.alertService.AlertSuccess('Pool updated successfully');
-            this.GetPoolById(poolId);
-            this.GetPoolScoreBoardById(poolId);
+            this.GetPoolById(this.pool._id!.toString());
+            this.GetPoolScoreBoardById(this.pool._id!.toString());
           },
           (error) => {
             this.alertService.AlertError(error.message);

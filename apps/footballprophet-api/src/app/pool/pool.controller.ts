@@ -26,7 +26,7 @@ export class PoolController {
   constructor(
     private readonly poolService: PoolService,
     private readonly userService: UserService
-  ) {}
+  ) { }
 
   @Get()
   async getAll(@Request() req) {
@@ -41,7 +41,6 @@ export class PoolController {
   @Get(':id/scoreboard')
   async getScoreboard(@Param('id') id: string) {
     const data = await this.poolService.GetScoreBoard(id);
-    console.log(data);
     return data;
   }
 
@@ -64,6 +63,7 @@ export class PoolController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Put(':id')
   async update(@Param('id') id: string, @Body() pool: Pool) {
+    console.log('PoolController.update', pool)
     await this.poolService.Update(id, pool);
     return `Pool ${pool.name} has successfully been updated`;
   }

@@ -16,4 +16,17 @@ export class LeagueService {
                 })
             );
     }
+
+    public CreateLeague(league: League): Observable<League> {
+        return this.http.post(`${environment.api_url}/leagues`, league, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        })
+            .pipe(
+                map((resp: any) => {
+                    return resp.data;
+                })
+            );
+    }
 }

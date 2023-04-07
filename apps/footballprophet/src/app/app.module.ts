@@ -38,6 +38,9 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatTableModule } from '@angular/material/table';
 import { DialogComponent } from './shared/dialog/dialog.component';
 import { PoolDialogComponent } from './pool/dialog/pool-dialog.component';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatSelectModule } from '@angular/material/select';
+import { LeagueDialogComponent } from './league/dialog/league-dialog.component';
 
 @NgModule({
   declarations: [
@@ -52,6 +55,7 @@ import { PoolDialogComponent } from './pool/dialog/pool-dialog.component';
     PoolDetailComponent,
     DialogComponent,
     PoolDialogComponent,
+    LeagueDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -77,6 +81,8 @@ import { PoolDialogComponent } from './pool/dialog/pool-dialog.component';
     MatCardModule,
     MatTabsModule,
     MatTableModule,
+    MatSlideToggleModule,
+    MatSelectModule,
 
     // Forms
     FormsModule,
@@ -94,4 +100,4 @@ import { PoolDialogComponent } from './pool/dialog/pool-dialog.component';
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

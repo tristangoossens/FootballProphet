@@ -1,34 +1,43 @@
 <div class="row bg-white rounded p-3 mb-3">
-    <div class="col-12">
+    <div class="col-12 d-flex justify-content-between align-items-center">
         <div class="breadcrumb">
             <button mat-button routerLink="/">
                 <mat-icon class="red-icon">home</mat-icon>
                 Home
             </button>
             <mat-icon class="my-auto">chevron_right</mat-icon>
-            <button mat-button routerLink="/leagues">
+            <button mat-button routerLink="/pools">
                 <mat-icon class="red-icon">sports_soccer</mat-icon>
                 Leagues
             </button>
         </div>
+        <button mat-raised-button *ngIf="loggedInUser" color="primary" (click)="OpenLeagueCreateDialog()">
+            <mat-icon>add</mat-icon> Create League
+        </button>
+    </div>
 
+    <div class="col-12">
         <h1 class="fw-bold title">LEAGUES</h1>
-        <p>Some of FootballProphets competitions where you can make a poule</p>
+        <p></p>
     </div>
 </div>
 
 <div class="row bg-white rounded p-3 justify-content-center">
-    <mat-card class="card col-12 mb-4" routerLink="/leagues/1">
-        <img mat-card-image class="logo" src="https://www.flashscore.nl/res/image/data/be5KoO97-h2AIY9cE.png" alt="Liverpool">
+    <a mat-card class="card col-12 mb-4" routerLink="/leagues/{{league._id}}" *ngFor="let league of leagues">
+        <img mat-card-image class="logo me-3" [src]="league.logoUrl" [alt]="league.name">
         <mat-card-content>
-            <div class="name">LaLiga</div>
-            <div class="season">2022</div>
-        </mat-card-content>
-    </mat-card>
+            <div class="name">{{league.name}}</div>
+            <div class="season">{{league.season}}</div>
 
-    <button mat-raised-button color="primary">
+            <button mat-mini-fab class="fab-button">
+                <mat-icon>chevron_right</mat-icon>
+            </button>
+        </mat-card-content>
+    </a>
+
+    <button mat-raised-button color="primary" (click)="LoadLeagues()">
         <mat-icon>expand_more</mat-icon>
         Load more
-        <mat-progress-bar *ngIf="true" mode="indeterminate" color="accent"></mat-progress-bar>
+        <mat-progress-bar *ngIf="isLoading" mode="indeterminate" color="accent"></mat-progress-bar>
     </button>
 </div>

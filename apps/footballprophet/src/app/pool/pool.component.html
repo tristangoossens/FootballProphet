@@ -1,5 +1,5 @@
 <div class="row bg-white rounded p-3 mb-3">
-    <div class="col-12">
+    <div class="col-12 d-flex justify-content-between align-items-center">
         <div class="breadcrumb">
             <button mat-button routerLink="/">
                 <mat-icon class="red-icon">home</mat-icon>
@@ -11,7 +11,12 @@
                 Pools
             </button>
         </div>
+        <button mat-raised-button *ngIf="loggedInUser" color="primary" (click)="OpenPoolCreateDialog()">
+            <mat-icon>add</mat-icon> Create Pool
+        </button>
+    </div>
 
+    <div class="col-12">
         <h1 class="fw-bold title">POOLS</h1>
         <p>Battle against your friends on who is the best at predicting the future. Down below are some of the most popular leagues on <span class="fw-bold">FootballProphet</span></p>
     </div>
