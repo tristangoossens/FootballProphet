@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Fixture, League, Team, User } from '@footballprophet/domain';
+import { Fixture, League, Prediction, Team, User } from '@footballprophet/domain';
 import { AlertService } from '../../shared/alert/alert.service';
 import { LeagueService } from '../league.service';
 import { ActivatedRoute } from '@angular/router';
@@ -10,6 +10,8 @@ import { FixtureDialogComponent } from '../../fixture/dialog/create/fixture-dial
 import { FixtureService } from '../../fixture/fixture.service';
 import { TeamDialogComponent } from '../../team/dialog/team-dialog.component';
 import { FixtureScoreDialogComponent } from '../../fixture/dialog/score/fixture-score-dialog.component';
+import { PredictionService } from '../../prediction/prediction.service';
+import { PredictionDialog } from '../../prediction/dialog/prediction-dialog.component';
 
 @Component({
   selector: 'footballprophet-league-details',
@@ -30,13 +32,12 @@ export class LeagueDetailComponent implements OnInit {
     private authService: AuthService,
     private activatedRoute: ActivatedRoute,
     private fixtureService: FixtureService,
+    private predictionService: PredictionService,
     private dialog: MatDialog
-  ) {}
+  ) { }
 
   ngOnInit(): void {
-    this.authService.currentUser$.subscribe((user) => {
-      this.loggedInUser = user;
-    });
+    this.LoadCurrentUser();
 
     this.activatedRoute.paramMap.subscribe((params) => {
       const id = params.get('leagueId');
@@ -126,6 +127,33 @@ export class LeagueDetailComponent implements OnInit {
     });
   }
 
+  OpenCreatePredictionDialog(fixture: Fixture): void {
+    const dialogRef = this.dialog.open(PredictionDialog, {
+      data: {
+        fixture: Object.assign({}, fixture),
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result: Prediction) => {
+      if (result) {
+        this.predictionService.CreatePrediction(result).subscribe(
+          (_) => {
+            this.alertService.AlertSuccess('Successfully created prediction');
+            this.authService.updateCurrentData(this.loggedInUser as User).subscribe(
+              (_) => {
+                this.LoadCurrentUser();
+                this.LoadLeague(this.league._id!.toString());
+              }
+            );
+          },
+          (error) => {
+            this.alertService.AlertError(error.message);
+          }
+        );
+      }
+    });
+  }
+
   OnChipSelectionChange(): void {
     this.finishedGames = !this.finishedGames;
     this.FilterFixtures();
@@ -166,13 +194,24 @@ export class LeagueDetailComponent implements OnInit {
     }, 500);
   }
 
+  LoadCurrentUser(): void {
+    this.authService.currentUser$.subscribe((user) => {
+      console.log(user)
+      this.loggedInUser = user;
+    });
+  }
+
   CanMakePrediction(fixture: Fixture): boolean {
     // Check if the fixture kickoff time is at least 1 hour in the future
     const now = new Date();
     const kickOff = new Date(fixture.kickOffDate);
     const diff = kickOff.getTime() - now.getTime();
     const diffHours = Math.ceil(diff / (1000 * 60 * 60));
-    return diffHours > 1;
+
+
+    // Return based on date and prediction conditions
+    const hasPrediction = this.loggedInUser!.predictions!.find(p => p.fixture._id === fixture._id);
+    return diffHours > 1 && !hasPrediction;
   }
 
   CanScoreBeSet(fixture: Fixture): boolean {

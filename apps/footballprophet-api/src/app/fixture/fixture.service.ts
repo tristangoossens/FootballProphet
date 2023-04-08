@@ -8,7 +8,7 @@ import { FixtureDocument } from './fixture.model';
 export class FixtureService {
   constructor(
     @InjectModel('fixtures') private fixtureModel: Model<FixtureDocument>
-  ) {}
+  ) { }
 
   async Create(fixture: Fixture) {
     return await this.fixtureModel.create(fixture);
@@ -22,10 +22,10 @@ export class FixtureService {
       },
       // Score to set
       {
-        $addToSet: {
+        $set: {
           actualAwayScore: fixture.actualAwayScore,
           actualHomeScore: fixture.actualHomeScore,
-          awayTeam: fixture.awayTeam,
+          actualHalfTimeScore: fixture.actualHalfTimeScore,
         },
       }
     );

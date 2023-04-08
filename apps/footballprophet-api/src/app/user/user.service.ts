@@ -6,13 +6,17 @@ import { UserDocument, UserModel } from './user.model';
 
 @Injectable()
 export class UserService {
-  constructor(@InjectModel('users') private userModel: Model<UserDocument>) {}
+  constructor(@InjectModel('users') private userModel: Model<UserDocument>) { }
 
   async findByUsername(username: string): Promise<User | null> {
     return await this.userModel.findOne({ username: username }).lean();
   }
 
-  async find(id: ObjectId): Promise<User[] | null> {
+  async find(id: ObjectId): Promise<User | null> {
+    return await this.userModel.findById(id);
+  }
+
+  async dashboard(id: ObjectId): Promise<User[] | null> {
     return await this.userModel.aggregate([
       {
         // First get the user with the given id

@@ -1,12 +1,13 @@
 <mat-toolbar color="primary">
   <mat-toolbar-row class="py-2">
-    <div>
+    <a routerLink="/">
       <img class="img-fluid" src="/assets/img/logo-nav.png">
-      <span class="ms-2 fw-bold title">Footballprophet</span>
-    </div>
+      <button mat-stroked-button class="ms-2 fw-bold text-white title">FOOTBALLPROPHET</button>
+    </a>
 
     <button mat-stroked-button class="ms-4 me-2 fp-nav-link" routerLink="/leagues"><mat-icon class="my-auto me-1">sports_soccer</mat-icon>Leagues</button>
     <button mat-stroked-button class="me-2 fp-nav-link" routerLink="/pools"><mat-icon class="my-auto me-1">groups</mat-icon>Pools</button>
+    <button mat-stroked-button class="me-2 fp-nav-link" routerLink="/about"><mat-icon class="my-auto me-1">info</mat-icon>About</button>
 
     <span class="example-spacer"></span>
 

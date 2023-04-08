@@ -6,7 +6,7 @@ import { PoolDocument } from './pool.model';
 
 @Injectable()
 export class PoolService {
-  constructor(@InjectModel('pools') private poolModel: Model<PoolDocument>) {}
+  constructor(@InjectModel('pools') private poolModel: Model<PoolDocument>) { }
 
   async GetAll(userId?: ObjectId) {
     // TODO: Filter private pools if user is not owner or member
@@ -97,6 +97,31 @@ export class PoolService {
           },
         },
         {
+          // Check if the fixture has been scored
+          $match: {
+            $and: [
+              {
+                "members.predictions.fixture.actualHalfTimeScore":
+                {
+                  $exists: true,
+                },
+              },
+              {
+                "members.predictions.fixture.actualHomeScore":
+                {
+                  $exists: true,
+                },
+              },
+              {
+                "members.predictions.fixture.actualAwayScore":
+                {
+                  $exists: true,
+                },
+              },
+            ],
+          },
+        },
+        {
           // Points calculation
           $addFields: {
             'members.predictions.points': {
@@ -184,7 +209,7 @@ export class PoolService {
                         {
                           $eq: [
                             '$members.predictions.fixture.actualAwayScore',
-                            '$members.predictions.actualAwayScore',
+                            '$members.predictions.predictedAwayScore',
                           ],
                         },
                       ],

@@ -12,7 +12,7 @@ export class FixtureScoreDialogComponent {
   public fixtureHalfTimeScoreForm: FormGroup = new FormGroup({});
   public fixtureFullTimeScoreForm: FormGroup = new FormGroup({});
   public model: Fixture;
-  public enumKeys: string[] = Object.keys(HalfTimeScore);
+  public enumKeys: string[] = Object.values(HalfTimeScore);
 
   constructor(
     private dialogRef: MatDialogRef<FixtureScoreDialogComponent>,

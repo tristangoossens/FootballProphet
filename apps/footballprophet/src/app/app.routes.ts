@@ -6,8 +6,17 @@ import { InviteResolver } from './pool/invite/invite.resolver';
 import { PoolComponent } from './pool/pool.component';
 import { PoolDetailComponent } from './pool/details/pool-details.component';
 import { LeagueDetailComponent } from './league/details/league-details.component';
+import { HomeComponent } from './home/home.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 const routes: Routes = [
+  // Home route
+  { path: '', pathMatch: 'full', component: HomeComponent },
+
+  // User profile route
+  { path: 'dashboard', pathMatch: 'full', component: DashboardComponent },
+
+  // League routes
   { path: 'leagues', pathMatch: 'full', component: LeagueComponent },
   {
     path: 'leagues/:leagueId',
@@ -34,4 +43,4 @@ const routes: Routes = [
   ],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

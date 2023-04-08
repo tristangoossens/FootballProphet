@@ -6,7 +6,7 @@ import { environment } from '../../environments/environment';
 
 @Injectable()
 export class FixtureService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   public CreateFixure(fixture: Fixture): Observable<Fixture> {
     return this.http
@@ -24,7 +24,7 @@ export class FixtureService {
 
   public UpdateFixture(fixture: Fixture): Observable<Fixture> {
     return this.http
-      .post(`${environment.api_url}/fixtures`, fixture, {
+      .put(`${environment.api_url}/fixtures/${fixture._id}`, fixture, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },

@@ -50,13 +50,19 @@ import { FixtureService } from './fixture/fixture.service';
 import { TeamDialogComponent } from './team/dialog/team-dialog.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { FixtureScoreDialogComponent } from './fixture/dialog/score/fixture-score-dialog.component';
+import { PredictionDialog } from './prediction/dialog/prediction-dialog.component';
+import { PredictionService } from './prediction/prediction.service';
+import { HomeComponent } from './home/home.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavComponent,
+    HomeComponent,
     LoginComponent,
     RegisterComponent,
+    DashboardComponent,
     SuccessComponent,
     ErrorComponent,
     LeagueComponent,
@@ -69,6 +75,7 @@ import { FixtureScoreDialogComponent } from './fixture/dialog/score/fixture-scor
     FixtureDialogComponent,
     TeamDialogComponent,
     FixtureScoreDialogComponent,
+    PredictionDialog
   ],
   imports: [
     BrowserModule,
@@ -114,8 +121,9 @@ import { FixtureScoreDialogComponent } from './fixture/dialog/score/fixture-scor
     LeagueService,
     PoolService,
     FixtureService,
+    PredictionService,
     InviteResolver,
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

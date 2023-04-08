@@ -23,11 +23,11 @@ export class AuthService {
     const token = localStorage.getItem(this.TOKEN);
     this._isLoggedin$.next(!!token);
 
-    if(!!token) {
+    if (!!token) {
       const user: User = jwt_decode(token);
       this._isAdmin$.next(user.roles.includes(UserRole.Admin));
       this._currentUser$.next(user);
-    }else{
+    } else {
       this._isAdmin$.next(false);
       this._currentUser$.next(undefined);
     }
@@ -64,4 +64,19 @@ export class AuthService {
       this._currentUser$.next(undefined);
     });
   }
+
+  public updateCurrentData(user: User): Observable<User | undefined> {
+    return this.http.get<User>(`${environment.api_url}/users/profile`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(this.TOKEN)}`
+      }
+    })
+      .pipe(
+        map((resp: any) => {
+          this._currentUser$.next(resp.data);
+          return resp.data;
+        })
+      );
+  }
+
 }
