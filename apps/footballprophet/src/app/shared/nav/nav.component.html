@@ -28,12 +28,12 @@
 
 
     <!-- A user is logged in -->
-    <button *ngIf="authService.currentUser$ | async as user" mat-mini-fab [matMenuTriggerFor]="loggedInMenu" class="avatarButton" [style.backgroundImage]="'url(' + user.avatarUrl + ')'">
+    <button *ngIf="authService.currentUser$ | async as loggedInUser" mat-mini-fab [matMenuTriggerFor]="loggedInMenu" class="avatarButton" [style.backgroundImage]="'url(' + loggedInUser.avatarUrl + ')'">
       <mat-menu #loggedInMenu="matMenu">
         <button mat-menu-item disabled>
-          <span>Welcome, {{user.username}}</span>
+          <span>Welcome, {{loggedInUser.username}}</span>
         </button>
-        <button mat-menu-item>
+        <button mat-menu-item [routerLink]="'/profile/' + loggedInUser._id">
           <mat-icon>manage_account</mat-icon>
           <span>View profile page</span>
         </button>

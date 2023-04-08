@@ -6,65 +6,133 @@ import { UserDocument, UserModel } from './user.model';
 
 @Injectable()
 export class UserService {
-  constructor(@InjectModel('users') private userModel: Model<UserDocument>) { }
+  constructor(@InjectModel('users') private userModel: Model<UserDocument>) {}
 
   async findByUsername(username: string): Promise<User | null> {
-    return await this.userModel.findOne({ username: username }).lean();
+    return await this.userModel
+      .findOne({ username: username })
+      .populate('pools');
   }
 
-  async find(id: ObjectId): Promise<User | null> {
-    return await this.userModel.findById(id);
+  async find(id: ObjectId): Promise<any | null> {
+    return await this.userModel.findById(id).populate('pools');
   }
 
   async dashboard(id: ObjectId): Promise<User[] | null> {
     return await this.userModel.aggregate([
       {
-        // First get the user with the given id
+        // Find the users's document
         $match: {
-          _id: id,
+          $expr: {
+            $eq: ['$_id', id],
+          },
         },
       },
       {
-        // Then join the fixtures collection
+        // Unwind document for each user's predictions
         $unwind: {
           path: '$predictions',
         },
       },
       {
-        // Unwind the fixtures array
+        // Lookup related fixture to prediction
         $lookup: {
           from: 'fixtures',
           localField: 'predictions.fixture',
           foreignField: '_id',
-          as: 'fixture',
+          as: 'predictions.fixture',
         },
       },
       {
-        $addFields: {
-          fixture: {
-            $arrayElemAt: ['$fixture', 0],
+        // Unwind fixture (always one element)
+        $unwind: {
+          path: '$members.predictions.fixture',
+        },
+      },
+    ]);
+  }
+
+  async scores(id: string): Promise<User[] | null> {
+    return await this.userModel.aggregate([
+      {
+        // Find the users's document
+        $match: {
+          $expr: {
+            $eq: ['$_id', mongoose.Types.ObjectId.createFromHexString(id)],
           },
         },
       },
       {
-        $project: {
-          _id: 1,
-          username: 1,
-          email: 1,
-          roles: 1,
-          pools: 1,
-          predictions: 1,
+        // Unwind document for each user's predictions
+        $unwind: {
+          path: '$predictions',
+        },
+      },
+      {
+        // Lookup related fixture to prediction
+        $lookup: {
+          from: 'fixtures',
+          localField: 'predictions.fixture',
+          foreignField: '_id',
+          as: 'predictions.fixture',
+        },
+      },
+      {
+        // Unwind fixture (always one element)
+        $unwind: {
+          path: '$predictions.fixture',
+        },
+      },
+      {
+        $lookup: {
+          from: 'leagues',
+          localField: 'predictions.fixture.league',
+          foreignField: '_id',
+          as: 'league',
+        },
+      },
+      {
+        // Check if the fixture has been scored
+        $match: {
+          $and: [
+            {
+              'predictions.fixture.actualHalfTimeScore': {
+                $exists: true,
+              },
+            },
+            {
+              'predictions.fixture.actualHomeScore': {
+                $exists: true,
+              },
+            },
+            {
+              'predictions.fixture.actualAwayScore': {
+                $exists: true,
+              },
+            },
+          ],
+        },
+      },
+      {
+        $unwind: {
+          path: '$league',
+        },
+      },
+      {
+        // Points calculation
+        $addFields: {
           'predictions.points': {
             $sum: [
               {
                 $cond: [
                   {
                     $eq: [
-                      '$fixture.actualHalfTimeScore',
+                      '$predictions.fixture.actualHalfTimeScore',
                       '$predictions.predictedHalfTimeScore',
                     ],
                   },
-                  3, // Correct half time score
+                  3,
+                  // Correct half time score
                   0, // Incorrect half time score
                 ],
               },
@@ -76,8 +144,8 @@ export class UserService {
                         $cond: [
                           {
                             $gt: [
-                              '$fixture.actualHomeScore',
-                              '$fixture.actualAwayScore',
+                              '$predictions.fixture.actualHomeScore',
+                              '$predictions.fixture.actualAwayScore',
                             ],
                           },
                           'Home',
@@ -85,8 +153,8 @@ export class UserService {
                             $cond: [
                               {
                                 $eq: [
-                                  '$fixture.actualHomeScore',
-                                  '$fixture.actualAwayScore',
+                                  '$predictions.fixture.actualHomeScore',
+                                  '$predictions.fixture.actualAwayScore',
                                 ],
                               },
                               'Tied',
@@ -120,7 +188,8 @@ export class UserService {
                       },
                     ],
                   },
-                  3, // Correct winner
+                  3,
+                  // Correct winner
                   0, // Incorrect winner
                 ],
               },
@@ -130,23 +199,36 @@ export class UserService {
                     $and: [
                       {
                         $eq: [
-                          '$fixture.actualHomeScore',
+                          '$predictions.fixture.actualHomeScore',
                           '$predictions.predictedHomeScore',
                         ],
                       },
                       {
                         $eq: [
-                          '$fixture.actualAwayScore',
-                          '$predictions.actualAwayScore',
+                          '$predictions.fixture.actualAwayScore',
+                          '$predictions.predictedAwayScore',
                         ],
                       },
                     ],
                   },
-                  5, // Correct final score
+                  5,
+                  // Correct final score
                   0, // Incorect final score
                 ],
               },
             ],
+          },
+        },
+      },
+      {
+        // Group per user
+        $group: {
+          _id: {
+            user: '$_id',
+            league: '$league',
+          },
+          totalPoints: {
+            $sum: '$predictions.points',
           },
         },
       },
@@ -155,7 +237,7 @@ export class UserService {
 
   async create(user: User) {
     // TODO: Hash password
-    await this.userModel.create(user);
+    return await this.userModel.create(user);
   }
 
   // Pool reference methods

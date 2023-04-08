@@ -1,5 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { Fixture, League, Prediction, Team, User } from '@footballprophet/domain';
+import {
+  Fixture,
+  League,
+  Prediction,
+  Team,
+  User,
+} from '@footballprophet/domain';
 import { AlertService } from '../../shared/alert/alert.service';
 import { LeagueService } from '../league.service';
 import { ActivatedRoute } from '@angular/router';
@@ -34,7 +40,7 @@ export class LeagueDetailComponent implements OnInit {
     private fixtureService: FixtureService,
     private predictionService: PredictionService,
     private dialog: MatDialog
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.LoadCurrentUser();
@@ -139,12 +145,12 @@ export class LeagueDetailComponent implements OnInit {
         this.predictionService.CreatePrediction(result).subscribe(
           (_) => {
             this.alertService.AlertSuccess('Successfully created prediction');
-            this.authService.updateCurrentData(this.loggedInUser as User).subscribe(
-              (_) => {
+            this.authService
+              .profile(this.loggedInUser?._id?.toString() as string)
+              .subscribe((_) => {
                 this.LoadCurrentUser();
                 this.LoadLeague(this.league._id!.toString());
-              }
-            );
+              });
           },
           (error) => {
             this.alertService.AlertError(error.message);
@@ -196,7 +202,7 @@ export class LeagueDetailComponent implements OnInit {
 
   LoadCurrentUser(): void {
     this.authService.currentUser$.subscribe((user) => {
-      console.log(user)
+      console.log(user);
       this.loggedInUser = user;
     });
   }
@@ -208,9 +214,10 @@ export class LeagueDetailComponent implements OnInit {
     const diff = kickOff.getTime() - now.getTime();
     const diffHours = Math.ceil(diff / (1000 * 60 * 60));
 
-
     // Return based on date and prediction conditions
-    const hasPrediction = this.loggedInUser!.predictions!.find(p => p.fixture._id === fixture._id);
+    const hasPrediction = this.loggedInUser!.predictions!.find(
+      (p) => p.fixture._id === fixture._id
+    );
     return diffHours > 1 && !hasPrediction;
   }
 

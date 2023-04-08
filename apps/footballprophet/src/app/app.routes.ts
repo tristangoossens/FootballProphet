@@ -14,7 +14,7 @@ const routes: Routes = [
   { path: '', pathMatch: 'full', component: HomeComponent },
 
   // User profile route
-  { path: 'dashboard', pathMatch: 'full', component: DashboardComponent },
+  { path: 'profile/:id', pathMatch: 'full', component: DashboardComponent },
 
   // League routes
   { path: 'leagues', pathMatch: 'full', component: LeagueComponent },
@@ -43,4 +43,4 @@ const routes: Routes = [
   ],
   exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

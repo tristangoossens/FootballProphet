@@ -19,13 +19,15 @@ import { RolesGuard } from '../auth/guards/roles.guard';
 import { UserService } from '../user/user.service';
 import { PoolService } from './pool.service';
 import mongoose from 'mongoose';
+import { Neo4jService } from '../neo4j/neo4j.service';
 
 @ApiTags('Pool')
 @Controller('pools')
 export class PoolController {
   constructor(
     private readonly poolService: PoolService,
-    private readonly userService: UserService
+    private readonly userService: UserService,
+    private readonly neo4jService: Neo4jService
   ) {}
 
   @Get()
@@ -54,8 +56,26 @@ export class PoolController {
     // Owner is also a member
     pool.members = [req.user._id];
 
+    // Create pool in database
     const poolDocument = await this.poolService.Create(pool);
+
+    // Create a pool reference in user document
     await this.userService.addPool(req.user._id, poolDocument._id as ObjectId);
+
+    // Create a pool in Neo4j
+    await this.neo4jService.run(
+      `CREATE (:Pool {id: '${poolDocument._id.toString()}', name: '${
+        pool.name
+      }', logoUrl: '${pool.logoUrl}', description: '${
+        pool.description
+      }', isPrivate: '${pool.isPrivate}'})`
+    );
+
+    // Create a relationship in Neo4j
+    await this.neo4jService.run(
+      `MATCH (u:User {id: '${req.user._id.toString()}'}), (p:Pool {id: '${poolDocument._id.toString()}'}) CREATE (u)-[:MEMBER_OF]->(p)`
+    );
+
     return `Pool ${pool.name} has successfully been created`;
   }
 
@@ -72,8 +92,15 @@ export class PoolController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Post(':id/join')
   async join(@Request() req, @Param('id') id: ObjectId) {
+    // Create a reference in pool and user documents
     await this.poolService.Join(id, req.user._id);
     await this.userService.addPool(req.user._id, id);
+
+    // Create a relationship in Neo4j
+    await this.neo4jService.run(
+      `MATCH (u:User {id: '${req.user._id.toString()}'}), (p:Pool {id: '${id.toString()}'}) CREATE (u)-[:MEMBER_OF]->(p)`
+    );
+
     return `User (${req.user._id}) has successfully joined pool (${id})`;
   }
 
@@ -81,9 +108,15 @@ export class PoolController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Delete(':id/kick/:userId')
   async kick(@Param('id') id: ObjectId, @Param('userId') userId: ObjectId) {
-    Logger.log(`Kicking user (${userId}) from pool (${id})`);
+    // Remove a reference in pool and user documents
     await this.poolService.Leave(id, userId);
     await this.userService.removePool(userId, id);
+
+    // Remove a relationship in Neo4j
+    await this.neo4jService.run(
+      `MATCH (u:User {id: '${userId.toString()}'}), (p:Pool {id: '${id.toString()}'}) DELETE (u)-[:MEMBER_OF]->(p)`
+    );
+
     return `User (${userId}) has successfully been kicked from pool (${id})`;
   }
 }

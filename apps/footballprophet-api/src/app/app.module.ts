@@ -7,6 +7,7 @@ import { Connection } from 'mongoose';
 import { LeagueModule } from './league/league.module';
 import { FixtureModule } from './fixture/fixture.module';
 import { PoolModule } from './pool/pool.module';
+import { Neo4jService } from './neo4j/neo4j.service';
 
 @Module({
   imports: [
@@ -16,9 +17,11 @@ import { PoolModule } from './pool/pool.module';
     FixtureModule,
     UserModule,
     LeagueModule,
-    PoolModule
+    PoolModule,
   ],
+  providers: [Neo4jService],
+  exports: [Neo4jService],
 })
 export class AppModule {
-  constructor(@InjectConnection() private conn: Connection) { }
+  constructor(@InjectConnection() private conn: Connection) {}
 }

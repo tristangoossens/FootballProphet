@@ -6,13 +6,12 @@ import { PredictionService } from '../prediction/prediction.service';
 import { UserController } from './user.controller';
 import { UserModel, UserSchema } from './user.model';
 import { UserService } from './user.service';
+import { Neo4jService } from '../neo4j/neo4j.service';
 
 @Module({
-  imports: [
-    MongooseModule.forFeature([{ name: 'users', schema: UserSchema }]),
-  ],
+  imports: [MongooseModule.forFeature([{ name: 'users', schema: UserSchema }])],
   controllers: [UserController],
-  providers: [UserService, PredictionService],
-  exports: [UserService]
+  providers: [UserService, PredictionService, Neo4jService],
+  exports: [UserService],
 })
-export class UserModule { }
+export class UserModule {}

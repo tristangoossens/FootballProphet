@@ -54,6 +54,7 @@ import { PredictionDialog } from './prediction/dialog/prediction-dialog.componen
 import { PredictionService } from './prediction/prediction.service';
 import { HomeComponent } from './home/home.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
@@ -75,7 +76,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     FixtureDialogComponent,
     TeamDialogComponent,
     FixtureScoreDialogComponent,
-    PredictionDialog
+    PredictionDialog,
   ],
   imports: [
     BrowserModule,
@@ -106,7 +107,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     MatProgressSpinnerModule,
     MatChipsModule,
     MatDividerModule,
-    MatExpansionModule,
+    MatTooltipModule,
 
     // Forms
     FormsModule,
@@ -126,4 +127,4 @@ import { DashboardComponent } from './dashboard/dashboard.component';
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

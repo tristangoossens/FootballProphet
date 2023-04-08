@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Identity, User, UserRole } from '@footballprophet/domain';
+import { Identity, League, User, UserRole } from '@footballprophet/domain';
 import { environment } from 'apps/footballprophet/src/environments/environment';
 import { BehaviorSubject, map, Observable, of } from 'rxjs';
 import jwt_decode from 'jwt-decode';
@@ -34,7 +34,8 @@ export class AuthService {
   }
 
   public login(userCredentials: Identity): Observable<string | undefined> {
-    return this.http.post<Identity>(`${environment.api_url}/auth/login`, userCredentials)
+    return this.http
+      .post<Identity>(`${environment.api_url}/auth/login`, userCredentials)
       .pipe(
         map((resp: any) => {
           localStorage.setItem(this.TOKEN, resp.data.access_token);
@@ -48,7 +49,8 @@ export class AuthService {
   }
 
   public register(userInfo: User): Observable<string | undefined> {
-    return this.http.post<User>(`${environment.api_url}/auth/register`, userInfo)
+    return this.http
+      .post<User>(`${environment.api_url}/auth/register`, userInfo)
       .pipe(
         map((resp: any) => {
           return resp.message;
@@ -65,18 +67,34 @@ export class AuthService {
     });
   }
 
-  public updateCurrentData(user: User): Observable<User | undefined> {
-    return this.http.get<User>(`${environment.api_url}/users/profile`, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem(this.TOKEN)}`
-      }
-    })
+  public profile(userId: string) {
+    return this.http
+      .get<User>(`${environment.api_url}/users/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem(this.TOKEN)}`,
+        },
+      })
       .pipe(
         map((resp: any) => {
-          this._currentUser$.next(resp.data);
           return resp.data;
         })
       );
   }
 
+  public scores(userId: string) {
+    return this.http
+      .get<{ _id: { league: League }; totalScore: number }>(
+        `${environment.api_url}/users/${userId}/scores`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem(this.TOKEN)}`,
+          },
+        }
+      )
+      .pipe(
+        map((resp: any) => {
+          return resp.data;
+        })
+      );
+  }
 }

@@ -1,1 +1,54 @@
-<p>dashboard</p>
+<div class="row" *ngIf="!isLoading">
+    <div class="col-8">
+        <div class="bg-white p-3 rounded">
+            <h2 class="fw-bold red">PREDICTIONS</h2>
+            <p>Predictions made by @{{user!.username}}</p>
+        </div>
+    </div>
+
+    <div class="col-4">
+        <div class="bg-white p-3 rounded">
+            <div class="text-center mb-2">
+                <img [src]="user!.avatarUrl" class="profile-image">
+            </div>
+            <h4 class="profile-username text-center">@{{user!.username}}<span class="ms-2 tag" *ngIf="IsAdmin()">ADMIN</span></h4>
+            <mat-divider></mat-divider>
+
+            <ul class="list-unstyled mt-3">
+                <li><mat-icon class="me-1">cake</mat-icon>{{user!.birthDate | date: 'mediumDate'}}</li>
+                <li><mat-icon class="me-1">call</mat-icon>{{user!.phonenumber}}</li>
+            </ul>
+        </div>
+
+        <div class="bg-white p-3 my-3 rounded">
+            <h4 class="fw-bold red">LEAGUE POINTS</h4>
+            <p>Total points in participated leagues</p>
+
+            <mat-card class="league-card p-3 my-3" *ngFor="let league of leagueScores">
+                <img mat-card-image class="pool-suggestion-logo me-2" [src]="league._id.league.logoUrl">
+                <mat-card-content>
+                    <div class="pool-suggestion-name">{{league._id.league.name}}</div>
+                    <p>{{league.totalPoints}}</p>
+                </mat-card-content>
+            </mat-card>
+        </div>
+
+        <div class="bg-white p-3 my-3 rounded">
+            <h4 class="fw-bold red">SUGGESTED POOLS <mat-icon matTooltip="Suggested based on friend's pools" matTooltipPosition="right">help</mat-icon></h4>
+            <p>Explore and join new pools!</p>
+
+            <mat-card class="pool-suggestion-card pool-card p-3 my-3" *ngFor="let pool of AsSuggestedPoolArray()" routerLink="/pools/{{pool.id}}">
+                <img mat-card-image class="pool-suggestion-logo me-2" [src]="pool!.logoUrl">
+                <mat-card-content>
+                    <div class="pool-suggestion-name">{{pool.name}}</div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+</div>
+
+<div class="row justify-content-center" *ngIf="isLoading">
+    <div class="col-12 d-flex">
+        <mat-spinner class="mx-auto"></mat-spinner>
+    </div>
+</div>

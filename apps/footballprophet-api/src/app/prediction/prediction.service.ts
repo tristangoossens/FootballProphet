@@ -31,8 +31,6 @@ export class PredictionService {
     prediction: Prediction
   ) {
     // TODO: Check if prediction is updated one hour before kickoff
-    console.log(userId);
-    console.log(predictionId);
 
     await this.userModel.findOneAndUpdate(
       // Filter
