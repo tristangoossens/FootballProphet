@@ -36,9 +36,7 @@ async function bootstrap() {
   // TODO: Return document on create/edit methods
   // TODO: Error handling
   // TODO: Swagger documentation (entities per request)
-  Logger.log(
-    `⚽ Footballprophet API is running on: http://localhost:${port}/${globalPrefix}`
-  );
+  Logger.log(`⚽ Footballprophet API is running on port ${port}`);
 }
 
 // Execute application
