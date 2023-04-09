@@ -6,10 +6,9 @@ import { PoolDocument } from './pool.model';
 
 @Injectable()
 export class PoolService {
-  constructor(@InjectModel('pools') private poolModel: Model<PoolDocument>) { }
+  constructor(@InjectModel('pools') private poolModel: Model<PoolDocument>) {}
 
   async GetAll(userId?: ObjectId) {
-    // TODO: Filter private pools if user is not owner or member
     return await this.poolModel.find();
   }
 
@@ -101,20 +100,17 @@ export class PoolService {
           $match: {
             $and: [
               {
-                "members.predictions.fixture.actualHalfTimeScore":
-                {
+                'members.predictions.fixture.actualHalfTimeScore': {
                   $exists: true,
                 },
               },
               {
-                "members.predictions.fixture.actualHomeScore":
-                {
+                'members.predictions.fixture.actualHomeScore': {
                   $exists: true,
                 },
               },
               {
-                "members.predictions.fixture.actualAwayScore":
-                {
+                'members.predictions.fixture.actualAwayScore': {
                   $exists: true,
                 },
               },
@@ -267,7 +263,6 @@ export class PoolService {
   }
 
   async Update(id: string, pool: Pool) {
-    // TODO: Check if user is owner of pool before updating
     return await this.poolModel
       .updateOne(
         // Filter
@@ -286,11 +281,6 @@ export class PoolService {
         }
       )
       .exec();
-  }
-
-  async Delete(id: ObjectId) {
-    // TODO: Check if user is owner of pool before deleting
-    return await this.poolModel.findByIdAndDelete(id);
   }
 
   async Join(id: ObjectId, userId: ObjectId) {

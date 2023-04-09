@@ -15,7 +15,11 @@ export class UserService {
   }
 
   async find(id: ObjectId): Promise<any | null> {
-    return await this.userModel.findById(id).populate('pools');
+    return await this.userModel
+      .findById(id)
+      .select('-password')
+      .populate('pools')
+      .populate('predictions.fixture');
   }
 
   async dashboard(id: ObjectId): Promise<User[] | null> {
@@ -236,7 +240,6 @@ export class UserService {
   }
 
   async create(user: User) {
-    // TODO: Hash password
     return await this.userModel.create(user);
   }
 
@@ -255,7 +258,6 @@ export class UserService {
     userId: mongoose.Types.ObjectId,
     poolId: mongoose.Types.ObjectId
   ) {
-    // TODO: A owner of a pool should not be able to remove himself from the pool
     await this.userModel.findOneAndUpdate(
       { _id: userId },
       { $pull: { pools: poolId } }

@@ -81,6 +81,20 @@ export class AuthService {
       );
   }
 
+  public update(userId: string) {
+    return this.http
+      .get<User>(`${environment.api_url}/users/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem(this.TOKEN)}`,
+        },
+      })
+      .pipe(
+        map((resp: any) => {
+          this._currentUser$.next(resp.data);
+        })
+      );
+  }
+
   public scores(userId: string) {
     return this.http
       .get<{ _id: { league: League }; totalScore: number }>(

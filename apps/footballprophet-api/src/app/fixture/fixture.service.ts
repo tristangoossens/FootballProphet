@@ -8,7 +8,11 @@ import { FixtureDocument } from './fixture.model';
 export class FixtureService {
   constructor(
     @InjectModel('fixtures') private fixtureModel: Model<FixtureDocument>
-  ) { }
+  ) {}
+
+  async GetById(id: mongoose.Types.ObjectId) {
+    return await this.fixtureModel.findById(id);
+  }
 
   async Create(fixture: Fixture) {
     return await this.fixtureModel.create(fixture);

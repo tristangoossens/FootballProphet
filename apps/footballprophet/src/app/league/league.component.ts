@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { League, User } from '@footballprophet/domain';
+import { League, User, UserRole } from '@footballprophet/domain';
 import { AuthService } from '../auth/auth.service';
 import { AlertService } from '../shared/alert/alert.service';
 import { LeagueDialogComponent } from './dialog/league-dialog.component';
@@ -13,6 +13,7 @@ import { LeagueService } from './league.service';
 })
 export class LeagueComponent implements OnInit {
   public loggedInUser?: User;
+  public isAdmin: boolean = false;
   public leagues: League[] = [];
   public isLoading: boolean = false;
 
@@ -25,7 +26,12 @@ export class LeagueComponent implements OnInit {
 
   ngOnInit(): void {
     this.authService.currentUser$.subscribe((user) => {
-      this.loggedInUser = user;
+      if (user) {
+        console.log(user);
+        // Check if the admin role (string) is present
+        this.isAdmin = user.roles.includes(UserRole.Admin);
+        this.loggedInUser = user;
+      }
     });
 
     this.LoadLeagues();

@@ -23,7 +23,7 @@ export class FixtureController {
   constructor(
     private readonly fixtureService: FixtureService,
     private readonly leagueService: LeagueService
-  ) { }
+  ) {}
 
   @HasRoles([UserRole.Admin])
   @UseGuards(JwtAuthGuard, RolesGuard)
@@ -47,7 +47,6 @@ export class FixtureController {
     @Body() fixture: Fixture
   ): Promise<string> {
     await this.fixtureService.Update(id as mongoose.Types.ObjectId, fixture);
-
-    return `Fixture has been updated`;
+    return `Fixture has been scored`;
   }
 }

@@ -17,7 +17,7 @@
             </button>
         </div>
 
-        <div *ngIf="loggedInUser" class="ms-auto my-auto">
+        <div *ngIf="loggedInUser && isAdmin" class="ms-auto my-auto">
             <button class="ms-2" mat-raised-button color="primary" (click)="OpenEditLeagueDialog()">
                 <mat-icon>edit</mat-icon>
                 Edit
@@ -26,7 +26,7 @@
     </div>
 
     <div class="col-12">
-        <div class="league-header mt-4 mb-3 d-flex">
+        <div class="league-header mt-3 mb-3 d-flex">
             <img class="logo me-3" [src]="league.logoUrl" [alt]="league.name">
             <div class="mb-auto">
                 <div class="name">{{league.name}}<span class="ms-2 season">({{league.season}})</span></div>
@@ -49,7 +49,7 @@
                     <div class="d-flex">
                         <h3 class="fw-bold red">FIXTURES</h3>
 
-                        <button mat-raised-button *ngIf="loggedInUser" color="primary" class="ms-auto" (click)="OpenCreateFixtureDialog()">
+                        <button mat-raised-button *ngIf="loggedInUser && isAdmin" color="primary" class="ms-auto" (click)="OpenCreateFixtureDialog()">
                             <mat-icon>add</mat-icon> Create fixture
                         </button>
                     </div>
@@ -77,11 +77,11 @@
                     </div>
 
                     <div class="mx-auto">
-                        <button mat-mini-fab *ngIf="loggedInUser && CanMakePrediction(fixture)" color="primary" (click)="OpenCreatePredictionDialog(fixture)">
+                        <button mat-mini-fab *ngIf="(authService.currentUser$ | async) !== undefined && CanMakePrediction(fixture)" color="primary" (click)="OpenCreatePredictionDialog(fixture)">
                             <mat-icon>tips_and_updates</mat-icon>
                         </button>
 
-                        <button mat-mini-fab *ngIf="loggedInUser && CanScoreBeSet(fixture)" color="primary" class="ms-2" (click)="OpenFixtureScoreDialog(fixture)">
+                        <button mat-mini-fab *ngIf="loggedInUser && isAdmin && CanScoreBeSet(fixture)" color="primary" class="ms-2" (click)="OpenFixtureScoreDialog(fixture)">
                             <mat-icon>sports_score</mat-icon>
                         </button>
                     </div>
@@ -99,7 +99,7 @@
                     <div class="d-flex">
                         <h3 class="fw-bold red">TEAMS</h3>
 
-                        <button mat-raised-button *ngIf="loggedInUser" color="primary" class="ms-auto" (click)="OpenCreateTeamDialog()">
+                        <button mat-raised-button *ngIf="loggedInUser && isAdmin" color="primary" class="ms-auto" (click)="OpenCreateTeamDialog()">
                             <mat-icon>add</mat-icon> Create team
                         </button>
                     </div>

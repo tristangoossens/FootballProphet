@@ -3,6 +3,12 @@
     <h3 class="fw-bold red">CREATE PREDICTION</h3>
     <p>Create/Edit a prediction for a game</p>
 
+    <ul>
+        <li>A correct half time score (3 points)</li>
+        <li>A correct final score (5 points)</li>
+        <li>Correct winner prediction (3 points)</li>
+    </ul>
+
     <mat-horizontal-stepper linear="true">
         <mat-step class="py-3" [stepControl]="predictionHalfTimeForm">
             <ng-template matStepLabel>Half time score</ng-template>

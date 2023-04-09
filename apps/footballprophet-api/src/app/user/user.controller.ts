@@ -8,7 +8,6 @@ import {
 import {
   Body,
   Controller,
-  Delete,
   Get,
   Param,
   Post,
@@ -25,6 +24,7 @@ import { PredictionService } from '../prediction/prediction.service';
 import { UserService } from './user.service';
 import { Neo4jService } from '../neo4j/neo4j.service';
 import { SuggestedPool } from 'libs/domain/src/lib/SuggestedPool';
+import { PredictionGuard } from '../prediction/prediction.guard';
 
 @ApiTags('User')
 @Controller('users')
@@ -43,6 +43,7 @@ export class UserController {
        WHERE u.id = '${id.toString()}' AND NOT (u)-[:MEMBER_OF]->(otherPool)
        RETURN otherPool.id, otherPool.name, otherPool.logoUrl, otherPool.isPrivate`
     );
+
     const user = await this.userService.find(id);
 
     return {
@@ -66,7 +67,7 @@ export class UserController {
 
   // Prediction methods
   @HasRoles([UserRole.User])
-  @UseGuards(JwtAuthGuard, RolesGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard, PredictionGuard)
   @Post('predictions')
   async createPrediction(
     @Request() req,
@@ -74,21 +75,5 @@ export class UserController {
   ): Promise<string> {
     await this.predictionService.CreatePrediction(req.user._id, prediction);
     return `Prediction has been created`;
-  }
-
-  @HasRoles([UserRole.User])
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Put('predictions/:id')
-  async updatePrediction(
-    @Request() req,
-    @Param('id') predictionId: ObjectId,
-    @Body() prediction: Prediction
-  ): Promise<string> {
-    await this.predictionService.UpdatePrediction(
-      req.user._id,
-      predictionId,
-      prediction
-    );
-    return `Prediction has been updated`;
   }
 }

@@ -5,6 +5,7 @@ import {
   Prediction,
   Team,
   User,
+  UserRole,
 } from '@footballprophet/domain';
 import { AlertService } from '../../shared/alert/alert.service';
 import { LeagueService } from '../league.service';
@@ -26,6 +27,7 @@ import { PredictionDialog } from '../../prediction/dialog/prediction-dialog.comp
 })
 export class LeagueDetailComponent implements OnInit {
   public loggedInUser?: User;
+  public isAdmin: boolean = false;
   public isLoading: boolean = false;
   public finishedGames: boolean = false;
   public league: League = {} as League;
@@ -35,7 +37,7 @@ export class LeagueDetailComponent implements OnInit {
   constructor(
     private leagueService: LeagueService,
     private alertService: AlertService,
-    private authService: AuthService,
+    public authService: AuthService,
     private activatedRoute: ActivatedRoute,
     private fixtureService: FixtureService,
     private predictionService: PredictionService,
@@ -43,6 +45,7 @@ export class LeagueDetailComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    console.log('LeagueDetailComponent.ngOnInit()');
     this.LoadCurrentUser();
 
     this.activatedRoute.paramMap.subscribe((params) => {
@@ -145,12 +148,8 @@ export class LeagueDetailComponent implements OnInit {
         this.predictionService.CreatePrediction(result).subscribe(
           (_) => {
             this.alertService.AlertSuccess('Successfully created prediction');
-            this.authService
-              .profile(this.loggedInUser?._id?.toString() as string)
-              .subscribe((_) => {
-                this.LoadCurrentUser();
-                this.LoadLeague(this.league._id!.toString());
-              });
+            this.LoadCurrentUser();
+            this.LoadLeague(this.league._id?.toString() as string);
           },
           (error) => {
             this.alertService.AlertError(error.message);
@@ -202,22 +201,31 @@ export class LeagueDetailComponent implements OnInit {
 
   LoadCurrentUser(): void {
     this.authService.currentUser$.subscribe((user) => {
-      console.log(user);
-      this.loggedInUser = user;
+      if (user) {
+        this.isAdmin = user.roles.includes(UserRole.Admin);
+        this.authService
+          .profile(user._id?.toString() as string)
+          .subscribe((user) => {
+            this.loggedInUser = user;
+          });
+      }
     });
   }
 
   CanMakePrediction(fixture: Fixture): boolean {
+    console.log(this.loggedInUser);
+
     // Check if the fixture kickoff time is at least 1 hour in the future
     const now = new Date();
     const kickOff = new Date(fixture.kickOffDate);
     const diff = kickOff.getTime() - now.getTime();
     const diffHours = Math.ceil(diff / (1000 * 60 * 60));
 
-    // Return based on date and prediction conditions
-    const hasPrediction = this.loggedInUser!.predictions!.find(
+    // Check if the user has already made a prediction for this fixture
+    const hasPrediction = this.loggedInUser?.predictions?.some(
       (p) => p.fixture._id === fixture._id
     );
+
     return diffHours > 1 && !hasPrediction;
   }
 

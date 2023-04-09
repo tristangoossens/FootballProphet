@@ -11,7 +11,7 @@
                 Leagues
             </button>
         </div>
-        <button mat-raised-button *ngIf="loggedInUser" color="primary" (click)="OpenLeagueCreateDialog()">
+        <button mat-raised-button *ngIf="loggedInUser && isAdmin" color="primary" (click)="OpenLeagueCreateDialog()">
             <mat-icon>add</mat-icon> Create League
         </button>
     </div>

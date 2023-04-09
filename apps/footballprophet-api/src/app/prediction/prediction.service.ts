@@ -9,8 +9,6 @@ export class PredictionService {
   constructor(@InjectModel('users') private userModel: Model<UserDocument>) {}
 
   async CreatePrediction(userId: ObjectId, prediction: Prediction) {
-    // TODO: Check if prediction is made one hour before kickoff
-
     await this.userModel.findOneAndUpdate(
       // Filter
       {
@@ -30,8 +28,6 @@ export class PredictionService {
     predictionId: ObjectId,
     prediction: Prediction
   ) {
-    // TODO: Check if prediction is updated one hour before kickoff
-
     await this.userModel.findOneAndUpdate(
       // Filter
       {

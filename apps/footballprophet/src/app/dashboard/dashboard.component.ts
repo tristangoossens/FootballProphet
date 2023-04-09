@@ -1,7 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
-import { League, Pool, User, UserRole } from '@footballprophet/domain';
+import {
+  Fixture,
+  League,
+  Pool,
+  Prediction,
+  User,
+  UserRole,
+} from '@footballprophet/domain';
 import { SuggestedPool } from 'libs/domain/src/lib/SuggestedPool';
 
 @Component({
@@ -43,8 +50,9 @@ export class DashboardComponent implements OnInit {
 
   LoadLeagueScores(id: string) {
     this.authService.scores(id).subscribe((scores) => {
-      console.log(scores);
-      this.leagueScores = scores;
+      this.leagueScores = scores.sort((a: any, b: any) => {
+        return b.totalPoints - a.totalPoints;
+      });
     });
   }
 
@@ -62,5 +70,28 @@ export class DashboardComponent implements OnInit {
 
   AsSuggestedPoolArray() {
     return this.user!.suggestedPools as SuggestedPool[];
+  }
+
+  AsPredictionsArray() {
+    return this.user!.predictions as Prediction[];
+  }
+
+  AsFixture(prediction: Prediction) {
+    return prediction.fixture as Fixture;
+  }
+
+  AsLeague(fixture: Fixture) {
+    return fixture.league as League;
+  }
+
+  IsFixtureFinished(fixture: Fixture): boolean {
+    // Check if the fixture is in the past
+    const now = new Date();
+    const kickOff = new Date(fixture.kickOffDate);
+    const diff = kickOff.getTime() - now.getTime();
+    const diffHours = Math.ceil(diff / (1000 * 60 * 60));
+
+    // Check if the fixture has already been scored
+    return diffHours < 0;
   }
 }

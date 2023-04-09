@@ -6,10 +6,10 @@
     <form [formGroup]="teamForm" (ngSubmit)="Submit()">
         <!-- Name field -->
         <mat-form-field class="mb-2 w-100">
-            <mat-label>Pool name</mat-label>
-            <input matInput type="text" placeholder="Pool name" formControlName="name" required [(ngModel)]="model.name">
+            <mat-label>Team name</mat-label>
+            <input matInput type="text" placeholder="Team name" formControlName="name" required [(ngModel)]="model.name">
             <mat-error *ngIf="teamForm.get('name')!.hasError('required')">
-                Pool name is required.
+                Team name is required.
             </mat-error>
         </mat-form-field>
 

@@ -34,6 +34,8 @@ async function bootstrap() {
   await app.listen(port);
 
   // TODO: Return document on create/edit methods
+  // TODO: Error handling
+  // TODO: Swagger documentation (entities per request)
   Logger.log(
     `⚽ Footballprophet API is running on: http://localhost:${port}/${globalPrefix}`
   );
@@ -44,8 +46,6 @@ async function bootstrap() {
   try {
     await bootstrap();
   } catch (error) {
-    Logger.error(
-      `⚠️ Something went wrong while starting the application: ${error}`
-    );
+    Logger.error(`⚠️ Something went wrong: ${error}`);
   }
 })();

@@ -2,7 +2,23 @@
     <div class="col-8">
         <div class="bg-white p-3 rounded">
             <h2 class="fw-bold red">PREDICTIONS</h2>
-            <p>Predictions made by @{{user!.username}}</p>
+            <p></p>
+            <p>{{AsPredictionsArray()!.length == 0 ? user!.username  + " has no predictions yet" : "Predictions made by @"  + user!.username}}</p>
+
+            <mat-card class="fixture-card my-3" *ngFor="let prediction of AsPredictionsArray()">
+                <div class="date">{{AsFixture(prediction).kickOffDate | date: 'medium'}}</div>
+                <div class="matchscore my-2">
+                    <img src="{{ AsFixture(prediction).homeTeam.logoUrl }}" alt="{{ AsFixture(prediction).homeTeam.name }}" class="team-logo">
+                    <div class="score-container">
+                        <div class="score-text">
+                            <div class="score">{{ prediction.predictedHomeScore }} <span class="actual-score" *ngIf="IsFixtureFinished(AsFixture(prediction))">({{AsFixture(prediction).actualHomeScore}})</span></div>
+                            <div class="vs">-</div>
+                            <div class="score">{{ prediction.predictedAwayScore }} <span class="actual-score" *ngIf="IsFixtureFinished(AsFixture(prediction))">({{AsFixture(prediction).actualAwayScore}})</span></div>
+                        </div>
+                    </div>
+                    <img src="{{ AsFixture(prediction).awayTeam.logoUrl }}" alt="{{ AsFixture(prediction).awayTeam.name }}" class="team-logo">
+                </div>
+            </mat-card>
         </div>
     </div>
 
@@ -22,7 +38,7 @@
 
         <div class="bg-white p-3 my-3 rounded">
             <h4 class="fw-bold red">LEAGUE POINTS</h4>
-            <p>Total points in participated leagues</p>
+            <p>{{leagueScores!.length == 0 ? "Predict matches to earn points!" : "Total points in participated leagues"}}</p>
 
             <mat-card class="league-card p-3 my-3" *ngFor="let league of leagueScores">
                 <img mat-card-image class="pool-suggestion-logo me-2" [src]="league._id.league.logoUrl">
@@ -35,7 +51,8 @@
 
         <div class="bg-white p-3 my-3 rounded">
             <h4 class="fw-bold red">SUGGESTED POOLS <mat-icon matTooltip="Suggested based on friend's pools" matTooltipPosition="right">help</mat-icon></h4>
-            <p>Explore and join new pools!</p>
+            <p *ngIf="AsSuggestedPoolArray().length > 0">Explore and join new pools!</p>
+            <p *ngIf="AsSuggestedPoolArray().length == 0">Join a pool to see suggestions!</p>
 
             <mat-card class="pool-suggestion-card pool-card p-3 my-3" *ngFor="let pool of AsSuggestedPoolArray()" routerLink="/pools/{{pool.id}}">
                 <img mat-card-image class="pool-suggestion-logo me-2" [src]="pool!.logoUrl">

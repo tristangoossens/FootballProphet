@@ -20,6 +20,7 @@ import { UserService } from '../user/user.service';
 import { PoolService } from './pool.service';
 import mongoose from 'mongoose';
 import { Neo4jService } from '../neo4j/neo4j.service';
+import { PoolGuard } from './pool.guard';
 
 @ApiTags('Pool')
 @Controller('pools')
@@ -80,7 +81,7 @@ export class PoolController {
   }
 
   @HasRoles([UserRole.User])
-  @UseGuards(JwtAuthGuard, RolesGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard, PoolGuard)
   @Put(':id')
   async update(@Param('id') id: string, @Body() pool: Pool) {
     console.log('PoolController.update', pool);
@@ -104,8 +105,8 @@ export class PoolController {
     return `User (${req.user._id}) has successfully joined pool (${id})`;
   }
 
-  @HasRoles([UserRole.Admin])
-  @UseGuards(JwtAuthGuard, RolesGuard)
+  @HasRoles([UserRole.User])
+  @UseGuards(JwtAuthGuard, RolesGuard, PoolGuard)
   @Delete(':id/kick/:userId')
   async kick(@Param('id') id: ObjectId, @Param('userId') userId: ObjectId) {
     // Remove a reference in pool and user documents
@@ -114,7 +115,8 @@ export class PoolController {
 
     // Remove a relationship in Neo4j
     await this.neo4jService.run(
-      `MATCH (u:User {id: '${userId.toString()}'}), (p:Pool {id: '${id.toString()}'}) DELETE (u)-[:MEMBER_OF]->(p)`
+      `MATCH (u:User {id: '${userId.toString()}'})-[m:MEMBER_OF]->(p:Pool {id: '${id.toString()}'})
+       DELETE m`
     );
 
     return `User (${userId}) has successfully been kicked from pool (${id})`;
