@@ -1,0 +1,43 @@
+<div class="row bg-white rounded p-3 mb-3">
+    <div class="col-12 d-flex justify-content-between align-items-center">
+        <div class="breadcrumb">
+            <button mat-button routerLink="/">
+                <mat-icon class="red-icon">home</mat-icon>
+                Home
+            </button>
+            <mat-icon class="my-auto">chevron_right</mat-icon>
+            <button mat-button routerLink="/pools" disabled>
+                <mat-icon class="red-icon">groups</mat-icon>
+                Pools
+            </button>
+        </div>
+        <button mat-raised-button *ngIf="loggedInUser" color="primary" (click)="OpenPoolCreateDialog()">
+            <mat-icon>add</mat-icon> Create Pool
+        </button>
+    </div>
+
+    <div class="col-12">
+        <h1 class="fw-bold title red">POOLS</h1>
+        <p>Battle against your friends on who is the best at predicting the future. Down below are some of the most popular leagues on Footballprophet</p>
+    </div>
+</div>
+
+<div class="row bg-white rounded p-3 justify-content-center">
+    <a mat-card class="card col-12 mb-4" routerLink="/pools/{{pool._id}}" *ngFor="let pool of pools">
+        <img mat-card-image class="logo me-3" [src]="pool.logoUrl" [alt]="pool.name">
+        <mat-card-content>
+            <div class="name">{{pool.name}} <mat-icon *ngIf="pool.isPrivate" class="red-icon">lock</mat-icon></div>
+            <p class="mb-0">{{pool.description}}</p>
+
+            <button mat-mini-fab class="fab-button" color="primary">
+                <mat-icon>chevron_right</mat-icon>
+            </button>
+        </mat-card-content>
+    </a>
+
+    <button mat-raised-button color="primary" (click)="LoadPools()">
+        <mat-icon>expand_more</mat-icon>
+        Load more
+        <mat-progress-bar *ngIf="isLoading" mode="indeterminate" color="accent"></mat-progress-bar>
+    </button>
+</div>

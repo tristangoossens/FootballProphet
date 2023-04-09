@@ -1,5 +1,7 @@
+import mongoose, { ObjectId } from 'mongoose';
+
 export interface EntityBase {
-    id: string;
-    createdAt: Date;
-    updatedAt: Date;
+  _id?: mongoose.Types.ObjectId;
+  createdAt?: Date;
+  updatedAt?: Date;
 }

@@ -1,0 +1,13 @@
+<mat-dialog-content>
+    <div class="dialog-content">
+        <img *ngIf="data.imageUrl" class="rounded-image" [src]="data.imageUrl" />
+        <div class="dialog-name">{{ data.title }}</div>
+        <div class="dialog-description">{{data.message}}</div>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions class="dialog-actions">
+    <div class="mx-auto">
+        <button mat-raised-button color="primary" (click)="Confirm()">{{data.method}}</button>
+        <button mat-button (click)="CloseDialog()">Cancel</button>
+    </div>
+</mat-dialog-actions>

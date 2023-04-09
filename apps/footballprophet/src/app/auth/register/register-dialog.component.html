@@ -1,0 +1,64 @@
+<mat-dialog-content>
+    <h3 class="fw-bold red">REGISTER</h3>
+
+    <mat-horizontal-stepper linear="true">
+        <!-- Step 1: User information -->
+        <mat-step [stepControl]="personalInfoForm" class="py-3">
+          <ng-template matStepLabel>Personal info</ng-template>
+
+          <form [formGroup]="personalInfoForm" class="my-3">
+            <!-- Phonenumber -->
+            <mat-form-field class="w-100 mb-2">
+              <mat-label>Phonenumber</mat-label>
+              <input matInput type="text" placeholder="Phone number" formControlName="phonenumber" [(ngModel)]="model.phonenumber">
+              <mat-error *ngIf="personalInfoForm.get('phonenumber')!.hasError('required')">Phone number is required</mat-error>
+              <mat-error *ngIf="personalInfoForm.get('phonenumber')!.hasError('pattern')">Invalid phone number</mat-error>
+            </mat-form-field>
+            <!-- Birth date -->
+            <mat-form-field class="w-100 mb-2">
+              <mat-label>Birthdate</mat-label>
+              <input matInput [matDatepicker]="picker" placeholder="Birth date" formControlName="birthDate" [(ngModel)]="model.birthDate">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+              <mat-error *ngIf="personalInfoForm.get('birthDate')!.hasError('required')">Birth date is required</mat-error>
+            </mat-form-field>
+            <!-- Avatar -->
+            <mat-form-field class="w-100 mb-2">
+              <mat-label>Avatar URL</mat-label>
+              <input matInput type="text" placeholder="Avatar URL" formControlName="avatarUrl" [(ngModel)]="model.avatarUrl">
+              <mat-error *ngIf="personalInfoForm.get('avatarUrl')!.hasError('required')">Avatar URL is required</mat-error>
+            </mat-form-field>
+            <button mat-raised-button color="primary" matStepperNext class="w-100" [disabled]="personalInfoForm.invalid">Next</button>
+          </form>
+        </mat-step>
+        <!-- Step 2: User credentials -->
+        <mat-step [stepControl]="personalInfoForm">
+          <ng-template matStepLabel>Credentials</ng-template>
+          <form [formGroup]="credentialsForm" class="my-3" (ngSubmit)="register()">
+            <!-- Username -->
+            <mat-form-field class="w-100 mb-2">
+              <mat-label>Username</mat-label>
+              <input matInput placeholder="Username" formControlName="username" [(ngModel)]="model.username">
+              <mat-error *ngIf="credentialsForm.get('username')!.hasError('required')">Username is required.</mat-error>
+            </mat-form-field>
+
+            <!-- Password -->
+            <mat-form-field class="w-100 mb-2">
+              <mat-label>Password</mat-label>
+              <input matInput placeholder="Password" formControlName="password" [type]="hidePassword ? 'password' : 'text'" [(ngModel)]="model.password">
+              <mat-icon matSuffix (click)="hidePassword = !hidePassword">{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+              <mat-error *ngIf="credentialsForm.get('password')!.hasError('required')">Password is required.</mat-error>
+              <mat-error *ngIf="credentialsForm.get('password')!.hasError('pattern')">
+                Invalid password format
+              </mat-error>
+            </mat-form-field>
+
+            <!-- Progress bar (loading) -->
+            <mat-progress-bar [hidden]="!loading"  class="w-100" mode="indeterminate"></mat-progress-bar>
+
+            <!-- Submit button -->
+            <button mat-raised-button [disabled]="credentialsForm.invalid || personalInfoForm.invalid" color="primary" type="submit" class="w-100">Submit</button>
+          </form>
+        </mat-step>
+    </mat-horizontal-stepper>
+</mat-dialog-content>

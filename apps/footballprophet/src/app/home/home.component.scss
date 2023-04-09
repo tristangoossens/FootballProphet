@@ -1,0 +1,33 @@
+.header {
+    height: 60vh;
+    background-image: url('/assets/img/header-bg.jpg');
+    background-size: cover;
+    position: relative;
+    border-radius: 10px;
+}
+  
+.header::before {
+    border-radius: 10px;
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* change the opacity here */
+}
+
+.header-title {
+    font-size: 3rem;
+}
+
+.header-content {
+    position: absolute;
+    top: 10%;
+    left: 0;
+    padding: 20px;
+    width: 35vw;
+    background-color: #1F2327;
+    color: white;
+}

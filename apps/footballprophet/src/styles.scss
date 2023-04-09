@@ -1,41 +1,84 @@
 /* You can add global styles to this file, and also import other style files */
-@use "variables" as var;
-@import '~bootstrap/scss/bootstrap';
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@500&display=swap');
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
 
-body {
+/* Importing Bootstrap SCSS file. */
+@import 'bootstrap/scss/bootstrap';
+
+* {
     font-family: 'DM Sans', sans-serif !important;
 }
 
-.color-span {
-    color: var.$redMunsell;
+.material-icons {
+    font-family: 'Material Icons' !important;
 }
 
-.btn-footballprophet-create {
-    color: #ffffff !important;
-    background-color: var.$lightGreen !important;
+html,
+body {
+    height: 100%;
 }
 
-.btn-footballprophet-create:hover {
-    background-color: var.$green !important;
+body {
+    margin: 0;
+    background-color: #EEEEEE;
 }
 
-.btn-footballprophet-delete {
-    color: #ffffff !important;
-    background-color: var.$redMunsell !important;
+.red-icon {
+    color: #ff1507 !important;
 }
 
-.btn-footballprophet-delete:hover {
-    background-color: var.$lightRed !important;
+.red {
+    color: #ff1507 !important;
 }
 
-.btn-footballprophet-info {
-    color: #ffffff !important;
-    background-color: var.$darkBlue !important;
+p {
+    font-size: 16px;
+    font-weight: lighter;
+    color: gray;
 }
 
-.btn-footballprophet-info:hover {
-    background-color: var.$lightBlue !important;
+a {
+    text-decoration: none;
+    color: black;
 }
 
+a:hover {
+    text-decoration: none;
+    color: black;
+}
 
+// Dialog
+.dialog-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.dialog-name {
+    margin-top: 16px;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.dialog-description {
+    margin-top: 8px;
+    font-size: 16px;
+    text-align: center;
+}
+
+.dialog-actions {
+    display: flex;
+    align-items: center;
+}
+
+.rounded-image {
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+mat-card {
+    background-color: #F4F4F2 !important;
+}

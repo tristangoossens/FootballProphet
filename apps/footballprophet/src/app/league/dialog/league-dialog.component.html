@@ -1,0 +1,38 @@
+<!-- Dialog -->
+<mat-dialog-content class="dialog-content">
+    <h3 class="fw-bold red">{{data ? "UPDATE LEAGUE" : "CREATE LEAGUE"}}</h3>
+    <p>Create/edit a league</p>
+
+    <form [formGroup]="leagueForm" (ngSubmit)="Submit()">
+        <!-- Name field -->
+        <mat-form-field class="mb-2 w-100">
+            <mat-label>Name</mat-label>
+            <input matInput type="text" placeholder="Name" formControlName="name" [(ngModel)]="model.name" required>
+            <mat-error *ngIf="leagueForm.get('name')!.hasError('required')">
+                League name is required.
+            </mat-error>
+        </mat-form-field>
+
+        <!-- LogoUrl field -->
+        <mat-form-field class="mb-2 w-100">
+            <mat-label>Logo URL</mat-label>
+            <input matInput type="text" placeholder="Logo URL" formControlName="logoUrl" [(ngModel)]="model.logoUrl" required>
+            <mat-error *ngIf="leagueForm.get('logoUrl')!.hasError('required')">
+                Logo URL is required.
+            </mat-error>
+        </mat-form-field>
+
+        <!-- Season field -->
+        <mat-form-field class="mb-2 w-100">
+            <mat-label>Season</mat-label>
+            <input matInput type="number" placeholder="Season" formControlName="season" [(ngModel)]="model.season" required>
+            <mat-error *ngIf="leagueForm.get('season')!.hasError('required')">
+                Season is required.
+            </mat-error>
+        </mat-form-field>
+
+        <div class="dialog-actions">
+            <button mat-raised-button color="primary" type="submit" [disabled]="leagueForm.invalid"><mat-icon>save</mat-icon> Submit</button>
+        </div>
+    </form>
+</mat-dialog-content>

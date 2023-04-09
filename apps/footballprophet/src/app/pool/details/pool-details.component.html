@@ -1,0 +1,162 @@
+<div class="row bg-white rounded p-3 mb-3" *ngIf="!isLoading">
+    <div class="col-12 d-flex">
+        <div class="breadcrumb">
+            <button mat-button routerLink="/">
+                <mat-icon class="red-icon">home</mat-icon>
+                Home
+            </button>
+            <mat-icon class="my-auto">chevron_right</mat-icon>
+            <button mat-button routerLink="/pools">
+                <mat-icon class="red-icon">groups</mat-icon>
+                Pools
+            </button>
+            <mat-icon class="my-auto">chevron_right</mat-icon>
+            <button mat-button routerLink="/pools/{{pool._id}}" disabled>
+                <mat-icon class="red-icon">groups</mat-icon>
+                {{pool.name}}
+            </button>
+        </div>
+
+        <button *ngIf="loggedInUser && IsPoolOwner(loggedInUser)" class="ms-auto my-auto" mat-raised-button color="primary" (click)="OpenPoolEditDialog()">
+            <mat-icon>edit</mat-icon>
+            Edit
+        </button>
+    </div>
+
+    <div class="pool-header mt-2 mb-3 col-12">
+        <img class="logo me-3" [src]="pool.logoUrl" [alt]="pool.name">
+        <div class="mb-auto">
+            <div class="name">{{pool.name}}<mat-icon *ngIf="pool.isPrivate" class="red-icon ms-2">lock</mat-icon></div>
+            <p class="description">{{pool.description}}</p>
+            <div class="date">Last updated: {{pool.updatedAt | date: 'medium'}}</div>
+        </div>
+
+        <div *ngIf="loggedInUser" class="ms-auto">
+            <button *ngIf="!IsAlreadyMember(loggedInUser)" mat-raised-button color="primary" (click)="OpenJoinPoolDialog()" [disabled]="pool.isPrivate">
+                <mat-icon>{{pool.isPrivate ? "lock" : "add"}}</mat-icon>
+                {{pool.isPrivate ? "Invite only" : "Join now"}}
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="row bg-white rounded p-3 justify-content-center" *ngIf="!isLoading" [hidden]="!loggedInUser || (!IsAlreadyMember(loggedInUser) && pool.isPrivate)">
+    <mat-tab-group class="col-12">
+        <mat-tab>
+            <ng-template mat-tab-label>
+                <mat-icon class="me-2">table</mat-icon>
+                Standings
+            </ng-template>
+
+            <div class="py-4">
+                <h3 class="fw-bold red">SCOREBOARD</h3>
+                <p class="description">Standings in the current league season</p>
+
+                <table mat-table [dataSource]="scoreBoard">
+                    <!-- Position Column -->
+                    <ng-container matColumnDef="position">
+                        <th mat-header-cell *matHeaderCellDef> Position </th>
+                        <td mat-cell *matCellDef="let scoreboardEntry"> 
+                        <ng-container *ngIf="scoreboardEntry.position <3">
+                            <mat-icon *ngIf="scoreboardEntry.position ==0" class="gold-icon">workspace_premium</mat-icon>
+                            <mat-icon *ngIf="scoreboardEntry.position ==1" class="silver-icon">workspace_premium</mat-icon>
+                            <mat-icon *ngIf="scoreboardEntry.position==2" class="bronze-icon">workspace_premium</mat-icon>
+                        </ng-container>
+                        <ng-container *ngIf="scoreboardEntry.position>=3">
+                            {{scoreboardEntry.position}}
+                        </ng-container>
+                        </td>
+                    </ng-container>
+
+                    <!-- Image Column -->
+                    <ng-container matColumnDef="avatarUrl">
+                      <th mat-header-cell *matHeaderCellDef> Image </th>
+                      <td mat-cell *matCellDef="let scoreboardEntry"> <img src="{{ scoreboardEntry.member.avatarUrl }}" class="rounded-image" routerLink="/profile/{{scoreboardEntry.member._id}}"> </td>
+                    </ng-container>
+                  
+                    <!-- Username Column -->
+                    <ng-container matColumnDef="username">
+                      <th mat-header-cell *matHeaderCellDef> Username </th>
+                      <td mat-cell *matCellDef="let scoreboardEntry"> {{ scoreboardEntry.member.username }} <span *ngIf="scoreboardEntry.member._id === PoolOwnerAsUser()._id" class="owner-tag">Owner</span> </td>
+                    </ng-container>
+                   <!-- -->
+                    <ng-container matColumnDef="points">
+                      <th mat-header-cell *matHeaderCellDef>Total points</th>
+                      <td mat-cell *matCellDef="let scoreboardEntry"> 
+                        {{scoreboardEntry.totalPoints}}
+                    </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumnsScoreboard"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumnsScoreboard;"></tr>
+                </table>
+            </div>
+        </mat-tab>
+        <mat-tab>
+            <ng-template mat-tab-label>
+                <mat-icon class="me-2">groups</mat-icon>
+                Members ({{pool.members.length}})
+            </ng-template>
+
+            <div class="py-4">
+                <h3 class="fw-bold red">MEMBERS</h3>
+                <p class="description">Members that are part of "<span class="red-icon">{{pool.name}}</span>"</p>
+
+                <table mat-table [dataSource]="AsUserArray()">
+                    <!-- Image Column -->
+                    <ng-container matColumnDef="avatarUrl">
+                      <th mat-header-cell *matHeaderCellDef> Image </th>
+                      <td mat-cell *matCellDef="let user"> <img src="{{ user.avatarUrl }}" class="rounded-image" routerLink="/profile/{{user._id}}"> </td>
+                    </ng-container>
+                  
+                    <!-- Username Column -->
+                    <ng-container matColumnDef="username">
+                      <th mat-header-cell *matHeaderCellDef> Username </th>
+                      <td mat-cell *matCellDef="let user"> {{ user.username }} <span *ngIf="user._id === PoolOwnerAsUser()._id" class="owner-tag">Owner</span> </td>
+                    </ng-container>
+                  
+                    <!-- Kick Column -->
+                    <ng-container matColumnDef="id">
+                      <th mat-header-cell *matHeaderCellDef>Kick (Owner only)</th>
+                      <td mat-cell *matCellDef="let user"> 
+                        <button *ngIf="!IsPoolOwner(user)" mat-mini-fab color="warn" class="kick-button" [disabled]="loggedInUser && !IsPoolOwner(loggedInUser)" (click)="OpenKickFromPoolDialog(user)" > 
+                            <mat-icon>delete_outline</mat-icon> 
+                        </button> 
+                    </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumnsMembers"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumnsMembers;"></tr>
+                </table>
+            </div>
+        </mat-tab>
+        <mat-tab *ngIf="loggedInUser && IsPoolOwner(loggedInUser)">
+            <ng-template mat-tab-label>
+                <mat-icon class="me-2">send</mat-icon>
+                Invite (Owner only)
+            </ng-template>
+
+            <div class="py-4">
+                <h3 class="fw-bold red">INVITE</h3>
+                <p class="description">Invite users with the link below.</p>
+                
+                <mat-divider class="my-3"></mat-divider>
+
+                <mat-form-field class="w-100">
+                    <mat-label>Invite link</mat-label>
+                    <input matInput type="text" readonly value="http://localhost:4200/pools/{{pool._id}}/invite/{{pool.joinCode}}">
+                    <button matSuffix mat-icon-button (click)="CopyInviteUrl()">
+                      <mat-icon>file_copy</mat-icon>
+                    </button>
+                </mat-form-field>
+            </div>
+        </mat-tab>
+    </mat-tab-group>
+</div>
+
+
+<div class="row justify-content-center" *ngIf="isLoading">
+    <div class="col-12 d-flex">
+        <mat-spinner class="mx-auto"></mat-spinner>
+    </div>
+</div>
