@@ -1,0 +1,83 @@
+@use '@angular/material' as mat;
+@include mat.core();
+
+$fp-primary-color: (
+    50: #ddedf6,
+    100: #b9d1da,
+    200: #93b0bc,
+    300: #6d91a0,
+    400: #517a8b,
+    500: #336476,
+    600: #295666,
+    700: #1c4452,
+    800: #0f323e,
+    900: #001e28,
+    A100: #b9d1da,
+    A200: #93b0bc,
+    A400: #336476,
+    A700: #001e28,
+    contrast: (
+      50: rgba(black, 0.87),
+      100: rgba(black, 0.87),
+      200: rgba(black, 0.87),
+      300: rgba(black, 0.87),
+      400: rgba(black, 0.87),
+      500: white,
+      600: white,
+      700: white,
+      800: white,
+      900: white,
+    )
+);
+
+$fp-accent-color: (
+    50: #ffe7e6,
+    100: #ffc7b8,
+    200: #ffa28a,
+    300: #ff795b,
+    400: #ff5436,
+    500: #ff200c,
+    600: #ff1507,
+    700: #ff0000,
+    800: #f10000,
+    900: #da0000,
+    A100: #ffc7b8,
+    A200: #ffa28a,
+    A400: #ff200c,
+    A700: #da0000,
+    contrast: (
+      50: rgba(black, 0.87),
+      100: rgba(black, 0.87),
+      200: rgba(black, 0.87),
+      300: rgba(black, 0.87),
+      400: rgba(black, 0.87),
+      500: white,
+      600: white,
+      700: white,
+      800: white,
+      900: white,
+    )
+);
+
+$fp-primary: mat.define-palette($fp-primary-color, 900);
+$fp-accent: mat.define-palette($fp-accent-color, 600, 900, 500);
+
+$theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $fp-primary,
+      accent: $fp-accent,
+    ),
+    typography: mat.define-typography-config(),
+    density: 0,
+  )
+);
+
+@include mat.all-component-themes($theme);
+
+* { font-family: 'DM Sans', sans-serif; }
+.material-icons{
+    font-family: 'Material Icons' !important;
+}
+html, body { height: 100%; }
+body { margin: 0; }

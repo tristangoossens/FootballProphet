@@ -1,14 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { AuthService } from '../../auth/auth.service';
+import { LoginComponent } from '../../auth/login/login-dialog.component';
+import { RegisterComponent } from '../../auth/register/register-dialog.component';
 
 @Component({
   selector: 'footballprophet-nav',
   templateUrl: './nav.component.html',
   styleUrls: ['./nav.component.scss'],
 })
-export class NavComponent implements OnInit {
-  public isMenuCollapsed = true;
+export class NavComponent {
+  constructor(public authService: AuthService, public dialog: MatDialog) {}
 
-  constructor() {}
+  openLoginDialog() {
+    this.dialog.open(LoginComponent, { restoreFocus: false });
+  }
 
-  ngOnInit(): void {}
+  openRegisterDialog() {
+    this.dialog.open(RegisterComponent, { restoreFocus: false });
+  }
 }

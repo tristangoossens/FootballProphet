@@ -1,0 +1,71 @@
+.logo {
+  width: 125px;
+  height: 125px;
+  object-fit: contain;
+}
+
+.pool-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.name {
+  font-size: 30px;
+  font-weight: bold;
+  word-break: break-word;
+  text-transform: uppercase;
+}
+
+.join-button {
+    display: flex;
+    align-items: center;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+  
+td {
+    padding: 8px;
+    text-align: left;
+}
+  
+  .owner-tag {
+    margin-left: 8px;
+    padding: 4px;
+    border-radius: 4px;
+    background-color: #ff1507;
+    color: white;
+  }
+  
+  .kick-button {
+    width: 32px;
+    height: 32px;
+  }
+
+  .rounded-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+.gold-icon {
+  color: rgb(173, 148, 3);
+}
+
+.silver-icon {
+  color: silver;
+}
+
+.bronze-icon {
+  color: #b86e25; 
+}
+
+.date {
+  font-style: italic;
+  font-size: 12px;
+  color: gray;
+}

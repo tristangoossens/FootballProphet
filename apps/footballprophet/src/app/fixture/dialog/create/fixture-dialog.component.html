@@ -1,0 +1,77 @@
+<!-- Dialog -->
+<mat-dialog-content class="dialog-content">
+    <h3 class="fw-bold red">CREATE FIXTURE</h3>
+    <p>Create/edit a fixture</p>
+
+    <mat-horizontal-stepper linear="true">
+        <mat-step class="py-3" [stepControl]="fixtureTeamForm">
+            <ng-template matStepLabel>Teams</ng-template>
+
+            <form [formGroup]="fixtureTeamForm" class="my-3">
+                <div class="team-preview mb-3">
+                    <img [src]="this.model.homeTeam.logoUrl" alt="{{this.model.homeTeam.name}}" class="team-logo">
+                    <div class="team-info ms-2">
+                        <p class="team-name" *ngIf="this.model.homeTeam.name">{{this.model.homeTeam.name}}</p>
+                        <p class="team-founded" *ngIf="this.model.homeTeam.foundedIn">Founded in {{this.model.homeTeam.foundedIn | date: 'medium'}}</p>
+                    </div>
+                </div>
+
+                <mat-form-field class="w-100">
+                    <mat-label>Select home team</mat-label>
+                    <mat-select [(ngModel)]="this.model.homeTeam" formControlName="homeTeam" required>
+                        <mat-option *ngFor="let team of league.teams" [value]="team">
+                        {{team.name}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="fixtureTeamForm.get('homeTeam')!.hasError('required')">
+                        Selecting a home team is required.
+                    </mat-error>
+                </mat-form-field>
+
+                <div class="team-preview my-3">
+                    <img [src]="this.model.awayTeam.logoUrl" alt="{{this.model.homeTeam.name}}" class="team-logo">
+                    <div class="team-info ms-2">
+                        <p class="team-name" *ngIf="this.model.awayTeam.name">{{this.model.awayTeam.name}}</p>
+                        <p class="team-founded" *ngIf="this.model.awayTeam.foundedIn">Founded in {{this.model.awayTeam.foundedIn | date: 'medium'}}</p>
+                    </div>
+                </div>
+
+                <mat-form-field class="w-100">
+                    <mat-label>Select away team</mat-label>
+                    <mat-select [(ngModel)]="this.model.awayTeam" formControlName="awayTeam" required>
+                        <mat-option *ngFor="let team of league.teams" [value]="team">
+                        {{team.name}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="fixtureTeamForm.get('awayTeam')!.hasError('required')">
+                        Selecting an away team is required.
+                    </mat-error>
+                </mat-form-field>
+
+                <button mat-raised-button color="primary" matStepperNext class="w-100" [disabled]="fixtureTeamForm.invalid">Next</button>
+            </form>
+        </mat-step>
+        <mat-step class="py-3">
+            <ng-template matStepLabel>Fixture info</ng-template>
+
+            <form [formGroup]="fixtureInfoForm" class="my-3" (ngSubmit)="Submit()">
+                <mat-form-field class="w-100 mb-2">
+                    <mat-label>Referee</mat-label>
+                    <input matInput type="text" placeholder="Name of referee" formControlName="referee" [(ngModel)]="this.model.referee" required>
+                    <mat-error *ngIf="fixtureInfoForm.get('stadium')!.hasError('required')">
+                        Referee name is required.
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field class="w-100 mb-2">
+                    <mat-label>Stadium</mat-label>
+                    <input matInput type="text" placeholder="Name of stadium" formControlName="stadium" [(ngModel)]="this.model.stadium" required>
+                    <mat-error *ngIf="fixtureInfoForm.get('stadium')!.hasError('required')">
+                        Stadium is required.
+                    </mat-error>
+                </mat-form-field>
+
+                <button mat-raised-button color="primary" type="submit" [disabled]="fixtureInfoForm.invalid || fixtureTeamForm.invalid"><mat-icon>save</mat-icon> Submit</button>
+            </form>
+        </mat-step>
+    </mat-horizontal-stepper>
+</mat-dialog-content>
