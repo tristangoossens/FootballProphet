@@ -12,7 +12,7 @@ import { Neo4jService } from './neo4j/neo4j.service';
 @Module({
   imports: [
     ConfigModule.forRoot({ envFilePath: `.env.${process.env.NODE_ENV}` }),
-    MongooseModule.forRoot('mongodb://127.0.0.1:27017/footballprophet'),
+    MongooseModule.forRoot(process.env.MONGO_URL),
     AuthModule,
     FixtureModule,
     UserModule,
