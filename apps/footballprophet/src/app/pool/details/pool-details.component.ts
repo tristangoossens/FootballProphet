@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { AlertService } from '../../shared/alert/alert.service';
 import { PoolService } from '../pool.service';
-import { Pool, User } from '@footballprophet/domain';
+import { League, Pool, User } from '@footballprophet/domain';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
@@ -10,6 +10,7 @@ import { ObjectId } from 'mongoose';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { DialogComponent } from '../../shared/dialog/dialog.component';
 import { PoolDialogComponent } from '../dialog/pool-dialog.component';
+import { environment } from 'apps/footballprophet/src/environments/environment';
 
 @Component({
   selector: 'footballprophet-pool-details',
@@ -20,6 +21,7 @@ export class PoolDetailComponent implements OnInit {
   public loggedInUser!: User | undefined;
   public isLoading: boolean = false;
   public pool: Pool = {} as Pool;
+  public appUrl = environment.application_url;
   public scoreBoard: any[] = []; // TODO: Create ScoreBoard interface
   public displayedColumnsMembers: string[] = ['avatarUrl', 'username', 'id'];
   public displayedColumnsScoreboard: string[] = [
@@ -55,19 +57,17 @@ export class PoolDetailComponent implements OnInit {
     // Add a timeout to simulate a slow connection
     this.isLoading = true;
 
-    setTimeout(() => {
-      this.poolService.GetPoolById(id).subscribe(
-        (pool) => {
-          this.GetPoolScoreBoardById(id);
-          this.pool = pool;
-          this.isLoading = false;
-        },
-        (error) => {
-          this.alertService.AlertError(error.message);
-          this.isLoading = false;
-        }
-      );
-    }, 500);
+    this.poolService.GetPoolById(id).subscribe(
+      (pool) => {
+        this.GetPoolScoreBoardById(id);
+        this.pool = pool;
+        this.isLoading = false;
+      },
+      (error) => {
+        this.alertService.AlertError(error.message);
+        this.isLoading = false;
+      }
+    );
   }
 
   public GetPoolScoreBoardById(id: string): void {
@@ -75,6 +75,11 @@ export class PoolDetailComponent implements OnInit {
       (scoreBoard) => {
         this.scoreBoard = scoreBoard.map((entry, index) => {
           return { ...entry, position: index };
+        });
+
+        // Sort by points descending
+        this.scoreBoard.sort((a, b) => {
+          return b.points - a.points;
         });
       },
       (error) => {
@@ -159,6 +164,10 @@ export class PoolDetailComponent implements OnInit {
 
   public AsUserArray(): User[] {
     return this.pool.members as User[];
+  }
+
+  public AsLeague(): League {
+    return this.pool.league as League;
   }
 
   public PoolOwnerAsUser(): User {

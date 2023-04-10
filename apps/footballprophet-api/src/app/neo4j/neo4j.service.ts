@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import neo4j, { Driver } from 'neo4j-driver';
 
 @Injectable()
@@ -17,6 +17,15 @@ export class Neo4jService {
     try {
       const result = await session.run(query, params);
       return result.records;
+    } catch (error) {
+      Logger.error(
+        `⚠️: Something went wrong (Neo4JService -> Run) (${query}):  ${error.message}`
+      );
+
+      throw new HttpException(
+        'Something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
     } finally {
       session.close();
     }

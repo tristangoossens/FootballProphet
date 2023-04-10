@@ -68,20 +68,18 @@ export class RegisterComponent {
 
   register() {
     this.loading = true;
-    // Add a timeout to simulate a slow connection
-    setTimeout(() => {
-      this.authService.register(this.model).subscribe(
-        (message) => {
-          this.loading = false;
-          this.registerDialogRef.close();
 
-          this.alertService.AlertSuccess(message as string);
-        },
-        (err) => {
-          this.alertService.AlertError(err.error.message);
-          this.loading = false;
-        }
-      );
-    }, 400);
+    this.authService.register(this.model).subscribe(
+      (message) => {
+        this.loading = false;
+        this.registerDialogRef.close();
+
+        this.alertService.AlertSuccess(message as string);
+      },
+      (err) => {
+        this.alertService.AlertError(err.error.message);
+        this.loading = false;
+      }
+    );
   }
 }

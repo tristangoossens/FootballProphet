@@ -1,5 +1,5 @@
 import { League, Team } from '@footballprophet/domain';
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import mongoose, { Model } from 'mongoose';
 import { LeagueDocument } from './league.model';
@@ -11,49 +11,107 @@ export class LeagueService {
   ) {}
 
   // League methods
-  async GetAll(): Promise<League[]> {
-    return await this.leagueModel.find();
+  async GetAll(limit: number = 5, offset: number = 0): Promise<League[]> {
+    try {
+      return await this.leagueModel.find().limit(limit).skip(offset);
+    } catch (error) {
+      Logger.error(
+        `⚠️: Something went wrong (LeagueService -> GetAll): ${error.message}`
+      );
+
+      throw new HttpException(
+        'Something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
   }
 
   async GetById(id: mongoose.Types.ObjectId): Promise<League> {
-    return await this.leagueModel.findById(id).populate('fixtures');
+    try {
+      const league = await this.leagueModel.findById(id).populate('fixtures');
+      if (!league)
+        throw new HttpException('League not found', HttpStatus.NOT_FOUND);
+      return league;
+    } catch (error) {
+      Logger.error(
+        `⚠️: Something went wrong (LeagueService -> GetAll): ${error.message}`
+      );
+
+      throw new HttpException(
+        'Something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
   }
 
   async Create(league: League) {
-    return await this.leagueModel.create(league);
+    try {
+      return await this.leagueModel.create(league);
+    } catch (error) {
+      Logger.error(
+        `⚠️: Something went wrong (LeagueService -> Create): ${error.message}`
+      );
+
+      throw new HttpException(
+        'Something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
   }
 
   async Update(id: mongoose.Types.ObjectId, league: League) {
-    return await this.leagueModel.findOneAndUpdate(
-      // Filter
-      {
-        _id: id,
-      },
-      // Update (league attributes)
-      {
-        $set: {
-          name: league.name,
-          logoUrl: league.logoUrl,
-          season: league.season,
+    try {
+      return await this.leagueModel.findOneAndUpdate(
+        // Filter
+        {
+          _id: id,
         },
-      }
-    );
+        // Update (league attributes)
+        {
+          $set: {
+            name: league.name,
+            logoUrl: league.logoUrl,
+            season: league.season,
+          },
+        }
+      );
+    } catch (error) {
+      Logger.error(
+        `⚠️: Something went wrong (LeagueService -> Update): ${error.message}`
+      );
+
+      throw new HttpException(
+        'Something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
   }
 
   // Team method
   async AddTeamToLeague(leagueId: mongoose.Types.ObjectId, team: Team) {
-    await this.leagueModel.findOneAndUpdate(
-      // Filter
-      {
-        _id: leagueId,
-      },
-      // Team to add
-      {
-        $push: {
-          teams: team,
+    try {
+      return await this.leagueModel.findOneAndUpdate(
+        // Filter
+        {
+          _id: leagueId,
         },
-      }
-    );
+        // Team to add
+        {
+          $push: {
+            teams: team,
+          },
+        }
+      );
+    } catch (error) {
+      Logger.error(
+        `⚠️: Something went wrong (LeagueService -> AddTeamToLeague): ${error.message}`
+      );
+
+      throw new HttpException(
+        'Something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
   }
 
   // Fixture reference methods
@@ -61,17 +119,28 @@ export class LeagueService {
     leagueId: mongoose.Types.ObjectId,
     fixtureId: mongoose.Types.ObjectId
   ) {
-    await this.leagueModel.findOneAndUpdate(
-      // Filter
-      {
-        _id: leagueId,
-      },
-      // Update
-      {
-        $push: {
-          fixtures: fixtureId,
+    try {
+      return await this.leagueModel.findOneAndUpdate(
+        // Filter
+        {
+          _id: leagueId,
         },
-      }
-    );
+        // Update
+        {
+          $push: {
+            fixtures: fixtureId,
+          },
+        }
+      );
+    } catch (error) {
+      Logger.error(
+        `⚠️: Something went wrong (LeagueService -> AddFixtureReference): ${error.message}`
+      );
+
+      throw new HttpException(
+        'Something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
   }
 }

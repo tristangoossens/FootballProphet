@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
@@ -21,8 +22,11 @@ export class LeagueController {
   constructor(private leagueService: LeagueService) {}
 
   @Get()
-  async getAll() {
-    return await this.leagueService.GetAll();
+  async getAll(
+    @Query('limit') limit?: number,
+    @Query('offset') offset?: number
+  ) {
+    return await this.leagueService.GetAll(limit, offset);
   }
 
   @Get(':id')

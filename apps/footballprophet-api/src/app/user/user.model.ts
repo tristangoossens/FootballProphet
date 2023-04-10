@@ -1,6 +1,7 @@
 import { User } from '@footballprophet/domain';
 import mongoose, { Document } from 'mongoose';
 import { PredictionSchema } from '../prediction/prediction.model';
+import * as bcrypt from 'bcrypt';
 
 export type UserDocument = User & Document;
 
@@ -17,5 +18,18 @@ export const UserSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+// Password hashing hook
+UserSchema.pre<User>('save', async function (next) {
+  try {
+    const salt = await bcrypt.genSalt(10);
+    const hash = await bcrypt.hash(this.password, salt);
+    this.password = hash;
+
+    return next();
+  } catch (err) {
+    return next(err);
+  }
+});
 
 export const UserModel = mongoose.model<UserDocument>('users', UserSchema);
