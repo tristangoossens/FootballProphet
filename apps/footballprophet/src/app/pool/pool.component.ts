@@ -8,55 +8,74 @@ import { PoolDialogComponent } from './dialog/pool-dialog.component';
 import { PoolService } from './pool.service';
 
 @Component({
-    selector: 'footballprophet-pool',
-    templateUrl: './pool.component.html',
-    styleUrls: ['./pool.component.scss'],
+  selector: 'footballprophet-pool',
+  templateUrl: './pool.component.html',
+  styleUrls: ['./pool.component.scss'],
 })
 export class PoolComponent implements OnInit {
-    public loggedInUser?: User;
-    public pools: Pool[] = [];
-    public isLoading: boolean = false;
+  public loggedInUser?: User;
+  public pools: Pool[] = [];
+  public isLoading: boolean = false;
 
-    constructor(private poolService: PoolService, private dialog: MatDialog, private alertService: AlertService, private authService: AuthService) { }
+  // Page
+  public pageSize: number = 10;
+  public currentPage: number = 0;
 
-    ngOnInit(): void {
-        this.authService.currentUser$.subscribe((user) => {
-            this.loggedInUser = user;
-        });
+  constructor(
+    private poolService: PoolService,
+    private dialog: MatDialog,
+    private alertService: AlertService,
+    private authService: AuthService
+  ) {}
 
-        this.LoadPools();
-    }
+  ngOnInit(): void {
+    this.authService.currentUser$.subscribe((user) => {
+      this.loggedInUser = user;
+    });
 
-    LoadPools(offset: number = 0, limit: number = 10) {
-        this.isLoading = true;
-        // Set a timeout to simulate a slow connection
-        setTimeout(() => {
-            this.poolService.GetPools(offset, limit).subscribe((pools) => {
-                this.pools = pools;
-                this.isLoading = false;
-            });
-        }, 500);
-    }
+    this.LoadPools();
+  }
 
-    public OpenPoolCreateDialog(): void {
-        const dialogRef = this.dialog.open(PoolDialogComponent, {
-            data: {
-                user: this.loggedInUser,
-            }
-        });
+  NextPage(): void {
+    this.currentPage++;
+    this.LoadPools();
+  }
 
-        dialogRef.afterClosed().subscribe((result) => {
-            if (result) {
-                this.poolService.CreatePool(result).subscribe(
-                    (_) => {
-                        this.alertService.AlertSuccess('Pool created successfully');
-                        this.LoadPools();
-                    },
-                    (error) => {
-                        this.alertService.AlertError(error.message);
-                    }
-                );
-            }
-        });
-    }
+  LoadPools() {
+    this.isLoading = true;
+    this.poolService
+      .GetPools(this.currentPage * this.pageSize, this.pageSize)
+      .subscribe(
+        (pools) => {
+          this.pools = [...this.pools, ...pools];
+          this.isLoading = false;
+        },
+        (error) => {
+          this.alertService.AlertError(error.message);
+          this.isLoading = false;
+        }
+      );
+  }
+
+  public OpenPoolCreateDialog(): void {
+    const dialogRef = this.dialog.open(PoolDialogComponent, {
+      data: {
+        user: this.loggedInUser,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.poolService.CreatePool(result).subscribe(
+          (_) => {
+            this.alertService.AlertSuccess('Pool created successfully');
+            this.LoadPools();
+          },
+          (error) => {
+            this.alertService.AlertError(error.message);
+          }
+        );
+      }
+    });
+  }
 }

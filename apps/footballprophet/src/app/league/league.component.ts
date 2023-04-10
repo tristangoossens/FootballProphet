@@ -17,6 +17,10 @@ export class LeagueComponent implements OnInit {
   public leagues: League[] = [];
   public isLoading: boolean = false;
 
+  // Page
+  public pageSize: number = 10;
+  public currentPage: number = 0;
+
   constructor(
     private leagueService: LeagueService,
     private authService: AuthService,
@@ -38,13 +42,19 @@ export class LeagueComponent implements OnInit {
 
   LoadLeagues(): void {
     this.isLoading = true;
-    // Set a timeout to simulate a slow connection
-    setTimeout(() => {
-      this.leagueService.GetLeagues(0, 10).subscribe((leagues) => {
-        this.leagues = leagues;
-        this.isLoading = false;
-      });
-    }, 500);
+    this.leagueService
+      .GetLeagues(this.currentPage * this.pageSize, this.pageSize)
+      .subscribe(
+        (leagues) => {
+          this.leagues = [...this.leagues, ...leagues];
+          this.currentPage++;
+          this.isLoading = false;
+        },
+        (error) => {
+          this.alertService.AlertError(error.message);
+          this.isLoading = false;
+        }
+      );
   }
 
   public OpenLeagueCreateDialog(): void {
