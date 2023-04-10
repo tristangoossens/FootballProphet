@@ -20,11 +20,11 @@ export class LeagueService {
   }
 
   async Create(league: League) {
-    await this.leagueModel.create(league);
+    return await this.leagueModel.create(league);
   }
 
   async Update(id: mongoose.Types.ObjectId, league: League) {
-    await this.leagueModel.findOneAndUpdate(
+    return await this.leagueModel.findOneAndUpdate(
       // Filter
       {
         _id: id,

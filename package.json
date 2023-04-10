@@ -6,7 +6,9 @@
     "start": "nx serve",
     "build": "nx build",
     "build_backend": "nx build footballprophet-api --prod",
-    "test": "nx test"
+    "test": "nx test",
+    "test_backend": "nx test footballprophet-api",
+    "test_frontend": "nx test footballprophet"
   },
   "private": true,
   "dependencies": {
@@ -35,6 +37,8 @@
     "bcrypt": "^5.1.0",
     "bootstrap": "^5.2.3",
     "jwt-decode": "^3.1.2",
+    "mongodb": "^5.2.0",
+    "mongodb-memory-server": "^8.12.2",
     "mongoose": "^6.7.5",
     "neo4j-driver": "^5.7.0",
     "passport": "^0.6.0",

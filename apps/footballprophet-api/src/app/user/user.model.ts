@@ -11,7 +11,7 @@ export const UserSchema = new mongoose.Schema(
     birthDate: { type: Date, required: true },
     avatarUrl: { type: String, required: true },
     phonenumber: { type: String, required: true },
-    roles: { type: [String], required: true },
+    roles: [{ type: String, required: true }],
     predictions: { type: [PredictionSchema], required: false },
     pools: [{ type: mongoose.Types.ObjectId, required: false, ref: 'pools' }],
   },

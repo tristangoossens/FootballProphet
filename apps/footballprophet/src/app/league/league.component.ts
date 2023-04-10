@@ -27,7 +27,6 @@ export class LeagueComponent implements OnInit {
   ngOnInit(): void {
     this.authService.currentUser$.subscribe((user) => {
       if (user) {
-        console.log(user);
         // Check if the admin role (string) is present
         this.isAdmin = user.roles.includes(UserRole.Admin);
         this.loggedInUser = user;
