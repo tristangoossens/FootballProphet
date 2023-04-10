@@ -1,0 +1,26 @@
+.title {
+    font-size: 3.5rem;
+    font-weight: 700;
+}
+
+.subtitle {
+    font-size: 1.5rem;
+    font-weight: 400;
+}
+
+.subheader {
+    font-size: 1.10rem;
+    font-style: italic;
+    font-weight: 300;
+    color: gray;
+}
+
+.about-text {
+    font-size: 1.05rem;
+    font-weight: lighter;
+    color: gray;
+}
+
+.use-case-list li::before {
+    color: #f44336;
+}

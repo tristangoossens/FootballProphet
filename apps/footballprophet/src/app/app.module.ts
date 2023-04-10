@@ -55,12 +55,14 @@ import { PredictionService } from './prediction/prediction.service';
 import { HomeComponent } from './home/home.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { AboutComponent } from './about/about.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavComponent,
     HomeComponent,
+    AboutComponent,
     LoginComponent,
     RegisterComponent,
     DashboardComponent,

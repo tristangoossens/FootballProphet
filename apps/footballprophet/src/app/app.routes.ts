@@ -8,10 +8,14 @@ import { PoolDetailComponent } from './pool/details/pool-details.component';
 import { LeagueDetailComponent } from './league/details/league-details.component';
 import { HomeComponent } from './home/home.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { AboutComponent } from './about/about.component';
 
 const routes: Routes = [
   // Home route
   { path: '', pathMatch: 'full', component: HomeComponent },
+
+  // About route
+  { path: 'about', pathMatch: 'full', component: AboutComponent },
 
   // User profile route
   { path: 'profile/:id', pathMatch: 'full', component: DashboardComponent },
