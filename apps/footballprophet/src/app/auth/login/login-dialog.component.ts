@@ -33,18 +33,17 @@ export class LoginComponent {
 
   login() {
     this.loading = true;
-    setTimeout(() => {
-      this.authService.login(this.model).subscribe({
-        next: (_) => {
-          this.dialogRef.close();
-          this.loading = false;
-          this.alertService.AlertSuccess('Login successful');
-        },
-        error: (e) => {
-          this.loading = false;
-          this.alertService.AlertError(e.error.message);
-        },
-      });
-    }, 400);
+
+    this.authService.login(this.model).subscribe({
+      next: (_) => {
+        this.dialogRef.close();
+        this.loading = false;
+        this.alertService.AlertSuccess('Login successful');
+      },
+      error: (e) => {
+        this.loading = false;
+        this.alertService.AlertError(e.error.message);
+      },
+    });
   }
 }

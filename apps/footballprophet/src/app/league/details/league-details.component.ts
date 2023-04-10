@@ -45,7 +45,6 @@ export class LeagueDetailComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log('LeagueDetailComponent.ngOnInit()');
     this.LoadCurrentUser();
 
     this.activatedRoute.paramMap.subscribe((params) => {
@@ -182,21 +181,18 @@ export class LeagueDetailComponent implements OnInit {
   }
 
   LoadLeague(id: string): void {
-    // Add timeout to simulate slow connection
     this.isLoading = true;
-    setTimeout(() => {
-      this.leagueService.GetLeagueById(id).subscribe(
-        (league: League) => {
-          this.league = league;
-          this.FilterFixtures();
-          this.isLoading = false;
-        },
-        (error) => {
-          this.isLoading = false;
-          this.alertService.AlertError(error.message);
-        }
-      );
-    }, 500);
+    this.leagueService.GetLeagueById(id).subscribe(
+      (league: League) => {
+        this.league = league;
+        this.FilterFixtures();
+        this.isLoading = false;
+      },
+      (error) => {
+        this.isLoading = false;
+        this.alertService.AlertError(error.message);
+      }
+    );
   }
 
   LoadCurrentUser(): void {
@@ -213,8 +209,6 @@ export class LeagueDetailComponent implements OnInit {
   }
 
   CanMakePrediction(fixture: Fixture): boolean {
-    console.log(this.loggedInUser);
-
     // Check if the fixture kickoff time is at least 1 hour in the future
     const now = new Date();
     const kickOff = new Date(fixture.kickOffDate);
