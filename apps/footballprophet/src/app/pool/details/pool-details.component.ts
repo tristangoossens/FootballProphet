@@ -61,7 +61,6 @@ export class PoolDetailComponent implements OnInit {
       (pool) => {
         this.GetPoolScoreBoardById(id);
         this.pool = pool;
-        this.isLoading = false;
       },
       (error) => {
         this.alertService.AlertError(error.message);
@@ -81,6 +80,8 @@ export class PoolDetailComponent implements OnInit {
         this.scoreBoard.sort((a, b) => {
           return b.points - a.points;
         });
+
+        this.isLoading = false;
       },
       (error) => {
         this.alertService.AlertError(error.message);
