@@ -23,7 +23,7 @@
 </div>
 
 <div class="row bg-white rounded p-3 justify-content-center">
-    <mat-card class="card col-12 mb-4" routerLink="/leagues/{{league._id}}" *ngFor="let league of leagues">
+    <a mat-card class="card col-12 mb-4" routerLink="/leagues/{{league._id}}" *ngFor="let league of leagues">
         <img mat-card-image class="logo me-3" [src]="league.logoUrl" [alt]="league.name">
         <mat-card-content>
             <div class="name">{{league.name}}</div>
@@ -33,7 +33,7 @@
                 <mat-icon>chevron_right</mat-icon>
             </button>
         </mat-card-content>
-    </mat-card>
+    </a>
 
     <button mat-raised-button color="primary" (click)="LoadLeagues()">
         <mat-icon>expand_more</mat-icon>
