@@ -10,7 +10,7 @@ import { ObjectId } from 'mongoose';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { DialogComponent } from '../../shared/dialog/dialog.component';
 import { PoolDialogComponent } from '../dialog/pool-dialog.component';
-import { environment } from 'apps/footballprophet/src/environments/environment';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'footballprophet-pool-details',
