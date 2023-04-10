@@ -19,7 +19,8 @@
         "inlineStyleLanguage": "scss",
         "assets": [
           "apps/footballprophet/src/favicon.ico",
-          "apps/footballprophet/src/assets"
+          "apps/footballprophet/src/assets",
+          "apps/footballprophet/src/_redirects"
         ],
         "styles": [
           "apps/footballprophet/src/theme.scss",
