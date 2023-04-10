@@ -6,6 +6,7 @@
     "start": "nx serve",
     "build": "nx build",
     "build_backend": "nx build footballprophet-api --prod",
+    "build_frontend": "nx build footballprophet --prod",
     "test": "nx test",
     "test_backend": "nx test footballprophet-api",
     "test_frontend": "nx test footballprophet"
