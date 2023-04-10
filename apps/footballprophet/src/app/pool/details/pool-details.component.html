@@ -32,7 +32,10 @@
         </div>
 
         <div *ngIf="loggedInUser" class="ms-auto">
-            <button *ngIf="!IsAlreadyMember(loggedInUser)" mat-raised-button color="primary" (click)="OpenJoinPoolDialog()" [disabled]="pool.isPrivate">
+            <a [routerLink]="'/leagues/' + AsLeague()._id"><img [matTooltip]="AsLeague().name" matTooltipPosition="above" [src]="AsLeague().logoUrl" class="rounded-image"></a>
+
+
+            <button *ngIf="!IsAlreadyMember(loggedInUser)" mat-raised-button color="primary" class="ms-3" (click)="OpenJoinPoolDialog()" [disabled]="pool.isPrivate">
                 <mat-icon>{{pool.isPrivate ? "lock" : "add"}}</mat-icon>
                 {{pool.isPrivate ? "Invite only" : "Join now"}}
             </button>
@@ -144,7 +147,7 @@
 
                 <mat-form-field class="w-100">
                     <mat-label>Invite link</mat-label>
-                    <input matInput type="text" readonly value="http://localhost:4200/pools/{{pool._id}}/invite/{{pool.joinCode}}">
+                    <input matInput type="text" readonly value="{{appUrl}}/pools/{{pool._id}}/invite/{{pool.joinCode}}">
                     <button matSuffix mat-icon-button (click)="CopyInviteUrl()">
                       <mat-icon>file_copy</mat-icon>
                     </button>

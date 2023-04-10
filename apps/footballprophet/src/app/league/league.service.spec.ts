@@ -31,7 +31,9 @@ describe('UI LEAGUE SERVICE TESTS', () => {
       expect(resp).toBeTruthy();
     });
 
-    const req = httpMock.expectOne(environment.api_url + '/leagues');
+    const req = httpMock.expectOne(
+      environment.api_url + '/leagues?limit=10&offset=0'
+    );
     expect(req.request.method).toEqual('GET');
   });
 

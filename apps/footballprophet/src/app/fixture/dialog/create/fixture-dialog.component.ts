@@ -13,13 +13,14 @@ export class FixtureDialogComponent {
   public fixtureTeamForm: FormGroup = new FormGroup({});
   public fixtureInfoForm: FormGroup = new FormGroup({});
   public league: League;
+  public today = new Date();
   public model: Fixture = {
     league: mongoose.Types.ObjectId.createFromHexString(
       '6391f781a9480c7b3fadeefd'
     ) as mongoose.Types.ObjectId,
     stadium: '',
     referee: '',
-    kickOffDate: new Date(new Date().setDate(new Date().getDate() + 1)),
+    kickOffDate: new Date(),
     homeTeam: {
       logoUrl: 'https://www.flashscore.com/res/image/empty-logo-team-share.gif',
     } as Team,
@@ -41,6 +42,7 @@ export class FixtureDialogComponent {
     this.fixtureInfoForm = this.fb.group({
       stadium: ['', Validators.required],
       referee: ['', Validators.required],
+      kickOffDate: ['', Validators.required],
     });
 
     this.league = data.league as League;

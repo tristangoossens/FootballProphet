@@ -10,6 +10,7 @@ import {
   Put,
   Delete,
   Logger,
+  Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { ObjectId } from 'mongoose/lib/types';
@@ -32,8 +33,11 @@ export class PoolController {
   ) {}
 
   @Get()
-  async getAll(@Request() req) {
-    return await this.poolService.GetAll();
+  async getAll(
+    @Query('limit') limit?: number,
+    @Query('offset') offset?: number
+  ) {
+    return await this.poolService.GetAll(limit, offset);
   }
 
   @Get(':id')
@@ -84,7 +88,6 @@ export class PoolController {
   @UseGuards(JwtAuthGuard, RolesGuard, PoolGuard)
   @Put(':id')
   async update(@Param('id') id: string, @Body() pool: Pool) {
-    console.log('PoolController.update', pool);
     await this.poolService.Update(id, pool);
     return `Pool ${pool.name} has successfully been updated`;
   }

@@ -10,6 +10,7 @@ import {
   UserRole,
 } from '@footballprophet/domain';
 import { SuggestedPool } from 'libs/domain/src/lib/SuggestedPool';
+import { AlertService } from '../shared/alert/alert.service';
 
 @Component({
   selector: 'footballprophet-dashboard',
@@ -23,7 +24,8 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private alertService: AlertService
   ) {}
 
   ngOnInit(): void {
@@ -37,15 +39,18 @@ export class DashboardComponent implements OnInit {
   }
 
   LoadUser(id: string) {
-    // Set timeout to simulate slow connection
     this.isLoading = true;
 
-    setTimeout(() => {
-      this.authService.profile(id).subscribe((user) => {
+    this.authService.profile(id).subscribe(
+      (user) => {
         this.user = user;
         this.isLoading = false;
-      });
-    }, 500);
+      },
+      (error) => {
+        this.alertService.AlertError(error.error.message);
+        this.isLoading = false;
+      }
+    );
   }
 
   LoadLeagueScores(id: string) {

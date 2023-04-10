@@ -1,7 +1,6 @@
 import { User, UserRole } from '@footballprophet/domain';
 import { Body, Controller, Post, Request, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import * as bcrypt from 'bcrypt';
 import { Neo4jService } from '../neo4j/neo4j.service';
 import { UserService } from '../user/user.service';
 import { AuthService } from './auth.service';
@@ -25,9 +24,6 @@ export class AuthController {
   @Post('register')
   async register(@Body() user: User): Promise<any> {
     user.roles = [UserRole.User];
-
-    // Hash the password
-    user.password = await bcrypt.hash(user.password, 10);
 
     // Create a user in the database
     const userDocument = await this.userService.create(user);

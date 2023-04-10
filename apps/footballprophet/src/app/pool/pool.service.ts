@@ -11,7 +11,7 @@ export class PoolService {
   public GetPools(offset: number, limit: number): Observable<Pool[]> {
     // TODO: Implement offset and limit
     return this.http
-      .get(`${environment.api_url}/pools`, {
+      .get(`${environment.api_url}/pools?limit=${limit}&offset=${offset}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
