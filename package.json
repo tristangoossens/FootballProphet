@@ -40,7 +40,7 @@
     "jwt-decode": "^3.1.2",
     "mongodb": "^5.2.0",
     "mongodb-memory-server": "^8.12.2",
-    "mongoose": "^6.7.5",
+    "mongoose": "^6.11.3",
     "neo4j-driver": "^5.7.0",
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.0",
